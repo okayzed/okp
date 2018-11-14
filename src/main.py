@@ -6,16 +6,6 @@ import shlex
 from util import *
 import clanger
 
-def replace_double_semicolons(lines):
-    new_lines = []
-    for line in lines:
-        while line.endswith(';;'):
-            line = line[:-1]
-        new_lines.append(line)
-
-    return new_lines
-
-
 def add_semi_colons(lines):
     new_lines = []
     indents = []
@@ -40,11 +30,11 @@ def add_semi_colons(lines):
         # there are a lot of reasons not to add a semicolon, like
         # if the line doesn't end with a backslash, colon or start with class keyword
         # or if the line has a template< decl on it
-        if line[-1] == '\\':
+        if cline[-1] == '\\':
             add_semi = False
-        elif line[-1] == ':':
+        elif cline[-1] == ':':
             add_semi = False
-        elif line[-1] == ';':
+        elif cline[-1] == ';':
             add_semi = False
         elif cline.startswith('class '):
             add_semi = False
@@ -149,7 +139,7 @@ def translate_indents(lines):
                 indent_levels.pop()
                 new_lines[nb] += ' }'
 
-                if indent_levels[-1] == 0:
+                if indent_levels[-1] == 0 and new_lines[nb][-1] != ';':
                     new_lines[nb] += ';'
 
 
@@ -168,7 +158,9 @@ def translate_indents(lines):
         if indent_levels[-1] > 0:
             new_lines[nb] += ' }'
 
-        new_lines[nb] += ';';
+        if new_lines[nb][-1] != ";":
+            new_lines[nb] += ';';
+
         indent_levels.pop()
     new_lines.append('')
 
@@ -537,7 +529,6 @@ def pipeline(lines):
 
     # indents have to be last???
     lines = translate_indents(lines)
-    lines = replace_double_semicolons(lines)
 
     return lines
 
