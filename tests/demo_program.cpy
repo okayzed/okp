@@ -41,7 +41,7 @@ def main():
     MyClass mc
     mc.set_string(s)
 
-    int a, b
+    int a, b, i
     a, b = foo() // std:tie when assigning from multi
 
     print a b
@@ -50,5 +50,8 @@ def main():
 
     if not false:
         print "false"
+
+    for i = 0; i < 10; i++:
+      print "I IS" i
 
     return 0

@@ -15,3 +15,5 @@ run_test tests/basic_class.cpy
 run_test tests/demo_program.cpy
 run_test tests/quick_print.cpy
 run_test tests/example_class.cpy
+run_test tests/simple_array_max_min.cpy
+run_test tests/scarborough_fair.cpy

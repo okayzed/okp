@@ -4,6 +4,7 @@ import sys
 import shlex
 
 from util import *
+import clanger
 
 def replace_double_semicolons(lines):
     new_lines = []
@@ -45,10 +46,65 @@ def add_semi_colons(lines):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def read_scopings(lines):
+    indent_levels = [0]
+    nb = 0
+    scopings = {}
+    scope = {}
+    scope_stack = { 0: scope }
+
+
+    for i, line in enumerate(lines):
+        line = line.rstrip('\n')
+        indent = get_indent(line)
+
+        if indent in scope_stack:
+            scope = scope_stack[indent]
+        else:
+            scope = {}
+            scope_stack[indent] = scope
+
+        scopings[i] = [c for c in scope]
+
+        if not line:
+            continue
+
+        if visibility_line(line):
+            continue
+
+        if indent_levels[-1] > indent:
+            while indent_levels[-1] > indent:
+                indent_levels.pop()
+                scope = scope_stack[indent_levels[-1]]
+
+
+        if indent_levels[-1] < indent:
+            if not visibility_line(lines[nb]):
+                indent_levels.append(indent)
+
+                scope = dict([(c, c) for c in scope])
+                scope_stack[indent] = scope
+
+        if i < len(lines) - 1:
+            next_line = lines[i+1]
+            next_indent = get_indent(next_line)
+
+            if indent < next_indent:
+                scope = dict([(c, c) for c in scope])
+                scope_stack[next_indent] = scope
+
+        new = clanger.add_identifiers(line, scope)
+
+        # last non blank line is this one
+        nb = i
+
+    return scopings
+
 def translate_indents(lines):
     new_lines = []
     indent_levels = [0]
     nb = 0
+
     for i, line in enumerate(lines):
         line = line.rstrip('\n')
         indent = get_indent(line)
@@ -92,14 +148,65 @@ def translate_indents(lines):
     return new_lines
 
 
+def make_declarations(line, scope):
+    global DESTRUCTURE_INDEX
+
+    di = DESTRUCTURE_INDEX
+    indent = get_indent(line)
+    tokens = line.strip().split('= ')
+    if len(tokens) > 1:
+        lhs, rhs = line.split('= ')
+        args = get_args(lhs)
+        if len(args) > 1:
+
+            if lhs.find(' ') > lhs.find(','):
+                debug("RETURNING EARLY")
+                return line
+
+            need_args = False
+            for arg in args:
+                arg = arg.strip(',').strip()
+                if arg not in scope:
+                    need_args = True
+            rhs = rhs.strip()
+
+            if not need_args:
+                args = ''.join(args).strip()
+                line = '%sstd::tie(%s) = %s' % (' ' * indent, args, rhs)
+            else:
+                pname = "structuredArgs_%s" % (di)
+                line = '%sauto %s = %s;' % (' ' * indent, pname, rhs)
+                for j, arg in enumerate(args):
+                    arg = arg.strip(',').strip()
+                    if not arg in scope:
+                        line += '\n%sauto %s = get<%s>(%s);' % (' ' * indent, arg, j, pname )
+                    else:
+                        line += '\n%s%s = get<%s>(%s);' % (' ' * indent, arg, j, pname)
+
+                di += 1
+
+        elif len(args[0].split()) == 1:
+            arg = re.sub("\[.*\]", "", args[0]).strip()
+            if arg.find('.') == -1 and arg not in scope:
+                line = "%sauto %s = %s" % (' ' * indent, arg, rhs)
+
+    DESTRUCTURE_INDEX = di
+    return line
+
 # adds tuples to return statements and std::tie to assignments
-def add_destructuring(lines):
+DESTRUCTURE_INDEX = 0
+def add_destructuring(lines, scopings):
     new_lines = []
     keywords = [ "for", "while", "do" ]
-    for line in lines:
+    for i, line in enumerate(lines):
         # remove any trailing ':' and whitespace
         line = line.rstrip()
         sline = line.strip()
+
+        if i in scopings:
+            scope = scopings[i]
+        else:
+            scope = {}
 
         added = False
         for k in keywords:
@@ -119,15 +226,8 @@ def add_destructuring(lines):
                 line = "%sreturn make_tuple(%s)" % (' ' * indent, args)
 
         elif line.find('=') != -1:
-            indent = get_indent(line)
-            tokens = line.split('= ')
-            if len(tokens) > 1:
-                lhs, rhs = line.split('= ')
-                args = get_args(lhs)
-                if len(args) > 1:
-                    args = ''.join(args).strip()
-                    rhs = rhs.strip()
-                    line = '%sstd::tie(%s) = %s' % (' ' * indent, args, rhs)
+            line = make_declarations(line, scope)
+
 
         new_lines.append(line)
 
@@ -135,6 +235,9 @@ def add_destructuring(lines):
 
 def skip_comments(lines):
     return comment_remover(''.join(lines)).split('\n')
+
+def replace_tabs(lines):
+    return [ line.replace('\t', '    ') for line in lines ]
 
 def add_parentheses(lines):
     new_lines = []
@@ -260,7 +363,83 @@ def replace_pass(lines):
         new_lines.append(line)
 
     return new_lines
-# imply
+
+def replace_for_shorthand(lines):
+    new_lines = []
+    for line in lines:
+        sline = line.strip()
+        if sline.startswith("for ") and sline.find(";") == -1:
+            rem = sline[len("for "):]
+            args = rem.split()
+
+            ind = ' ' * get_indent(line)
+
+            if len(args) == 2:
+                line = "%sfor auto %s = 0; %s < %s; %s++" % (ind, args[0], args[0], args[1], args[0])
+            if len(args) == 3:
+                line = "%sfor auto %s = %s; %s < %s; %s++" % (ind, args[0], args[1], args[0],
+                    args[2], args[0])
+
+
+        new_lines.append(line)
+
+    return new_lines
+
+def add_declarations(lines, scopings):
+    new_lines = []
+    for i, line in enumerate(lines):
+        sline = line.strip()
+        scope = scopings[i]
+        indent = get_indent(line)
+        if indent == 0:
+            type = ""
+            var = ""
+            pr = line.find("(")
+            if pr > 0:
+                lp = line.find(")")
+                params = line[pr+1:lp].split(",")
+                before_p = line[:pr]
+                after_p = line[lp+1:]
+                prev = None
+
+                new_params = []
+                for p in params:
+                    args = p.split()
+                    if len(args) == 1:
+                        var = args[0]
+                    elif len(args) >= 2:
+                        type = " ".join(args[:-1])
+                        var = args[-1]
+
+                    new_params.append("%s %s" % (type, var))
+
+                args = before_p.split()
+                if len(args) == 1 and before_p != "main":
+                    line = "auto %s(%s)%s" % (before_p, ", ".join(new_params), after_p)
+                else:
+                    line = "%s(%s)%s" % (before_p, ", ".join(new_params), after_p)
+
+
+        # special for loop declarations
+        if sline.startswith('for '):
+            args = sline.split(';')
+            args[0] = args[0][len('for '):]
+            lhs, rhs = args[0].split('=')
+            rhs = rhs.strip()
+
+            arg = re.sub("\[.*\]", "", lhs).strip()
+            if arg.find('.') == -1 and arg not in scope and len(arg.split()) == 1:
+                arg = "auto %s" % (arg)
+
+            args[0] = "%sfor %s = %s" % (' ' * indent, arg, rhs)
+
+            line = ";".join(args)
+
+
+
+        new_lines.append(line)
+    return new_lines
+
 def imply_functions(lines):
     new_lines = []
     for line in lines:
@@ -280,12 +459,19 @@ def imply_functions(lines):
 
 def pipeline(lines):
     lines = skip_comments(lines)
-    lines = add_destructuring(lines)
+    lines = replace_tabs(lines)
+    lines = replace_for_shorthand(lines)
+
+    scopings = read_scopings(lines)
+    lines = add_declarations(lines, scopings)
+    lines = add_destructuring(lines, scopings)
     lines = add_parentheses(lines)
     lines = imply_functions(lines)
     lines = replace_pass(lines)
     lines = add_io(lines)
     lines = add_semi_colons(lines)
+
+    # indents have to be last???
     lines = translate_indents(lines)
     lines = replace_double_semicolons(lines)
 
