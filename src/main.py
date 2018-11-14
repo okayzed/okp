@@ -36,8 +36,20 @@ def add_semi_colons(lines):
             new_lines.append(line)
             continue
 
+        add_semi = True
+        # there are a lot of reasons not to add a semicolon, like
         # if the line doesn't end with a backslash, colon or start with class keyword
-        if line[-1] != '\\' and line[-1] != ':' and not cline.startswith('class '):
+        # or if the line has a template< decl on it
+        if line[-1] == '\\':
+            add_semi = False
+        elif line[-1] == ':':
+            add_semi = False
+        elif cline.startswith('class '):
+            add_semi = False
+        elif cline.startswith("template<") or cline.startswith("template <"):
+            add_semi = False
+
+        if add_semi:
             line += ';'
 
         new_lines.append(line)

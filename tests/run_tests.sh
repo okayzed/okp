@@ -14,12 +14,23 @@ function run_test() {
   rm a.out
 }
 
-run_test tests/basic_main.cpy
-run_test tests/basic_class.cpy
-run_test tests/demo_program.cpy
-run_test tests/quick_print.cpy
-run_test tests/example_class.cpy
-run_test tests/simple_array_max_min.cpy
-run_test tests/scarborough_fair.cpy
-run_test tests/params_test.cpy
-run_test tests/toplevel_invoke.cpy
+
+function basic_tests() {
+  run_test tests/basic_main.cpy
+  run_test tests/basic_class.cpy
+  run_test tests/params_test.cpy
+  run_test tests/toplevel_invoke.cpy
+  run_test tests/nested_identifiers.cpy
+  run_test tests/demo_program.cpy
+}
+
+function external_tests() {
+  run_test tests/quick_print.cpy
+  run_test tests/example_class.cpy
+  run_test tests/simple_array_max_min.cpy
+  run_test tests/scarborough_fair.cpy
+  run_test tests/c_look_like_python.cpy
+}
+
+basic_tests
+external_tests
