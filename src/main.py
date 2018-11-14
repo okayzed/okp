@@ -26,6 +26,7 @@ def add_semi_colons(lines):
 
     for i, line in enumerate(lines):
         line = line.rstrip();
+        cline = line.strip()
 
         if not line or line[0] == '#':
             new_lines.append(line)
@@ -35,7 +36,8 @@ def add_semi_colons(lines):
             new_lines.append(line)
             continue
 
-        if line[-1] != '\\':
+        # if the line doesn't end with a backslash, colon or start with class keyword
+        if line[-1] != '\\' and line[-1] != ':' and not cline.startswith('class '):
             line += ';'
 
         new_lines.append(line)

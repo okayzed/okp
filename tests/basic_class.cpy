@@ -4,26 +4,31 @@
 
 using namespace std;
 
-class MyClass:
-    public:
-        MyClass():
-            pass
-        ~MyClass():
-            pass
+class AClass:
+  public:
+      AClass():
+          pass
+      ~AClass():
+          pass
 
-        def get_class_str():
-          return "Class"
-
-
-    private:
-        def multi_ret():
-          return 1, 2
-
-class SecondClass: public MyClass
-    public: SecondClass():
+class BClass: AClass
+public:
+    BClass():
+        pass
+    ~BClass():
         pass
 
-    public: ~SecondClass():
+    def get_class_str():
+      return "Class"
+private:
+    def multi_ret():
+      return 1, 2
+
+class CClass: public BClass
+    public: CClass():
+        pass
+
+    public: ~CClass():
         pass
 
     public: void mybar():
@@ -37,7 +42,7 @@ class SecondClass: public MyClass
 def main():
     int i
     int n = 10
-    MyClass mc
+    CClass mc
 
     vector<int> v(n);
     for i = 0; i < v.size(); i++

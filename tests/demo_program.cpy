@@ -41,7 +41,6 @@ def main():
     MyClass mc
     mc.set_string(s)
 
-    int a, b
     a, b = foo() // std:tie when assigning from multi
 
     print a b
