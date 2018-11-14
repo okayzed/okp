@@ -62,6 +62,17 @@ def add_semi_colons(lines):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def remove_knowns(lines):
+    new_lines = []
+    for line in lines:
+        indent = get_indent(line)
+        cline = line.strip()
+        if cline.startswith('known '):
+            line = "%s// %s" % (' ' * indent, cline)
+
+        new_lines.append(line)
+    return new_lines
+
 def read_scopings(lines):
     indent_levels = [0]
     nb = 0
@@ -273,7 +284,7 @@ def add_parentheses(lines):
 
 def io_readline(line, indent, read_token):
     sline = line.strip()
-    args = smart_split(sline[len(read_token):], ' ')
+    args = smart_split(sline[len(read_token):], ' ,')
     tokens = []
     cin_tokens = []
     cout_tokens = []
@@ -320,7 +331,7 @@ def io_printline(line, indent):
         print_token = 'puts '
 
     if print_token:
-        args = smart_split(sline[len(print_token):], ' ')
+        args = smart_split(sline[len(print_token):], ' ,')
         line = "%sstd::cout << %s" % (' ' * indent, " << ".join(args))
         return line
 
@@ -330,7 +341,7 @@ def io_printline(line, indent):
 
     for tok in ["!", "std::cout ", "cout ", "print "]:
         if sline.startswith(tok):
-            args = smart_split(sline[len(tok):], ' ')
+            args = smart_split(sline[len(tok):], ' ,')
             no_add = False
             for arg in args:
                 if arg == "<<":
@@ -515,6 +526,7 @@ def pipeline(lines):
     lines = replace_for_shorthand(lines)
 
     scopings = read_scopings(lines)
+    lines = remove_knowns(lines)
     lines = add_declarations(lines, scopings)
     lines = add_destructuring(lines, scopings)
     lines = add_parentheses(lines)
