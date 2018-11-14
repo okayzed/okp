@@ -44,6 +44,8 @@ def add_semi_colons(lines):
             add_semi = False
         elif line[-1] == ':':
             add_semi = False
+        elif line[-1] == ';':
+            add_semi = False
         elif cline.startswith('class '):
             add_semi = False
         elif cline.startswith("template<") or cline.startswith("template <"):
