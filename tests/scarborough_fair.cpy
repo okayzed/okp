@@ -9,7 +9,7 @@ main()
 	string s
 	cin >> n >> m >> s
 	while m--
-		int l, r, i
+		int l, r
 		char c, cn
 		cin >> l >> r >> c >> cn
 		l--; r--;

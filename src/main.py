@@ -156,11 +156,10 @@ def make_declarations(line, scope):
     tokens = line.strip().split('= ')
     if len(tokens) > 1:
         lhs, rhs = line.split('= ')
-        args = get_args(lhs)
+        args = smart_split(lhs, ',')
         if len(args) > 1:
 
             if lhs.find(' ') > lhs.find(','):
-                debug("RETURNING EARLY")
                 return line
 
             need_args = False
@@ -171,7 +170,7 @@ def make_declarations(line, scope):
             rhs = rhs.strip()
 
             if not need_args:
-                args = ''.join(args).strip()
+                args = ','.join(args).strip()
                 line = '%sstd::tie(%s) = %s' % (' ' * indent, args, rhs)
             else:
                 pname = "structuredArgs_%s" % (di)
@@ -220,9 +219,9 @@ def add_destructuring(lines, scopings):
 
         if line.strip().startswith('return'):
             indent = get_indent(line)
-            args = get_args(line[indent + len('return'):])
+            args = smart_split(line[indent + len('return'):], ',')
             if len(args) > 1:
-                args = ''.join(args).strip()
+                args = ', '.join(args).strip()
                 line = "%sreturn make_tuple(%s)" % (' ' * indent, args)
 
         elif line.find('=') != -1:
@@ -257,7 +256,7 @@ def add_parentheses(lines):
 
 def io_readline(line, indent, read_token):
     sline = line.strip()
-    args = split_quotes(sline[len(read_token):])
+    args = smart_split(sline[len(read_token):], ' ')
     tokens = []
     cin_tokens = []
     cout_tokens = []
@@ -304,7 +303,7 @@ def io_printline(line, indent):
         print_token = 'puts '
 
     if print_token:
-        args = split_quotes(sline[len(print_token):])
+        args = smart_split(sline[len(print_token):], ' ')
         line = "%sstd::cout << %s" % (' ' * indent, " << ".join(args))
         return line
 
@@ -314,7 +313,7 @@ def io_printline(line, indent):
 
     for tok in ["!", "std::cout ", "cout ", "print "]:
         if sline.startswith(tok):
-            args = split_quotes(sline[len(tok):])
+            args = smart_split(sline[len(tok):], ' ')
             no_add = False
             for arg in args:
                 if arg == "<<":
@@ -369,7 +368,7 @@ def replace_for_shorthand(lines):
     for line in lines:
         sline = line.strip()
         if sline.startswith("for ") and sline.find(";") == -1:
-            rem = sline[len("for "):]
+            rem = sline[len("for "):].rstrip(':')
             args = rem.split()
 
             ind = ' ' * get_indent(line)
@@ -379,6 +378,9 @@ def replace_for_shorthand(lines):
             if len(args) == 3:
                 line = "%sfor auto %s = %s; %s < %s; %s++" % (ind, args[0], args[1], args[0],
                     args[2], args[0])
+            if len(args) == 4:
+                line = "%sfor auto %s = %s; %s < %s; %s += %s" % (ind, args[0], args[1], args[0],
+                    args[2], args[0], args[3])
 
 
         new_lines.append(line)
@@ -397,21 +399,26 @@ def add_declarations(lines, scopings):
             pr = line.find("(")
             if pr > 0:
                 lp = line.find(")")
-                params = line[pr+1:lp].split(",")
+                params = smart_split(line[pr+1:lp], ",")
                 before_p = line[:pr]
                 after_p = line[lp+1:]
                 prev = None
 
                 new_params = []
+                # if any param has spaces in it, then we think it is a function declaration
+                # foo(int a) vs foo(10, 20, "abc")
                 for p in params:
-                    args = p.split()
+                    args = smart_split(p, " ")
                     if len(args) == 1:
                         var = args[0]
                     elif len(args) >= 2:
                         type = " ".join(args[:-1])
                         var = args[-1]
 
-                    new_params.append("%s %s" % (type, var))
+                    if type:
+                        new_params.append("%s %s" % (type, var))
+                    else:
+                        new_params.append(var)
 
                 args = before_p.split()
                 if len(args) == 1 and before_p != "main":

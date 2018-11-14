@@ -17,3 +17,5 @@ run_test tests/quick_print.cpy
 run_test tests/example_class.cpy
 run_test tests/simple_array_max_min.cpy
 run_test tests/scarborough_fair.cpy
+run_test tests/params_test.cpy
+run_test tests/toplevel_invoke.cpy
