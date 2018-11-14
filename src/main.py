@@ -6,6 +6,12 @@ import shlex
 from util import *
 import clanger
 
+def dot_access(arg):
+    return arg.find('.') != -1
+
+def array_access(arg):
+    return arg.find('[') != -1
+
 def add_semi_colons(lines):
     new_lines = []
     indents = []
@@ -204,8 +210,8 @@ def make_declarations(line, scope):
                 di += 1
 
         elif len(args[0].split()) == 1:
-            arg = re.sub("\[.*\]", "", args[0]).strip()
-            if arg.find('.') == -1 and arg not in scope:
+            arg = args[0].strip()
+            if not array_access(arg) and not dot_access(arg) and not arg in scope:
                 line = "%sauto %s = %s" % (' ' * indent, arg, rhs)
 
     DESTRUCTURE_INDEX = di
@@ -474,9 +480,9 @@ def add_declarations(lines, scopings):
                 add_auto = True
                 if j != 0:
                     add_auto = False
-                elif arg.find('[') != -1:
+                elif array_access(arg):
                     add_auto = False
-                elif arg.find('.') != -1:
+                elif dot_access(arg):
                     add_auto = False
                 elif arg in scope:
                     add_auto = False
