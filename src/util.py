@@ -125,6 +125,16 @@ def comment_remover(text):
     )
     return re.sub(pattern, replacer, text)
 
+
+def dot_access(arg):
+    return arg.find('.') != -1
+
+def array_access(arg):
+    return arg.find('[') != -1
+
+def visibility_line(line):
+    return line.endswith('private:') or line.endswith('public:')
+
 if __name__ == "__main__":
     smart_split("int main(int argc, char **argv)", [' '])
     smart_split('"foo bar baz", int main', [','])
