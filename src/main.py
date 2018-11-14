@@ -5,6 +5,7 @@ import os
 
 from transforms import comments, io, keywords, structure, variables
 import analysis
+import util
 
 
 def print_lines(lines):
@@ -40,6 +41,8 @@ def process_file(fname):
         lines = f.readlines()
 
     lines = pipeline(lines, basedir)
+#    exports = analysis.extract_functions(lines)
+
     print_lines(lines)
 
 

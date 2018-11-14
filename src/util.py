@@ -126,6 +126,9 @@ def comment_remover(text):
     return re.sub(pattern, replacer, text)
 
 
+def ptr_access(arg):
+    return arg.find('->') != -1
+
 def dot_access(arg):
     return arg.find('.') != -1
 

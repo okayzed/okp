@@ -27,7 +27,7 @@ def add_identifiers(line, scope):
 
         if toks:
             nt = toks[-1]
-            if nt.spelling == '.':
+            if nt.spelling == '.' or nt.spelling == '->':
                 toks.pop()
                 new_toks.pop()
 

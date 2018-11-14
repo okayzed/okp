@@ -1,5 +1,16 @@
 from util import *
 
+def var_access(arg):
+    return dot_access(arg) or array_access(arg) or ptr_access(arg)
+
+def no_punctuation(arg):
+    narg = []
+    for c in arg:
+        if c.isalnum() or c == '_':
+            narg.append(c)
+
+    return ''.join(narg)
+
 DESTRUCTURE_INDEX = 0
 def make_declarations(line, scope):
     global DESTRUCTURE_INDEX
@@ -7,7 +18,11 @@ def make_declarations(line, scope):
     di = DESTRUCTURE_INDEX
     indent = get_indent(line)
     tokens = line.strip().split('= ')
-    if len(tokens) > 1:
+
+    # TODO: what do we do if tokens > 2?
+    if len(tokens) == 2:
+#        lhs = tokens[0]
+#        rhs = tokens[1]
         lhs, rhs = line.split('= ')
         args = smart_split(lhs, ',')
         if len(args) > 1:
@@ -39,7 +54,8 @@ def make_declarations(line, scope):
 
         elif len(args[0].split()) == 1:
             arg = args[0].strip()
-            if not array_access(arg) and not dot_access(arg) and not arg in scope:
+            carg = no_punctuation(args[0])
+            if not var_access(arg) and not carg in scope:
                 line = "%sauto %s = %s" % (' ' * indent, arg, rhs)
 
     DESTRUCTURE_INDEX = di
@@ -144,9 +160,7 @@ def add_auto_declarations(lines, scopings):
                 add_auto = True
                 if j != 0:
                     add_auto = False
-                elif array_access(arg):
-                    add_auto = False
-                elif dot_access(arg):
+                elif var_access(arg):
                     add_auto = False
                 elif arg in scope:
                     add_auto = False

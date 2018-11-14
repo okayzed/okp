@@ -55,6 +55,31 @@ def read_scopings(lines):
 
     return scopings
 
+# after line is already decorated, we can check if its a function
+# so we can make a .h file for this .cpp file
+CONTROL_WORDS = [
+    'else',
+    'if',
+    'class',
+    'struct',
+    'typedef',
+    'for',
+    'while']
+
+def line_is_function(line):
+    args = smart_split(line, ' ')
+    if not args:
+        return
+
+    if args[0] in CONTROL_WORDS:
+        return False
+
+    if args[-1].endswith('{') and line.find('(') != -1:
+        return True
+
+    return False
+
+
 def imply_functions(lines):
     new_lines = []
     for line in lines:
@@ -71,3 +96,13 @@ def imply_functions(lines):
         new_lines.append(line)
 
     return new_lines
+
+def extract_functions(lines):
+    extracted = []
+    for line in lines:
+        if line_is_function(line):
+            func_decl = line.rstrip('{')
+            func_decl += ';'
+            extracted.append(func_decl)
+
+    return extracted
