@@ -1,7 +1,11 @@
+mkdir -p compiled/tests
+
 function run_test() {
-  python src/main.py < ${1} | g++ -x c++ -
+  name=${1/.cpy/.cpp}
+  python src/main.py < ${1} > "compiled/${name}" 
+  g++ -x c++ - < "compiled/${name}"
   if [[ $? != 0 ]]; then
-    python src/main.py < ${1} | cat -n
+    cat -n "compiled/${name}"
     echo "FAILED: ${1}"
   else
     echo "PASSED: ${1}"
