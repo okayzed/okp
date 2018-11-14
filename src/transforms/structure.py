@@ -36,6 +36,13 @@ def add_semi_colons(lines):
             add_semi = False
 
         if add_semi:
+            # we have `do` here, just in case
+            for tok in ['for ', 'while ', 'do ', 'else if', 'if ']:
+                if cline.startswith(tok):
+                    add_semi = False
+                    break
+
+        if add_semi:
             line += ';'
 
         new_lines.append(line)
@@ -94,7 +101,7 @@ def translate_indents(lines):
 
 def add_parentheses(lines):
     new_lines = []
-    replace = ["if ", "while ", "for "]
+    replace = ["if ", "while ", "for ", "else if "]
     for line in lines:
         indent = get_indent(line)
         sline = line.strip()

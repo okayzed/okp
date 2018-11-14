@@ -8,7 +8,7 @@ function run_test() {
   tmp_name=${name/.cpp/.tmp}
   diff_name=${name/.cpp/.diff}
 
-  python src/main.py < ${1} > "${name}"
+  python src/main.py - < ${1} > "${name}"
   g++ -x c++ - -o ${exe_name} < "${name}"
   if [[ $? != 0 ]]; then
     cat -n "compiled/${name}"

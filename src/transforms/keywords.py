@@ -1,6 +1,25 @@
 from util import *
+import os
 
-def remove_blocks(lines):
+def replace_raw(lines, base_dir):
+    new_lines = []
+    for line in lines:
+        cline = line.strip()
+        if cline.startswith("#raw "):
+            args = smart_split(cline[len("#raw "):], '"')
+
+            for arg in args:
+                fname = os.path.join(base_dir, arg)
+                with open(fname) as f:
+                    new_lines.extend(f.readlines())
+        else:
+            new_lines.append(line)
+
+
+    return new_lines
+
+
+def replace_blocks(lines):
     new_lines = []
     for line in lines:
         indent = get_indent(line)
@@ -11,7 +30,7 @@ def remove_blocks(lines):
         new_lines.append(line)
     return new_lines
 
-def remove_knowns(lines):
+def replace_knowns(lines):
     new_lines = []
     for line in lines:
         indent = get_indent(line)

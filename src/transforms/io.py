@@ -3,6 +3,12 @@ from util import *
 def io_readline(line, indent, read_token):
     sline = line.strip()
     args = smart_split(sline[len(read_token):], ' ,')
+
+    # if the line already has >> or << on it, we don't process it
+    for arg in args:
+        if arg == "<<" or arg == ">>":
+            return line
+
     tokens = []
     cin_tokens = []
     cout_tokens = []
@@ -78,7 +84,7 @@ def io_printline(line, indent):
 
 def add_io(lines):
     new_lines = []
-    tokens = [ '? ', 'read ', '?? ' ]
+    tokens = [ '? ', 'read ', '?? ', 'cin ' ]
     for line in lines:
         indent = get_indent(line)
         sline = line.strip()

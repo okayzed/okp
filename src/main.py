@@ -1,37 +1,56 @@
 from __future__ import print_function
 
 import sys
+import os
 
-from util import *
-from transforms.io import *
-from transforms.structure import *
-from transforms.variables import *
-from transforms.keywords import *
-from transforms.comments import *
-from analysis import *
+from transforms import comments, io, keywords, structure, variables
+import analysis
 
 
-def pipeline(lines):
-    lines = skip_comments(lines)
-    lines = replace_tabs(lines)
-    lines = replace_for_shorthand(lines)
+def print_lines(lines):
+    print('\n'.join(lines))
 
-    scopings = read_scopings(lines)
-    lines = remove_knowns(lines)
-    lines = remove_blocks(lines)
-    lines = add_auto_declarations(lines, scopings)
-    lines = add_destructuring(lines, scopings)
-    lines = add_parentheses(lines)
-    lines = imply_functions(lines)
-    lines = replace_pass(lines)
-    lines = add_io(lines)
-    lines = add_semi_colons(lines)
+def pipeline(lines, base_dir=None):
+    lines = keywords.replace_raw(lines, base_dir or os.getcwd())
+    lines = comments.skip_comments(lines)
+    lines = keywords.replace_tabs(lines)
+    lines = keywords.replace_for_shorthand(lines)
+
+    # scopings is a per line scope of seen variables
+    scopings = analysis.read_scopings(lines)
+    lines = keywords.replace_knowns(lines)
+    lines = keywords.replace_blocks(lines)
+    lines = variables.add_auto_declarations(lines, scopings)
+    lines = variables.add_destructuring(lines, scopings)
+    lines = structure.add_parentheses(lines)
+    lines = analysis.imply_functions(lines)
+    lines = keywords.replace_pass(lines)
+    lines = io.add_io(lines)
+    lines = structure.add_semi_colons(lines)
 
     # indents have to be last???
-    lines = translate_indents(lines)
+    lines = structure.translate_indents(lines)
 
     return lines
 
-lines = sys.stdin.readlines()
-lines = pipeline(lines)
-print('\n'.join(lines))
+
+def process_file(fname):
+    basedir, name = os.path.split(fname)
+    with open(fname) as f:
+        lines = f.readlines()
+
+    lines = pipeline(lines, basedir)
+    print_lines(lines)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        print("Usage: py++ <input file> <input file> -")
+    else:
+        if sys.argv[1] == '-':
+            lines = sys.stdin.readlines()
+            lines = pipeline(lines)
+            print_lines(lines)
+        else:
+            for arg in sys.argv[1:]:
+                process_file(arg)
