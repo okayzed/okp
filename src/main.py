@@ -262,7 +262,8 @@ def add_parentheses(lines):
         for tok in replace:
             if sline.startswith(tok):
                 nline = line[indent+len(tok):].rstrip(':')
-                line = "%s%s(%s) " % (' ' * indent, tok, nline)
+                if nline[0] != '(':
+                    line = "%s%s(%s) " % (' ' * indent, tok, nline)
 
         new_lines.append(line)
 
@@ -381,20 +382,27 @@ def replace_for_shorthand(lines):
     new_lines = []
     for line in lines:
         sline = line.strip()
+
         if sline.startswith("for ") and sline.find(";") == -1:
-            rem = sline[len("for "):].rstrip(':')
-            args = rem.split()
+            # check if we are in a range loop
+            range_loop = False
+            if sline.find(':') != -1 and sline.find(':') != len(sline) - 1:
+                range_loop = True
 
-            ind = ' ' * get_indent(line)
+            if not range_loop:
+                rem = sline[len("for "):].rstrip(':')
+                args = rem.split()
 
-            if len(args) == 2:
-                line = "%sfor auto %s = 0; %s < %s; %s++" % (ind, args[0], args[0], args[1], args[0])
-            if len(args) == 3:
-                line = "%sfor auto %s = %s; %s < %s; %s++" % (ind, args[0], args[1], args[0],
-                    args[2], args[0])
-            if len(args) == 4:
-                line = "%sfor auto %s = %s; %s < %s; %s += %s" % (ind, args[0], args[1], args[0],
-                    args[2], args[0], args[3])
+                ind = ' ' * get_indent(line)
+
+                if len(args) == 2:
+                    line = "%sfor auto %s = 0; %s < %s; %s++" % (ind, args[0], args[0], args[1], args[0])
+                if len(args) == 3:
+                    line = "%sfor auto %s = %s; %s < %s; %s++" % (ind, args[0], args[1], args[0],
+                        args[2], args[0])
+                if len(args) == 4:
+                    line = "%sfor auto %s = %s; %s < %s; %s += %s" % (ind, args[0], args[1], args[0],
+                        args[2], args[0], args[3])
 
 
         new_lines.append(line)
@@ -445,16 +453,37 @@ def add_declarations(lines, scopings):
         if sline.startswith('for '):
             args = sline.split(';')
             args[0] = args[0][len('for '):]
-            lhs, rhs = args[0].split('=')
-            rhs = rhs.strip()
 
-            arg = re.sub("\[.*\]", "", lhs).strip()
-            if arg.find('.') == -1 and arg not in scope and len(arg.split()) == 1:
-                arg = "auto %s" % (arg)
+            stmts = smart_split(args[0], ',')
+            arg0 = []
+            for j, s in enumerate(stmts):
+                toks = s.split('=')
+                if len(toks) == 1:
+                    arg0.append(s)
+                    continue
 
-            args[0] = "%sfor %s = %s" % (' ' * indent, arg, rhs)
+                lhs, rhs = toks
+                rhs = rhs.strip()
 
-            line = ";".join(args)
+                arg = lhs.strip()
+                add_auto = True
+                if j != 0:
+                    add_auto = False
+                elif arg.find('[') != -1:
+                    add_auto = False
+                elif arg.find('.') != -1:
+                    add_auto = False
+                elif arg in scope:
+                    add_auto = False
+                elif len(arg.split()) > 1:
+                    add_auto = False
+                if add_auto:
+                    arg = "auto %s" % (arg)
+
+                arg0.append("%s = %s" % (arg, rhs))
+
+            args[0] = ", ".join(arg0)
+            line = "%sfor %s" % (' '*indent, ";".join(args))
 
 
 
