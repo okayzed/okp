@@ -58,6 +58,17 @@ def add_semi_colons(lines):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def remove_blocks(lines):
+    new_lines = []
+    for line in lines:
+        indent = get_indent(line)
+        cline = line.strip()
+        if cline.startswith('block:'):
+            line = "%s/* %s */" % (' ' * indent, cline)
+
+        new_lines.append(line)
+    return new_lines
+
 def remove_knowns(lines):
     new_lines = []
     for line in lines:
@@ -525,6 +536,7 @@ def pipeline(lines):
 
     scopings = read_scopings(lines)
     lines = remove_knowns(lines)
+    lines = remove_blocks(lines)
     lines = add_declarations(lines, scopings)
     lines = add_destructuring(lines, scopings)
     lines = add_parentheses(lines)

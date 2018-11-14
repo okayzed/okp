@@ -32,6 +32,7 @@ function external_tests() {
   run_test tests/scarborough_fair.cpy
   run_test tests/c_look_like_python.cpy
   run_test tests/manacher.cpy
+  run_test tests/tree_diameter2.cpy
 }
 
 basic_tests
