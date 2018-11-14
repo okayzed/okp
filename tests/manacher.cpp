@@ -1,6 +1,7 @@
 
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <tuple>
+#include <vector>
 
 
 auto manacher(char *s, int n) {

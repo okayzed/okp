@@ -1,6 +1,7 @@
 // from zimpha/algorithmic.library
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <tuple>
+#include <vector>
 
 /**
  * u[i] is the length of the longest palindrome centered as i / 2.
