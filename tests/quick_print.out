@@ -1,0 +1,10 @@
+Type two integers: Well done! Now type a string: Congratulations!
+
+Following line is produced by command: ! a b str "Second << ' ' << string"
+10 11 somestring Second string
+
+!! is a quick print without ending the line... Ending the line in the following command exemplified!
+Following line is produced by command: ?? a b str
+A is valued  10 
+
+B is valued 11

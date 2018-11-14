@@ -1,3 +1,6 @@
 *.sw?
 *.pyc
-
+*.exe
+*.diff
+*.out
+*.tmp

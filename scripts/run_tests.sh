@@ -2,16 +2,40 @@ mkdir -p compiled/tests
 
 function run_test() {
   name=${1/.cpy/.cpp}
-  python src/main.py < ${1} > "compiled/${name}" 
-  g++ -x c++ - < "compiled/${name}"
+  exe_name=${name/.cpp/.exe}
+  in_name=${name/.cpp/.in}
+  out_name=${name/.cpp/.out}
+  tmp_name=${name/.cpp/.tmp}
+  diff_name=${name/.cpp/.diff}
+
+  python src/main.py < ${1} > "${name}"
+  g++ -x c++ - -o ${exe_name} < "${name}"
   if [[ $? != 0 ]]; then
     cat -n "compiled/${name}"
     echo "FAILED: ${1}"
   else
+
+    if test -f ${in_name}; then
+      # to regen output files:
+      # if test -f ${out_name}; then
+      #     cat ${in_name} | ${exe_name} > ${out_name}
+      # fi
+      cat ${in_name} | ${exe_name} > ${tmp_name}
+    else
+      ${exe_name} > ${tmp_name}
+    fi
+
+    if test -f ${out_name}; then
+      diff ${out_name} ${tmp_name} > ${diff_name}
+      if [[ $? != 0 ]]; then
+        echo "FAILED: ${1}"
+        cat ${diff_name}
+        return
+      fi
+    fi
+
     echo "PASSED: ${1}"
   fi
-
-  rm a.out
 }
 
 
