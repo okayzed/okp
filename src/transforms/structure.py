@@ -49,7 +49,7 @@ def add_semi_colons(lines):
 
     return new_lines
 
-def translate_indents(lines):
+def add_curly_braces(lines):
     new_lines = []
     indent_levels = [0]
     nb = 0

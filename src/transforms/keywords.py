@@ -85,3 +85,21 @@ def replace_for_shorthand(lines):
 
     return new_lines
 
+# finds and replaces "def" in front of functions
+def replace_defs(lines):
+    new_lines = []
+    for line in lines:
+        cline = line.strip()
+        if cline.startswith("def "):
+            tokens = cline.split()
+            next_word = tokens[1]
+            if next_word.find("(") == -1 or cline.find("main(") != -1:
+                line = line.replace("def ", "")
+            else:
+                # is a function
+                line = line.replace("def ", "auto ")
+
+        new_lines.append(line)
+
+    return new_lines
+

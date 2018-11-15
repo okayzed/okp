@@ -1,5 +1,3 @@
-mkdir -p compiled/tests
-
 function run_test() {
   name=${1/.cpy/.cpp}
   exe_name=${name/.cpp/.exe}

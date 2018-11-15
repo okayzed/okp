@@ -82,7 +82,7 @@ def io_printline(line, indent):
 
     return line
 
-def add_io(lines):
+def replace_io_keywords(lines):
     new_lines = []
     tokens = [ '? ', 'read ', '?? ', 'cin ' ]
     for line in lines:
