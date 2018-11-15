@@ -18,7 +18,6 @@ def replace_raw(lines, base_dir):
 
     return new_lines
 
-
 def replace_blocks(lines):
     new_lines = []
     for line in lines:

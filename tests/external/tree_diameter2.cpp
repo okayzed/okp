@@ -37,7 +37,7 @@ main() {
     std::cin >> n ;
 
     vector<vector<int>> edges(n+1);
-    for (auto i = 0; i < n-1; i++) {
+    for (auto i = 1; i < n; i++) {
         std::cin >> a >> b ;
         edges[a].push_back(b);
         edges[b].push_back(a); }

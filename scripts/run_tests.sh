@@ -48,13 +48,13 @@ function basic_tests() {
 }
 
 function external_tests() {
-  run_test tests/quick_print.cpy
-  run_test tests/example_class.cpy
-  run_test tests/simple_array_max_min.cpy
-  run_test tests/scarborough_fair.cpy
-  run_test tests/c_look_like_python.cpy
-  run_test tests/manacher.cpy
-  run_test tests/tree_diameter2.cpy
+  run_test tests/external/quick_print.cpy
+  run_test tests/external/example_class.cpy
+  run_test tests/external/simple_array_max_min.cpy
+  run_test tests/external/scarborough_fair.cpy
+  run_test tests/external/c_look_like_python.cpy
+  run_test tests/external/manacher.cpy
+  run_test tests/external/tree_diameter2.cpy
 }
 
 basic_tests
