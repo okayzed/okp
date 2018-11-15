@@ -16,7 +16,11 @@ def add_semi_colons(lines):
             new_lines.append(line)
             continue
 
-        if indents[i] < indents[i+1]:
+        j = i+1
+        while j < len(lines) and not lines[j].strip():
+            j += 1
+
+        if indents[i] < indents[j]:
             new_lines.append(line)
             continue
 

@@ -106,6 +106,21 @@ def extract_header(lines):
 
     return extracted
 
+def remove_structs(lines):
+    new_lines = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.find(" struct ") != -1 and line.endswith('{'):
+            until = extract_until_close(lines, i)
+            i = until
+        else:
+            i += 1
+            new_lines.append(line)
+
+    return new_lines
+    
+
 def extract_until_close(lines, i):
     count = 0
     while i < len(lines):

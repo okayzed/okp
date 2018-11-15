@@ -20,7 +20,8 @@ if the following code makes you happy, ${NAME} might be for you:
 
 ## status
 
-${NAME} is not a good idea for anyone to use, but try it anyways
+${NAME} is not a good idea for anyone to use, but try it anyways and let me
+know what you've built
 
 ## features
 
