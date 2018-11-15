@@ -141,6 +141,11 @@ def array_access(arg):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def case_statement(line):
+    cline= line.strip()
+    # default must have a : always
+    return cline.startswith('case ')  or cline.startswith("default:")
+
 if __name__ == "__main__":
     smart_split("int main(int argc, char **argv)", [' '])
     smart_split('"foo bar baz", int main', [','])

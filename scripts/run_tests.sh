@@ -45,13 +45,19 @@ function basic_tests() {
   run_test tests/nested_identifiers.cpy
   run_test tests/known_vars.cpy
   run_test tests/demo_program.cpy
+	run_test tests/switch_statement.cpy
 }
 
 function external_tests() {
+
+	# from CPY
+	run_test tests/external/cpy_readme.cpy
   run_test tests/external/quick_print.cpy
   run_test tests/external/example_class.cpy
   run_test tests/external/simple_array_max_min.cpy
   run_test tests/external/scarborough_fair.cpy
+
+	# elsewhere
   run_test tests/external/c_look_like_python.cpy
   run_test tests/external/manacher.cpy
   run_test tests/external/tree_diameter2.cpy

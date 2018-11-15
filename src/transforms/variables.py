@@ -12,6 +12,9 @@ def no_punctuation(arg):
     return ''.join(narg)
 
 DESTRUCTURE_INDEX = 0
+
+DECLARE_VARIABLES = True
+
 def make_declarations(line, scope):
     global DESTRUCTURE_INDEX
 
@@ -45,6 +48,9 @@ def make_declarations(line, scope):
                 line = '%sauto %s = %s;' % (' ' * indent, pname, rhs)
                 for j, arg in enumerate(args):
                     arg = arg.strip(',').strip()
+                    if arg == '_':
+                        continue
+
                     if not arg in scope:
                         line += '\n%sauto %s = get<%s>(%s);' % (' ' * indent, arg, j, pname )
                     else:
@@ -93,7 +99,8 @@ def add_destructuring(lines, scopings):
                 line = "%sreturn make_tuple(%s)" % (' ' * indent, args)
 
         elif line.find('=') != -1:
-            line = make_declarations(line, scope)
+            if DECLARE_VARIABLES:
+                line = make_declarations(line, scope)
 
 
         new_lines.append(line)

@@ -78,7 +78,8 @@ def add_curly_braces(lines):
         if indent_levels[-1] < indent:
             if not visibility_line(new_lines[nb]):
                 indent_levels.append(indent)
-                new_lines[nb] = new_lines[nb].rstrip(':')
+                if not case_statement(new_lines[nb]):
+                    new_lines[nb] = new_lines[nb].rstrip(':')
                 new_lines[nb] += ' {'
 
         new_lines.append(line)
@@ -101,7 +102,7 @@ def add_curly_braces(lines):
 
 def add_parentheses(lines):
     new_lines = []
-    replace = ["if ", "while ", "for ", "else if "]
+    replace = ["if ", "while ", "for ", "else if ", "switch " ]
     for line in lines:
         indent = get_indent(line)
         sline = line.strip()
