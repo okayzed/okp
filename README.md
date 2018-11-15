@@ -1,8 +1,8 @@
-# py++
+# ${NAME}
 
-py++ is a python script that processes .cpy files and generates C++ code.
+${NAME} is a python script that processes .cpy files and generates C++ code.
 
-if the following code makes you happy, py++ might be for you:
+if the following code makes you happy, ${NAME} might be for you:
 
     #include <iostream>
 
@@ -20,13 +20,13 @@ if the following code makes you happy, py++ might be for you:
 
 ## status
 
-py++ is not a good idea for anyone to use, but try it anyways
+${NAME} is not a good idea for anyone to use, but try it anyways
 
 ## features
 
 ### from CPY
 
-Features that py++ implements from CPY are:
+Features that ${NAME} implements from CPY are:
 
 * indentation based bracketing
 * automatic parenthesization of conditionals
@@ -45,7 +45,7 @@ Features that are **not** implemented yet:
 
 ### original
 
-Some original features of py++ to make it look more pythonic are:
+Some original features of ${NAME} to make it look more pythonic are:
 
 * `def` keyword before function names
 * `block` keyword for creating blocks
@@ -57,7 +57,7 @@ Some original features of py++ to make it look more pythonic are:
 i saw vrsperanza's CPY and the light was upon me: a language that looks like
 python but compiles like C. i decided i want to write programs in it.
 
-py++ is an attempt to write a pre-processor like CPY but in python.
+${NAME} is an attempt to write a pre-processor like CPY but in python.
 
 ## further resources
 
