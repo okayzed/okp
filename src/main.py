@@ -20,6 +20,8 @@ def pipeline(lines, base_dir=None):
     lines = keywords.replace_knowns(lines)
     lines = keywords.replace_blocks(lines)
     lines = keywords.replace_defs(lines)
+
+    # replaces !, ?, ??, print, read, etc
     lines = io.replace_io_keywords(lines)
 
     # scopings is a per line scope of seen variables

@@ -67,7 +67,7 @@ def replace_for_shorthand(lines):
 
             if not range_loop:
                 rem = sline[len("for "):].rstrip(':')
-                args = rem.split()
+                args = smart_split(rem, ' ')
 
                 ind = ' ' * get_indent(line)
 

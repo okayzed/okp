@@ -9,9 +9,9 @@ class Node:
 
 def bfs(int node, vector<vector<int>> edges):
     Node max_node
-    max_depth = 0; 
+    max_depth = 0; // semi-colons optional
 
-    queue<Node> q; 
+    queue<Node> q;
     q.push({node, 0})
 
     vector<int> visited(edges.size(), 0);
@@ -37,7 +37,7 @@ def main():
     read n
 
     vector<vector<int>> edges(n+1);
-    for i n-1:
+    for i 1 n: // [1 n)
         read a, b
         edges[a].push_back(b)
         edges[b].push_back(a)
