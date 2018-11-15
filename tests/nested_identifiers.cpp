@@ -1,3 +1,4 @@
+
 class B {
 public:
     int baz; };

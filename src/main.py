@@ -13,6 +13,8 @@ def print_lines(lines):
 
 def pipeline(lines, base_dir=None):
     lines = comments.skip_comments(lines)
+    lines = structure.join_backslash_lines(lines)
+
     lines = keywords.replace_raw(lines, base_dir or os.getcwd())
     lines = keywords.replace_tabs(lines)
     lines = keywords.replace_pass(lines)

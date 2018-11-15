@@ -1,4 +1,9 @@
+tests_to_run=$*
+
 function run_test() {
+  if ! [[ ${1} =~ ${tests_to_run} ]]; then
+    return
+  fi
   name=${1/.cpy/.cpp}
   exe_name=${name/.cpp/.exe}
   in_name=${name/.cpp/.in}
@@ -46,6 +51,7 @@ function basic_tests() {
   run_test tests/known_vars.cpy
   run_test tests/demo_program.cpy
 	run_test tests/switch_statement.cpy
+  run_test tests/long_conditionals.cpy # aka joined lines
 }
 
 function external_tests() {

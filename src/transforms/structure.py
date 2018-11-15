@@ -99,6 +99,34 @@ def add_curly_braces(lines):
 
     return new_lines
 
+def join_backslash_lines(lines):
+    new_lines = ['']
+
+    i = 0
+    full_line = []
+    while i < len(lines):
+        line = lines[i].rstrip()
+        if full_line:
+            line = line.strip()
+        if line.endswith('\\'):
+            # strip off the backslash, strip off the remaining spaces
+            full_line.append(line.rstrip('\\').rstrip())
+        else:
+            if full_line:
+                full_line.append(line.strip())
+            else:
+                full_line.append(line)
+            new_lines.append(' '.join(full_line))
+            full_line = []
+
+        i += 1
+
+    return new_lines
+
+
+
+
+
 
 def add_parentheses(lines):
     new_lines = []
