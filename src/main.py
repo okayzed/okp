@@ -41,7 +41,13 @@ def process_file(fname):
         lines = f.readlines()
 
     lines = pipeline(lines, basedir)
-#    exports = analysis.extract_functions(lines)
+    exports = analysis.extract_functions(lines)
+
+
+    # TODO:
+    # extract exports to fname.h
+    # print("\n".join(exports))
+    # print("/* END HEADER */")
 
     print_lines(lines)
 

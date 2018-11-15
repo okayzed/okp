@@ -26,7 +26,7 @@ def find_matching(line, open, close, start):
 # anything inside [], (), {} and <> are kept together
 # anything inside "" or '' is kept together
 # we pass a separator, like ' ' or ',' and we get back the inner pieces
-def smart_split(line, split_chars=[]):
+def smart_split(line, split_chars=[], keep_splitters=False):
     split = []
     prev = []
 
@@ -40,6 +40,9 @@ def smart_split(line, split_chars=[]):
             if prev:
                 split.append(''.join(prev))
                 prev = []
+
+            if keep_splitters:
+                split.append(c)
 
         elif c == '"':
             p, i = find_matching(line, '"', c, i)

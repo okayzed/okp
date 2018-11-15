@@ -1,6 +1,6 @@
 from util import *
 
-import clanger
+import id_recognizer
 def read_scopings(lines):
     indent_levels = [0]
     nb = 0
@@ -27,6 +27,9 @@ def read_scopings(lines):
         if visibility_line(line):
             continue
 
+        # last non blank line is now this one
+        nb = i
+
         if indent_levels[-1] > indent:
             while indent_levels[-1] > indent:
                 indent_levels.pop()
@@ -48,10 +51,13 @@ def read_scopings(lines):
                 scope = dict([(c, c) for c in scope])
                 scope_stack[next_indent] = scope
 
-        new = clanger.add_identifiers(line, scope)
+        new = id_recognizer.add_identifiers(line, scope)
 
-        # last non blank line is this one
-        nb = i
+        # compare libclang vs. our own version
+        # import clanger
+        # new2 = clanger.add_identifiers(line, bscope)
+        # debug("TOKENS", line, new, new2)
+
 
     return scopings
 
@@ -99,10 +105,34 @@ def imply_functions(lines):
 
 def extract_functions(lines):
     extracted = []
-    for line in lines:
+    i = 0
+    while i < len(lines):
+        line = lines[i]
         if line_is_function(line):
             func_decl = line.rstrip('{')
             func_decl += ';'
             extracted.append(func_decl)
 
+        if line.find(" struct ") != -1 and line.endswith('{'):
+            until = extract_until_close(lines, i)
+            ex = lines[i:until]
+            extracted.extend(ex)
+            i = until
+        else:
+            i += 1
+
     return extracted
+
+def extract_until_close(lines, i):
+    count = 0
+    while i < len(lines):
+        line = lines[i]
+        for c in line:
+            if c == '{':
+                count += 1
+            if c == '}':
+                count -= 1
+
+        i += 1
+        if count == 0:
+            return i
