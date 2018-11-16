@@ -131,11 +131,39 @@ def array_access(arg):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def is_def(line):
+    return line.strip().find("def ") != -1
+
+def is_struct(line):
+    return (line.find(" struct ") != -1 or line.startswith("struct ")) and line.endswith('{')
+
+def is_class(line):
+    return line.strip().startswith("class ")
+
+def line_is_include(line):
+    return line.startswith("#include")
+
+def line_is_using(line):
+    return line.startswith("using ");
+
 def case_statement(line):
     cline= line.strip()
     # default must have a : always
     return cline.startswith('case ')  or cline.startswith("default:")
 
+def extract_until_close(lines, i):
+    count = 0
+    while i < len(lines):
+        line = lines[i]
+        for c in line:
+            if c == '{':
+                count += 1
+            if c == '}':
+                count -= 1
+
+        i += 1
+        if count == 0:
+            return i
 if __name__ == "__main__":
     smart_split("int main(int argc, char **argv)", [' '])
     smart_split('"foo bar baz", int main', [','])

@@ -96,7 +96,7 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         pass
 
     if use_headers:
-        lines = analysis.remove_structs(lines)
+        lines = analysis.remove_structs_and_classes(lines)
         lines.insert(0, '#include "%s"' % os.path.basename(hfname))
         with open(hfname, "w") as f:
             f.write("\n".join(header))

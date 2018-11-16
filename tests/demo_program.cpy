@@ -10,20 +10,19 @@ using namespace std
 */
 
 class MyClass:
-    public:
-        MyClass():
-            print "instantiated new class mc"
+  public:
+    string s;
+    MyClass():
+        print "instantiated new class mc"
 
-        ~MyClass():
-            print "destructor for mc called" s
+    ~MyClass():
+        print "destructor for mc called" s
 
-        string s;
+    def set_string(auto a):
+        s = a
 
-        def set_string(auto a):
-            s = a
-
-        def get_string():
-            return s
+    def get_string():
+        return s
 
 
 // should auto prepare a tuple when returning multiple

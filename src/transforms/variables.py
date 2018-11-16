@@ -107,19 +107,54 @@ def add_destructuring(lines, scopings):
 
     return new_lines
 
+def get_class(line):
+    tokens = smart_split(line, ' ')
+    if tokens[0] == "class":
+        return tokens[1].rstrip(':')
+
+    return ""
 def add_auto_declarations(lines, scopings):
     new_lines = []
+    class_start = 0
+
+    keywords = ["if", "do ", "while", "else", "class", "struct", "typedef"]
+    in_class = ""
     for i, line in enumerate(lines):
         sline = line.strip()
         scope = scopings[i]
         indent = get_indent(line)
-        if indent == 0:
+
+        if is_class(line):
+            in_class = get_class(line)
+
+        skip_line = False
+        for k in keywords:
+            if line.find(k) != -1:
+                new_lines.append(line)
+                skip_line = True
+                break
+
+        if skip_line:
+            continue
+
+        next_indent = indent
+        if i < len(lines) - 1:
+            next_line = lines[i+1]
+            next_indent = get_indent(next_line)
+
+
+        # check for function level declarations,
+        # they either happen at the toplevel (0)
+        # or inside a class and on the first level
+        # TODO: figure out where more of these can happen
+        if indent == 0 or indent < next_indent:
             type = ""
             var = ""
             pr = line.find("(")
             if pr > 0:
                 lp = line.find(")")
                 params = smart_split(line[pr+1:lp], ",")
+
                 before_p = line[:pr]
                 after_p = line[lp+1:]
                 prev = None
@@ -141,8 +176,16 @@ def add_auto_declarations(lines, scopings):
                         new_params.append(var)
 
                 args = before_p.split()
-                if len(args) == 1 and before_p != "main":
-                    line = "auto %s(%s)%s" % (before_p, ", ".join(new_params), after_p)
+                class_func = False
+
+                if before_p.strip() == in_class.strip():
+                    class_func = True
+                elif before_p.strip() == "~%s" % in_class.strip():
+                    class_func = True
+
+                if len(args) == 1 and before_p != "main" and not class_func:
+                    before_p = before_p.strip()
+                    line = "%sauto %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
                 else:
                     line = "%s(%s)%s" % (before_p, ", ".join(new_params), after_p)
 

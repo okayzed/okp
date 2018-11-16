@@ -7,20 +7,19 @@ using namespace std;
 
 
 class MyClass {
-    public:
-        MyClass() {
-            std::cout << "instantiated new class mc" << std::endl; }
+  public:
+    string s;
+    MyClass() {
+        std::cout << "instantiated new class mc" << std::endl; }
 
-        ~MyClass() {
-            std::cout << "destructor for mc called" << ' ' << s << std::endl; }
+    ~MyClass() {
+        std::cout << "destructor for mc called" << ' ' << s << std::endl; }
 
-        string s;
+    auto set_string(auto a) {
+        s = a; }
 
-        auto set_string(auto a) {
-            s = a; }
-
-        auto get_string() {
-            return s; } };
+    auto get_string() {
+        return s; } };
 
 
 

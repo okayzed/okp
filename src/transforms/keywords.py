@@ -92,7 +92,7 @@ def replace_defs(lines):
         if cline.startswith("def "):
             tokens = cline.split()
             next_word = tokens[1]
-            if next_word.find("(") == -1 or cline.find("main(") != -1:
+            if next_word.find("(") == -1 or cline.find("main(") != -1 or cline.find("__new__") != -1 or cline.find("__del__") != -1:
                 line = line.replace("def ", "")
             else:
                 # is a function

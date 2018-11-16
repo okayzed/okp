@@ -50,6 +50,7 @@ function basic_tests() {
   run_test tests/nested_identifiers.cpy
   run_test tests/known_vars.cpy
   run_test tests/demo_program.cpy
+  run_test tests/class_constructors.cpy
 	run_test tests/switch_statement.cpy
   run_test tests/long_conditionals.cpy # aka joined lines
   run_test tests/function_with_comments_after.cpy
@@ -69,6 +70,7 @@ function external_tests() {
   run_test tests/external/c_look_like_python.cpy
   run_test tests/external/manacher.cpy
   run_test tests/external/tree_diameter2.cpy
+  run_test tests/external/cocktail_sort.cpy
 }
 
 basic_tests

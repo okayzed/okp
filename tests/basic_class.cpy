@@ -5,21 +5,21 @@
 using namespace std;
 
 class AClass:
-  public:
-      AClass():
+    public: AClass():
           pass
-      ~AClass():
+    public: ~AClass():
           pass
 
 class BClass: AClass
-public:
-    BClass():
+    public: BClass():
         pass
-    ~BClass():
+    public: ~BClass():
         pass
 
+    public:
     def get_class_str():
       return "Class"
+
 private:
     def multi_ret():
       return 1, 2
@@ -31,10 +31,11 @@ class CClass: public BClass
     public: ~CClass():
         pass
 
-    public: void mybar():
+    public: 
+    def void mybar():
         pass
 
-    public: string s;
+    string s;
 
     private: int get_int():
         return 10
@@ -46,7 +47,7 @@ def main():
 
     vector<int> v(n);
     for i = 0; i < v.size(); i++
-      puts v[i]
+      puts v[i], " "
 
     print ""
 

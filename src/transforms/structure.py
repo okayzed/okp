@@ -61,14 +61,14 @@ def add_curly_braces(lines):
     for i, line in enumerate(lines):
         line = line.rstrip('\n')
         indent = get_indent(line)
-        if not line:
+        if not line.strip():
             new_lines.append(line)
             continue
 
         if visibility_line(line):
+            # TODO: when we hit a public line, i guess we reset indent levels?
             new_lines.append(line)
             continue
-
 
         if indent_levels[-1] > indent:
             while indent_levels[-1] > indent:

@@ -6,21 +6,21 @@
 using namespace std;
 
 class AClass {
-  public:
-      AClass() {
+    public: AClass() {
           (void)0; }
-      ~AClass() {
+    public: ~AClass() {
           (void)0; } };
 
 class BClass: AClass {
-public:
-    BClass() {
+    public: BClass() {
         (void)0; }
-    ~BClass() {
+    public: ~BClass() {
         (void)0; }
 
+    public:
     auto get_class_str() {
       return "Class"; }
+
 private:
     auto multi_ret() {
       return make_tuple(1,  2); } };
@@ -32,10 +32,11 @@ class CClass: public BClass {
     public: ~CClass() {
         (void)0; }
 
-    public: void mybar() {
+    public:
+    void mybar() {
         (void)0; }
 
-    public: string s;
+    string s;
 
     private: int get_int() {
         return 10; } };
@@ -47,7 +48,7 @@ main() {
 
     vector<int> v(n);
     for (i = 0; i < v.size(); i++) {
-      std::cout << v[i]; }
+      std::cout << v[i] << " "; }
 
     std::cout << "" << std::endl;
 
