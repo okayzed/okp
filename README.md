@@ -34,7 +34,7 @@ Features that ${NAME} implements from CPY are:
 * auto variable declarations
 * return multiple values from functions
 * automatic variable destructuring
-* `for` loop shorthand
+* `for` and `rof` loop shorthand (to enable, use `-for` and `-rof` flags)
 * `known` keyword
 * `#raw` include directive
 * disabling auto variable declarations (-ni flag)
@@ -42,7 +42,6 @@ Features that ${NAME} implements from CPY are:
 
 Features that are **not** implemented yet:
 
-* `rof` keyword
 
 ### original
 
