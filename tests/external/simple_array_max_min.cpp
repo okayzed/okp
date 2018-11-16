@@ -34,9 +34,9 @@ main() {
     auto max = get<0>(structuredArgs_0);
     auto min = get<1>(structuredArgs_0);
 
-    std::cout << "Array:";
+    std::cout << "Array:" << " ";
     for (auto i = 0; i < size; i++) {
-        std::cout << arr[i]; }
+        std::cout << arr[i] << " "; }
     std::cout << std::endl;
 
     std::cout << "Biggest number:" << ' ' << max << std::endl;

@@ -49,14 +49,18 @@ def io_printline(line, indent):
     sline = line.strip()
     print_token = None
     # PRINT NO NEWLINE
+    add_space = False
     if sline.startswith('!!'):
         print_token = "!! "
+        add_space = True
     if sline.startswith('puts '):
         print_token = 'puts '
 
     if print_token:
         args = smart_split(sline[len(print_token):], ' ,')
         line = "%sstd::cout << %s" % (' ' * indent, " << ".join(args))
+        if add_space:
+            line = '%s << " "' % (line)
         return line
 
     # PRINT WITH NEWLINE

@@ -11,7 +11,7 @@ int main() {
     std::cout << a << ' ' << b << ' ' << str << ' ' << "Second string" << std::endl;
     std::cout << std::endl;
 
-    std::cout << "!! is a quick print without ending the line...";
+    std::cout << "!! is a quick print without ending the line..." << " ";
     std::cout << " Ending the line in the following command exemplified!" << std::endl;
 
     std::cout << "Following line is produced by command: ?? a b str" << std::endl;
