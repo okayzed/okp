@@ -3,13 +3,12 @@ import tempfile
 import shutil
 import shlex
 import subprocess
-
-from pipeline import pipeline
-import analysis
 import sys
-import util
 
-import config
+from . import pipeline
+from . import analysis
+from . import util
+from . import config
 
 def print_lines(lines):
     print('\n'.join(lines))
@@ -19,7 +18,7 @@ def process_file(fname):
     with open(fname) as f:
         lines = f.readlines()
 
-    lines = pipeline(lines, basedir)
+    lines = pipeline.pipeline(lines, basedir)
 
 
     # TODO:
@@ -148,7 +147,7 @@ def process_files(tmp_dir, args):
     for arg in files:
         if arg == '-':
             lines = sys.stdin.readlines()
-            lines = pipeline(lines)
+            lines = pipeline.pipeline(lines)
             print_lines(lines)
         else:
             util.verbose("processing", arg)

@@ -5,7 +5,7 @@
 import clang.cindex
 import os
 
-from util import *
+from .util import *
 IDX = None
 def detect_clang_path():
     global IDX

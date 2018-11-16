@@ -1,6 +1,6 @@
-from util import *
+from .util import *
 
-import id_recognizer
+from . import id_recognizer
 def read_scopings(lines):
     indent_levels = [0]
     nb = 0

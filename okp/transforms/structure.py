@@ -1,4 +1,4 @@
-from util import *
+from ..util import *
 
 def add_semi_colons(lines):
     new_lines = []

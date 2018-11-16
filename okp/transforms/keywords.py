@@ -1,4 +1,4 @@
-from util import *
+from ..util import *
 import os
 
 def replace_raw(lines, base_dir):

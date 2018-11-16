@@ -1,4 +1,4 @@
-from util import *
+from ..util import *
 
 def io_readline(line, indent, read_token):
     sline = line.strip()

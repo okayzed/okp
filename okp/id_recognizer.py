@@ -1,4 +1,4 @@
-from util import *
+from .util import *
 
 def is_identifier(w):
     if not w:

@@ -1,6 +1,7 @@
-from transforms import comments, io, keywords, structure, variables
-import analysis
-import util
+from .transforms import comments, io, keywords, structure, variables
+from . import analysis
+from . import util
+
 import os
 
 def pipeline(lines, base_dir=None):

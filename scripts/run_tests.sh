@@ -12,10 +12,10 @@ function run_test() {
   diff_name=${name/.cpp/.diff}
   FLAGS="--enable-for --enable-rof"
 
-  python src/main.py - $FLAGS < ${1} > "${name}"
+  python -m okp.main - $FLAGS < ${1} > "${name}"
   g++ -x c++ - -o ${exe_name} < "${name}"
   if [[ $? != 0 ]]; then
-    cat -n "compiled/${name}"
+    cat -n "${name}"
     echo "FAILED: ${1}"
   else
 

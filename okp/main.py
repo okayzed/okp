@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys
 import os
 
-import config
+from . import config
 
 def get_parser():
     import argparse
@@ -42,7 +42,7 @@ def main():
 
     config.KEEP_DIR = args.keep_dir
 
-    from project import compile_project
+    from .project import compile_project
     compile_project(args)
 
 if __name__ == "__main__":

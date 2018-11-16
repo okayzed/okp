@@ -1,4 +1,4 @@
-from util import *
+from ..util import *
 
 def var_access(arg):
     return dot_access(arg) or array_access(arg) or ptr_access(arg)
