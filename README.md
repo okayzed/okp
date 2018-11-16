@@ -37,12 +37,12 @@ Features that ${NAME} implements from CPY are:
 * for loop shorthand
 * `known` keyword
 * `#raw` include directive
+* disabling auto variable declarations (-ni flag)
+* compilation of hybrid projects
 
 Features that are **not** implemented yet:
 
 * `rof` keyword
-* compilation of hybrid projects
-* disabling auto variable declarations (-ni flag)
 
 ### original
 

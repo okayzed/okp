@@ -35,6 +35,85 @@ def run_cmd(cmd, more_args=[]):
     util.verbose(" ".join(cmd_args))
     return subprocess.check_output(cmd_args)
 
+def process_h_file(tmp_dir, arg):
+    name = arg
+    fname = os.path.join(tmp_dir, arg)
+    basedir = os.path.dirname(fname)
+
+    try:
+        os.makedirs(basedir)
+    except:
+        pass
+
+    with open(arg) as f:
+        lines = f.readlines()
+
+    with open(fname, "w") as f:
+        f.write("\n".join(lines))
+
+    return
+
+def process_cpp_file(tmp_dir, arg):
+    name = arg.rstrip(".cpp")
+    fname = os.path.join(tmp_dir, "%s.cpp" % name)
+    ofname = os.path.join(tmp_dir, "%s.o" % name)
+    hfname = os.path.join(tmp_dir, "%s.h" % name)
+
+    lines = process_file(arg)
+    header = analysis.extract_header(lines)
+
+    basedir = os.path.dirname(fname)
+
+    try:
+        os.makedirs(basedir)
+    except:
+        pass
+
+    with open(arg) as f:
+        lines = f.readlines()
+
+    with open(fname, "w") as f:
+        f.write("\n".join(lines))
+
+    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+    return ofname
+
+
+def process_cpy_file(args, tmp_dir, arg, use_headers=False):
+    name = arg.rstrip(".cpy")
+    fname = os.path.join(tmp_dir, "%s.cpp" % name)
+    ofname = os.path.join(tmp_dir, "%s.o" % name)
+    hfname = os.path.join(tmp_dir, "%s.h" % name)
+
+    lines = process_file(arg)
+    header = analysis.extract_header(lines)
+
+    basedir = os.path.dirname(fname)
+
+    try:
+        os.makedirs(basedir)
+    except:
+        pass
+
+    if use_headers:
+        lines = analysis.remove_structs(lines)
+        lines.insert(0, '#include "%s"' % os.path.basename(hfname))
+        with open(hfname, "w") as f:
+            f.write("\n".join(header))
+
+    if (args.print_):
+        print("// %s" % arg)
+        print_lines(lines)
+        return
+
+    with open(fname, "w") as f:
+        f.write("\n".join(lines))
+
+
+    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+    return ofname
+
+
 def compile_project(args):
     files = args.files
     outname = args.exename or "./a.out"
@@ -61,39 +140,13 @@ def compile_project(args):
             else:
                 more_than_stdin = True
 
-                name = arg.strip(".cpy")
-                fname = os.path.join(tmp_dir, "%s.cpp" % name)
-                ofname = os.path.join(tmp_dir, "%s.o" % name)
-                hfname = os.path.join(tmp_dir, "%s.h" % name)
+                if arg.endswith(".cpy"):
+                    ofiles.append(process_cpy_file(args, tmp_dir, arg, use_headers))
+                if arg.endswith(".cpp"):
+                    ofiles.append(process_cpp_file(tmp_dir, arg))
+                if arg.endswith(".h"):
+                    process_h_file(tmp_dir, arg)
 
-                ofiles.append(ofname)
-
-                lines = process_file(arg)
-                header = analysis.extract_header(lines)
-
-                basedir = os.path.dirname(fname)
-
-                try:
-                    os.makedirs(basedir)
-                except:
-                    pass
-
-                if use_headers:
-                    lines = analysis.remove_structs(lines)
-                    lines.insert(0, '#include "%s"' % os.path.basename(hfname))
-                    with open(hfname, "w") as f:
-                        f.write("\n".join(header))
-
-                if (args.print_):
-                    print("// %s" % arg)
-                    print_lines(lines)
-                    continue
-
-                with open(fname, "w") as f:
-                    f.write("\n".join(lines))
-
-
-                run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
 
         if not args.print_ and more_than_stdin and not args.noexe:
             os.chdir(tmp_dir)

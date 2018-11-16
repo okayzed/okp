@@ -89,15 +89,26 @@ def line_is_function(line):
 def is_struct(line):
     return (line.find(" struct ") != -1 or line.startswith("struct ")) and line.endswith('{')
 
+def line_is_include(line):
+    return line.startswith("#include")
+
+def line_is_using(line):
+    return line.startswith("using ");
+
 def extract_header(lines):
     extracted = []
     i = 0
     while i < len(lines):
         line = lines[i]
+
+        if line_is_include(line) or line_is_using(line):
+            extracted.append(line)
+
         if line_is_function(line):
             func_decl = line.rstrip('{')
             func_decl += ';'
             extracted.append(func_decl)
+
 
         if is_struct(line):
             until = extract_until_close(lines, i)
