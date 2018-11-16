@@ -81,6 +81,8 @@ def compile_project(args):
                 if use_headers:
                     lines = analysis.remove_structs(lines)
                     lines.insert(0, '#include "%s"' % os.path.basename(hfname))
+                    with open(hfname, "w") as f:
+                        f.write("\n".join(header))
 
                 if (args.print_):
                     print("// %s" % arg)
@@ -90,8 +92,6 @@ def compile_project(args):
                 with open(fname, "w") as f:
                     f.write("\n".join(lines))
 
-                with open(hfname, "w") as f:
-                    f.write("\n".join(header))
 
                 run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
 
@@ -100,8 +100,11 @@ def compile_project(args):
             util.verbose("generating", outname)
             run_cmd("g++ -o '%s'" % outname, ofiles)
     finally:
-        util.verbose("removing", tmp_dir)
-        shutil.rmtree(tmp_dir)
+        if not config.KEEP_DIR:
+            util.verbose("removing", tmp_dir)
+            shutil.rmtree(tmp_dir)
+        else:
+            util.debug("compiled into", tmp_dir)
 
 
 

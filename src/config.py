@@ -1,1 +1,2 @@
 VERBOSE=False
+KEEP_DIR=False

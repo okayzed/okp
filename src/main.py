@@ -14,6 +14,8 @@ def get_parser():
     parser.add_argument('-o', '--output', dest='exename', default="a.out")
     parser.add_argument('-v', '--verbose', dest='verbose', action="store_true")
     parser.add_argument('-p', '--print', dest='print_', action="store_true")
+    parser.add_argument('-k', '--keep-dir', dest='keep_dir', action="store_true",
+        help="Keep compilation directory around")
     parser.add_argument('-c', '-ne', '--no-exe', dest='noexe', action="store_true",
         help='Compile .o files only (no main)')
 
@@ -30,6 +32,8 @@ def main():
         transforms.variables.DECLARE_VARIABLES = False
 
     config.VERBOSE = args.verbose
+
+    config.KEEP_DIR = args.keep_dir
 
     from project import compile_project
     compile_project(args)
