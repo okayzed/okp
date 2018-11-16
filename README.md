@@ -1,8 +1,8 @@
-# ${NAME}
+# okp
 
-${NAME} is a python script that processes .cpy files and generates C++ code.
+okp is a python script that processes .cpy files and generates C++ code.
 
-if the following code makes you happy, ${NAME} might be for you:
+if the following code makes you happy, okp might be for you:
 
     #include <iostream>
 
@@ -20,14 +20,33 @@ if the following code makes you happy, ${NAME} might be for you:
 
 ## status
 
-${NAME} is not a good idea for anyone to use, but try it anyways and let me
+okp is not a good idea for anyone to use, but try it anyways and let me
 know what you've built
+
+## usage
+
+```
+# print c++ source
+okp -p file.cpy
+
+# compile code
+okp file.cpy
+
+# compile multiple cpy files together
+okp file1.cpy file2.cpy
+
+# specify the executable file
+okp file1.cpy -o ./a.out
+
+# compile a hybrid project
+okp file1.h file2.cpp file3.cpy -o ./a.out
+```
 
 ## features
 
 ### from CPY
 
-Features that ${NAME} implements from CPY are:
+Features that okp implements from CPY are:
 
 * indentation based bracketing
 * automatic parenthesization of conditionals
@@ -42,10 +61,11 @@ Features that ${NAME} implements from CPY are:
 
 Features that are **not** implemented yet:
 
+* export project + Makefile
 
 ### original
 
-Some original features of ${NAME} to make it look more pythonic are:
+Some original features of okp to make it look more pythonic are:
 
 * `def` keyword before function names
 * `block` keyword for creating blocks
@@ -57,7 +77,7 @@ Some original features of ${NAME} to make it look more pythonic are:
 i saw vrsperanza's CPY and the light was upon me: a language that looks like
 python but compiles like C. i decided i want to write programs in it.
 
-${NAME} is an attempt to write a pre-processor like CPY but in python.
+okp is an attempt to write a pre-processor like CPY but in python.
 
 ## further resources
 
