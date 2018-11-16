@@ -70,6 +70,7 @@ def compile_cpp_file(tmp_dir, arg):
 def add_guards(arg, lines):
     arg = arg.replace('/', '__')
     arg = arg.replace('.', '_')
+    arg = arg.replace(' ', '_')
     arg = arg.upper()
     arg = "%s_H" % (arg)
 
