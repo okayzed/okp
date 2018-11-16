@@ -53,6 +53,36 @@ def process_h_file(tmp_dir, arg):
 
     return
 
+def compile_cpy_file(tmp_dir, arg):
+    name = arg.rstrip(".cpy")
+    fname = os.path.join(tmp_dir, "%s.cpp" % name)
+    return compile_cpp_file(tmp_dir, fname)
+
+def compile_cpp_file(tmp_dir, arg):
+    name = arg.rstrip(".cpp")
+    fname = os.path.join(tmp_dir, "%s.cpp" % name)
+    ofname = os.path.join(tmp_dir, "%s.o" % name)
+
+    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+    return ofname
+
+
+def add_guards(arg, lines):
+    util.verbose("ARG IS", arg)
+    arg = arg.replace('/', '__')
+    arg = arg.replace('.', '_')
+    arg = arg.upper()
+    arg = "%s_H" % (arg)
+
+    guard_line = "#ifndef %s\n#define %s" % (arg, arg)
+    endif = "#endif"
+
+    lines.insert(0, guard_line)
+    lines.append(endif)
+
+
+    return lines
+
 def process_cpp_file(tmp_dir, arg):
     name = arg.rstrip(".cpp")
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
@@ -60,7 +90,6 @@ def process_cpp_file(tmp_dir, arg):
     hfname = os.path.join(tmp_dir, "%s.h" % name)
 
     lines = process_file(arg)
-    header = analysis.extract_header(lines)
 
     basedir = os.path.dirname(fname)
 
@@ -75,7 +104,6 @@ def process_cpp_file(tmp_dir, arg):
     with open(fname, "w") as f:
         f.write("\n".join(lines))
 
-    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
     return ofname
 
 
@@ -87,6 +115,7 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
 
     lines = process_file(arg)
     header = analysis.extract_header(lines)
+    header = add_guards(arg, header)
 
     basedir = os.path.dirname(fname)
 
@@ -110,54 +139,70 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         f.write("\n".join(lines))
 
 
-    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
-    return ofname
+
+def process_files(tmp_dir, args):
+    files = args.files
+    # if we have multiple files, we have to generate their headers
+    use_headers = len(files) > 1
+
+    for arg in files:
+        if arg == '-':
+            lines = sys.stdin.readlines()
+            lines = pipeline(lines)
+            print_lines(lines)
+        else:
+            util.verbose("processing", arg)
+            if arg.endswith(".cpy"):
+                process_cpy_file(args, tmp_dir, arg, use_headers)
+            if arg.endswith(".cpp"):
+                process_cpp_file(tmp_dir, arg)
+            if arg.endswith(".h"):
+                process_h_file(tmp_dir, arg)
+
+def compile_files(tmp_dir, args):
+    cur_dir = os.getcwd()
+    outname = args.exename or "./a.out"
+    if outname[0] != '/':
+        outname = os.path.join(cur_dir, outname)
+
+    files = args.files
+    more_than_stdin = False
+    for arg in files:
+        if arg != '-':
+            more_than_stdin = True
+
+    ofiles = []
+    for arg in files:
+        if arg != '-':
+            if arg.endswith(".cpy"):
+                ofiles.append(compile_cpy_file(tmp_dir, arg))
+            if arg.endswith(".cpp"):
+                ofiles.append(compile_cpp_file(tmp_dir, arg))
 
 
+    if not args.print_ and more_than_stdin and not args.noexe:
+        os.chdir(tmp_dir)
+        util.verbose("generating", outname)
+        run_cmd("g++ -o '%s'" % outname, ofiles)
+
+
+# we need a two pass compilation so we correctly build
+# all necessary header files before compiling
 def compile_project(args):
     files = args.files
-    outname = args.exename or "./a.out"
 
     tmp_dir = tempfile.mkdtemp()
     util.verbose("working tmp dir is", tmp_dir)
 
-    # if we have multiple files, we have to generate their headers
-    use_headers = len(files) > 1
-    cur_dir = os.getcwd()
-    if outname[0] != '/':
-        outname = os.path.join(cur_dir, outname)
-
-    more_than_stdin = False
-
-    ofiles = []
 
     try:
-        for arg in files:
-            if arg == '-':
-                lines = sys.stdin.readlines()
-                lines = pipeline(lines)
-                print_lines(lines)
-            else:
-                more_than_stdin = True
-
-                if arg.endswith(".cpy"):
-                    ofiles.append(process_cpy_file(args, tmp_dir, arg, use_headers))
-                if arg.endswith(".cpp"):
-                    ofiles.append(process_cpp_file(tmp_dir, arg))
-                if arg.endswith(".h"):
-                    process_h_file(tmp_dir, arg)
-
-
-        if not args.print_ and more_than_stdin and not args.noexe:
-            os.chdir(tmp_dir)
-            util.verbose("generating", outname)
-            run_cmd("g++ -o '%s'" % outname, ofiles)
+        process_files(tmp_dir, args)
+        ofiles = compile_files(tmp_dir, args)
     finally:
         if not config.KEEP_DIR:
             util.verbose("removing", tmp_dir)
             shutil.rmtree(tmp_dir)
         else:
             util.debug("compiled into", tmp_dir)
-
 
 

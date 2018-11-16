@@ -34,7 +34,7 @@ Features that ${NAME} implements from CPY are:
 * auto variable declarations
 * return multiple values from functions
 * automatic variable destructuring
-* for loop shorthand
+* `for` loop shorthand
 * `known` keyword
 * `#raw` include directive
 * disabling auto variable declarations (-ni flag)
