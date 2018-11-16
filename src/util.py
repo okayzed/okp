@@ -3,6 +3,12 @@ from __future__ import print_function
 import re
 import sys
 
+import config
+
+def verbose(*args):
+    if config.VERBOSE:
+        debug(*args)
+
 def debug(*args):
     print(' '.join(map(str, args)), file=sys.stderr)
 

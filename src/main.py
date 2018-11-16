@@ -3,8 +3,7 @@ from __future__ import print_function
 import sys
 import os
 
-OUTPUT_DIR=None
-
+import config
 
 def get_parser():
     import argparse
@@ -29,6 +28,8 @@ def main():
 
     if args.disable_implication:
         transforms.variables.DECLARE_VARIABLES = False
+
+    config.VERBOSE = args.verbose
 
     from project import compile_project
     compile_project(args)

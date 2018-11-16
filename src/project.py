@@ -3,14 +3,14 @@ import tempfile
 import shutil
 import shlex
 import subprocess
-import glob
 
 from pipeline import pipeline
 import analysis
 import sys
 import util
 
-VERBOSE = False
+import config
+
 def print_lines(lines):
     print('\n'.join(lines))
 
@@ -32,19 +32,15 @@ def process_file(fname):
 def run_cmd(cmd, more_args=[]):
     cmd_args = shlex.split(cmd)
     cmd_args.extend(more_args)
-    if VERBOSE:
-        util.debug(" ".join(cmd_args))
+    util.verbose(" ".join(cmd_args))
     return subprocess.check_output(cmd_args)
 
 def compile_project(args):
-    global VERBOSE
-
-    VERBOSE = args.verbose
-
     files = args.files
     outname = args.exename or "./a.out"
 
     tmp_dir = tempfile.mkdtemp()
+    util.verbose("working tmp dir is", tmp_dir)
 
     # if we have multiple files, we have to generate their headers
     use_headers = len(files) > 1
@@ -53,6 +49,9 @@ def compile_project(args):
         outname = os.path.join(cur_dir, outname)
 
     more_than_stdin = False
+
+    ofiles = []
+
     try:
         for arg in files:
             if arg == '-':
@@ -67,8 +66,17 @@ def compile_project(args):
                 ofname = os.path.join(tmp_dir, "%s.o" % name)
                 hfname = os.path.join(tmp_dir, "%s.h" % name)
 
+                ofiles.append(ofname)
+
                 lines = process_file(arg)
                 header = analysis.extract_header(lines)
+
+                basedir = os.path.dirname(fname)
+
+                try:
+                    os.makedirs(basedir)
+                except:
+                    pass
 
                 if use_headers:
                     lines = analysis.remove_structs(lines)
@@ -89,10 +97,10 @@ def compile_project(args):
 
         if not args.print_ and more_than_stdin and not args.noexe:
             os.chdir(tmp_dir)
-            args = glob.glob("%s/*.o" % tmp_dir)
-            run_cmd("g++ -o '%s'" % outname, args)
+            util.verbose("generating", outname)
+            run_cmd("g++ -o '%s'" % outname, ofiles)
     finally:
-        pass
+        util.verbose("removing", tmp_dir)
         shutil.rmtree(tmp_dir)
 
 
