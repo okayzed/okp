@@ -183,7 +183,10 @@ def add_auto_declarations(lines, scopings):
                 elif before_p.strip() == "~%s" % in_class.strip():
                     class_func = True
 
-                if len(args) == 1 and before_p != "main" and not class_func:
+                if before_p == "main":
+                    if len(args) == 1:
+                        line = "%sint %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
+                elif len(args) == 1 and not class_func:
                     before_p = before_p.strip()
                     line = "%sauto %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
                 else:
@@ -191,11 +194,20 @@ def add_auto_declarations(lines, scopings):
 
 
         # special for loop declarations
-        if sline.startswith('for '):
-            args = sline.split(';')
-            args[0] = args[0][len('for '):]
+        if sline.startswith('for ') or sline.startswith('for('):
+            # if its a for loop, remove ending colon just in case so we don't
+            # swallow it when parenthesizing
+            sline = sline.rstrip(':')
 
+            args = smart_split(sline, ';')
+            if sline.startswith('for('):
+                args[0] = args[0][len('for'):]
+            else:
+                args[0] = args[0][len('for '):]
+
+            args[0] = strip_outer_parens(args[0])
             stmts = smart_split(args[0], ',')
+
             arg0 = []
             for j, s in enumerate(stmts):
                 toks = s.split('=')
@@ -207,6 +219,7 @@ def add_auto_declarations(lines, scopings):
                 rhs = rhs.strip()
 
                 arg = lhs.strip()
+
                 add_auto = True
                 if j != 0:
                     add_auto = False
@@ -216,6 +229,7 @@ def add_auto_declarations(lines, scopings):
                     add_auto = False
                 elif len(arg.split()) > 1:
                     add_auto = False
+
                 if add_auto:
                     arg = "auto %s" % (arg)
 

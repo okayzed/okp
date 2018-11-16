@@ -151,6 +151,12 @@ def case_statement(line):
     # default must have a : always
     return cline.startswith('case ')  or cline.startswith("default:")
 
+def strip_outer_parens(s):
+    if s[0] == '(' and s[-1] == ')':
+        return s[1:-1]
+
+    return s
+
 def extract_until_close(lines, i):
     count = 0
     while i < len(lines):

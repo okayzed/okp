@@ -15,7 +15,7 @@ auto manacher(char *s, int n) {
     return u; };
 
 
-main() {
+int main() {
     auto s = "babbaa";
     auto u = manacher((char *) s, 10);
 

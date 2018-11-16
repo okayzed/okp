@@ -41,7 +41,7 @@ class CClass: public BClass {
     private: int get_int() {
         return 10; } };
 
-main() {
+int main() {
     int i;
     int n = 10;
     CClass mc;

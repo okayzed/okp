@@ -18,7 +18,7 @@ public:
 
 
 
-main() {
+int main() {
     A a;
 
     a.s = "foo";

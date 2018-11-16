@@ -32,7 +32,7 @@ def process_file(fname):
 def run_cmd(cmd, more_args=[]):
     cmd_args = shlex.split(cmd)
     cmd_args.extend(more_args)
-    util.verbose(" ".join(cmd_args))
+    util.debug(" ".join(cmd_args))
     return subprocess.check_output(cmd_args)
 
 def process_h_file(tmp_dir, arg):
@@ -68,7 +68,6 @@ def compile_cpp_file(tmp_dir, arg):
 
 
 def add_guards(arg, lines):
-    util.verbose("ARG IS", arg)
     arg = arg.replace('/', '__')
     arg = arg.replace('.', '_')
     arg = arg.upper()
@@ -197,7 +196,9 @@ def compile_project(args):
 
     try:
         process_files(tmp_dir, args)
-        ofiles = compile_files(tmp_dir, args)
+
+        if not (args.print_):
+            ofiles = compile_files(tmp_dir, args)
     finally:
         if not config.KEEP_DIR:
             util.verbose("removing", tmp_dir)

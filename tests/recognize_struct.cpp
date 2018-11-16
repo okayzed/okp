@@ -9,7 +9,7 @@ typedef struct node2 {
 
 typedef node2 A;
 
-main() {
+int main() {
     (void)0; };
 
 

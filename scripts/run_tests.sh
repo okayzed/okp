@@ -45,6 +45,7 @@ function run_test() {
 function basic_tests() {
   run_test tests/basic_main.cpy
   run_test tests/basic_class.cpy
+  run_test tests/parens.cpy
   run_test tests/params_test.cpy
   run_test tests/toplevel_invoke.cpy
   run_test tests/nested_identifiers.cpy

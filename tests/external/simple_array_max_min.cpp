@@ -23,7 +23,7 @@ auto findBiggestSmallest(int * arr, int size) {
 
     return make_tuple(max,  min); };
 
-main() {
+int main() {
     srand(time(NULL));
     int size, maxVal;
     std::cout << "Input array size and max value: " ; std::cin >> size >> maxVal ;

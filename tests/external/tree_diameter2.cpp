@@ -33,7 +33,7 @@ auto bfs(int node, vector<vector<int>> edges) {
 
     return max_node; };
 
-main() {
+int main() {
     int n, a, b;
     std::cin >> n ;
 

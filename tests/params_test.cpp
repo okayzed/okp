@@ -15,7 +15,7 @@ auto template_params(int a, int b, vector<pair<int, int>> c, vector<pair<int, in
 auto pointer_params(int a, int b, char *c, string *d) {
     (void)0; };
 
-main() {
+int main() {
     (void)0; };
 
 

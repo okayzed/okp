@@ -16,7 +16,7 @@ class Child : public Parent {
       int id_c; };
 
 
-main() {
+int main() {
     Child obj1;
 
 

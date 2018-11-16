@@ -30,7 +30,7 @@ auto my_function(vector<int> &nums) {
     return nums; };
 
 
-main() {
+int main() {
     vector<int> nums = {1, 3, 4, 100, 2, 9, -1};
     my_function(nums);
 

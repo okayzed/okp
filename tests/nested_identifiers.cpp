@@ -8,7 +8,7 @@ public:
     B bar; };
 
 
-main() {
+int main() {
     auto foo = F();
     foo.bar.baz = 20;
 

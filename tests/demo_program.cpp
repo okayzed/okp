@@ -27,7 +27,7 @@ auto foo() {
     std::cout << "test function" << std::endl;
     return make_tuple(1,  2); };
 
-main() {
+int main() {
     std::cout << "foobar" << std::endl;
 
     string s;

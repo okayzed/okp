@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-main() {
+int main() {
     auto a = 10;
     auto b = 20;
     auto c = 30;

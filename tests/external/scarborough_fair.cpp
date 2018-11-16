@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-main() {
+int main() {
     int n, m;
     string s;
     cin >> n >> m >> s;

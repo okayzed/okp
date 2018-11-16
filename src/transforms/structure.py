@@ -142,7 +142,7 @@ def add_parentheses(lines):
         for tok in replace:
             if sline.startswith(tok):
                 nline = line[indent+len(tok):].rstrip(':')
-                if nline[0] != '(' or nline[-1] != ')':
+                if nline[-1] != ';' and (nline[0] != '(' or nline[-1] != ')'):
                     line = "%s%s(%s) " % (' ' * indent, tok, nline)
 
         new_lines.append(line)
