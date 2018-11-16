@@ -182,7 +182,8 @@ def compile_files(tmp_dir, args):
     if not args.print_ and more_than_stdin and not args.noexe:
         os.chdir(tmp_dir)
         util.verbose("generating", outname)
-        run_cmd("g++ -o '%s'" % outname, ofiles)
+        cmd_args = ofiles + [ "-o", outname ]
+        run_cmd("g++", cmd_args)
 
 
 # we need a two pass compilation so we correctly build
