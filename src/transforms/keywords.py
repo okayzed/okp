@@ -53,31 +53,44 @@ def replace_pass(lines):
 
     return new_lines
 
+def replace_loop(line, keyword='for', op='<', inc='++'):
+
+    sline = line.strip()
+    kw = "%s " % (keyword.strip())
+    if sline.startswith(kw) and sline.find(";") == -1:
+        # check if we are in a range loop
+        range_loop = False
+        if sline.find(':') != -1 and sline.find(':') != len(sline) - 1:
+            range_loop = True
+
+        if not range_loop:
+            rem = sline[len(kw):].rstrip(':')
+            args = smart_split(rem, ' ')
+
+            ind = ' ' * get_indent(line)
+
+            if len(args) == 2:
+                line = "%sfor auto %s = 0; %s %s %s; %s%s" % (ind, args[0], args[0],
+                    op, args[1], args[0], inc)
+            if len(args) == 3:
+                line = "%sfor auto %s = %s; %s %s %s; %s%s" % (ind, args[0], args[1], args[0],
+                    op, args[2], args[0], inc)
+            if len(args) == 4:
+                line = "%sfor auto %s = %s; %s %s %s; %s += %s" % (ind, args[0], args[1], args[0],
+                    op, args[2], args[0], args[3])
+
+
+    return line
+
 def replace_for_shorthand(lines):
     new_lines = []
     for line in lines:
-        sline = line.strip()
+        if config.ENABLE_FOR:
+           line = replace_loop(line, keyword='for')
 
-        if sline.startswith("for ") and sline.find(";") == -1:
-            # check if we are in a range loop
-            range_loop = False
-            if sline.find(':') != -1 and sline.find(':') != len(sline) - 1:
-                range_loop = True
+        if config.ENABLE_ROF:
+            line = replace_loop(line, keyword='rof', op='>=', inc='--')
 
-            if not range_loop:
-                rem = sline[len("for "):].rstrip(':')
-                args = smart_split(rem, ' ')
-
-                ind = ' ' * get_indent(line)
-
-                if len(args) == 2:
-                    line = "%sfor auto %s = 0; %s < %s; %s++" % (ind, args[0], args[0], args[1], args[0])
-                if len(args) == 3:
-                    line = "%sfor auto %s = %s; %s < %s; %s++" % (ind, args[0], args[1], args[0],
-                        args[2], args[0])
-                if len(args) == 4:
-                    line = "%sfor auto %s = %s; %s < %s; %s += %s" % (ind, args[0], args[1], args[0],
-                        args[2], args[0], args[3])
 
 
         new_lines.append(line)

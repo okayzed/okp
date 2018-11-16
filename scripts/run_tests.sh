@@ -10,8 +10,9 @@ function run_test() {
   out_name=${name/.cpp/.out}
   tmp_name=${name/.cpp/.tmp}
   diff_name=${name/.cpp/.diff}
+  FLAGS="--enable-for --enable-rof"
 
-  python src/main.py - < ${1} > "${name}"
+  python src/main.py - $FLAGS < ${1} > "${name}"
   g++ -x c++ - -o ${exe_name} < "${name}"
   if [[ $? != 0 ]]; then
     cat -n "compiled/${name}"
@@ -48,6 +49,7 @@ function basic_tests() {
   run_test tests/basic_main.cpy
   run_test tests/basic_class.cpy
   run_test tests/parens.cpy
+  run_test tests/loop_shorthand.cpy
   run_test tests/params_test.cpy
   run_test tests/toplevel_invoke.cpy
   run_test tests/nested_identifiers.cpy
