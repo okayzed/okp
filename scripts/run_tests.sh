@@ -53,6 +53,7 @@ function basic_tests() {
 	run_test tests/switch_statement.cpy
   run_test tests/long_conditionals.cpy # aka joined lines
   run_test tests/function_with_comments_after.cpy
+  run_test tests/recognize_struct.cpy
 }
 
 function external_tests() {

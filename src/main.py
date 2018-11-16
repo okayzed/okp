@@ -13,6 +13,10 @@ def get_parser():
     parser.add_argument('-ni', '--disable-implication', help='Disables variable implication', action='store_true')
     parser.add_argument('files', nargs='*', help="List of files to process and compile")
     parser.add_argument('-o', '--output', dest='exename', default="a.out")
+    parser.add_argument('-v', '--verbose', dest='verbose', action="store_true")
+    parser.add_argument('-p', '--print', dest='print_', action="store_true")
+    parser.add_argument('-c', '-ne', '--no-exe', dest='noexe', action="store_true",
+        help='Compile .o files only (no main)')
 
     return parser
 
@@ -27,7 +31,7 @@ def main():
         transforms.variables.DECLARE_VARIABLES = False
 
     from project import compile_project
-    compile_project(args.files, args.exename)
+    compile_project(args)
 
 if __name__ == "__main__":
     main()

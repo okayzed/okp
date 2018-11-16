@@ -86,6 +86,9 @@ def line_is_function(line):
     return False
 
 
+def is_struct(line):
+    return (line.find(" struct ") != -1 or line.startswith("struct ")) and line.endswith('{')
+
 def extract_header(lines):
     extracted = []
     i = 0
@@ -96,7 +99,7 @@ def extract_header(lines):
             func_decl += ';'
             extracted.append(func_decl)
 
-        if line.find(" struct ") != -1 and line.endswith('{'):
+        if is_struct(line):
             until = extract_until_close(lines, i)
             ex = lines[i:until]
             extracted.extend(ex)
@@ -111,7 +114,7 @@ def remove_structs(lines):
     i = 0
     while i < len(lines):
         line = lines[i]
-        if line.find(" struct ") != -1 and line.endswith('{'):
+        if is_struct(line):
             until = extract_until_close(lines, i)
             i = until
         else:

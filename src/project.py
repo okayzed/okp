@@ -8,7 +8,9 @@ import glob
 from pipeline import pipeline
 import analysis
 import sys
+import util
 
+VERBOSE = False
 def print_lines(lines):
     print('\n'.join(lines))
 
@@ -30,9 +32,18 @@ def process_file(fname):
 def run_cmd(cmd, more_args=[]):
     cmd_args = shlex.split(cmd)
     cmd_args.extend(more_args)
+    if VERBOSE:
+        util.debug(" ".join(cmd_args))
     return subprocess.check_output(cmd_args)
 
-def compile_project(files, outname="./a.out"):
+def compile_project(args):
+    global VERBOSE
+
+    VERBOSE = args.verbose
+
+    files = args.files
+    outname = args.exename or "./a.out"
+
     tmp_dir = tempfile.mkdtemp()
 
     # if we have multiple files, we have to generate their headers
@@ -63,15 +74,20 @@ def compile_project(files, outname="./a.out"):
                     lines = analysis.remove_structs(lines)
                     lines.insert(0, '#include "%s"' % os.path.basename(hfname))
 
+                if (args.print_):
+                    print("// %s" % arg)
+                    print_lines(lines)
+                    continue
+
                 with open(fname, "w") as f:
                     f.write("\n".join(lines))
 
                 with open(hfname, "w") as f:
                     f.write("\n".join(header))
 
-                run_cmd("/usr/bin/g++ -c '%s' -o '%s'" % (fname, ofname))
+                run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
 
-        if more_than_stdin:
+        if not args.print_ and more_than_stdin and not args.noexe:
             os.chdir(tmp_dir)
             args = glob.glob("%s/*.o" % tmp_dir)
             run_cmd("g++ -o '%s'" % outname, args)
