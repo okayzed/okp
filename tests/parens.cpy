@@ -5,7 +5,7 @@ using namespace std;
 
 def a(int size):
     vector<int> arr(size);
-    for (i = 0; i < size; i++) 
+    for (i = 0; i < size; i++)
         arr[i] = 0;
 
     return arr

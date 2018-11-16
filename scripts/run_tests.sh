@@ -18,6 +18,7 @@ function run_test() {
     echo "FAILED: ${1}"
   else
 
+    prefix="-"
     if test -f ${in_name}; then
       # to regen output files:
       # if test -f ${out_name}; then
@@ -35,9 +36,10 @@ function run_test() {
         cat ${diff_name}
         return
       fi
+      prefix="+"
     fi
 
-    echo "PASSED: ${1}"
+    echo "${prefix}PASSED: ${1}"
   fi
 }
 
