@@ -14,3 +14,7 @@ def main():
         puts i, " "
     print
 
+    rof i 10 0 -2:
+        puts i, " "
+    print
+
