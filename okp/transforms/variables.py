@@ -30,7 +30,7 @@ def make_declarations(line, scope):
         args = smart_split(lhs, ',')
         if len(args) > 1:
 
-            if lhs.find(' ') > lhs.find(','):
+            if lhs.find(' ') > lhs.find(',') or lhs.find('[') != -1:
                 return line
 
             need_args = False
