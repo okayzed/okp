@@ -131,7 +131,7 @@ def guess_required_files(lines):
     REQUIRE_KEYWORDS = {
         "<iostream>" : [ "cout", "cin", "endl" ],
         "<vector>" : [ "vector" ],
-        "<tuple>" : [ "tuple", "make_tuple" ],
+        "<tuple>" : [ "tuple", "make_tuple", "tie", "std::tie"],
         "<map>" : ["map"],
         "<unordered_map>" : ["unordered_map"],
         "<cstdio>" : ["printf", "scanf"]
@@ -152,7 +152,7 @@ def guess_required_files(lines):
 
         for require in REQUIRE_KEYWORDS:
 
-            tokens = smart_split(line, " :<>")
+            tokens = smart_split(line, " :<>()")
 
             add_requires(tokens, REQUIRE_KEYWORDS[require], require)
 
