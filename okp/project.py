@@ -185,6 +185,9 @@ def compile_files(tmp_dir, args):
         cmd_args = ofiles + [ "-o", outname ]
         run_cmd("g++", cmd_args)
 
+        if config.RUN_EXE:
+            run_cmd(outname)
+
 
 # we need a two pass compilation so we correctly build
 # all necessary header files before compiling
@@ -206,5 +209,3 @@ def compile_project(args):
             shutil.rmtree(tmp_dir)
         else:
             util.debug("compiled into", tmp_dir)
-
-

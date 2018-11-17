@@ -11,9 +11,12 @@ def get_parser():
     parser = argparse.ArgumentParser(description='Process .cpy files into C++')
     parser.add_argument('-ni', '--disable-implication', help='disables variable implication', action='store_true')
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
+    parser.add_argument('-r', '--run', dest="runexe", action="store_true",
+        help="invoke executable after compiling it")
     parser.add_argument('-o', '--output', dest='exename', default="a.out")
     parser.add_argument('-v', '--verbose', dest='verbose', action="store_true")
-    parser.add_argument('-p', '--print', dest='print_', action="store_true")
+    parser.add_argument('-p', '--print', dest='print_', action="store_true",
+        help="print translated C++ source code")
     parser.add_argument('-k', '--keep-dir', dest='keep_dir', action="store_true",
         help="keep compilation directory around")
     parser.add_argument('-c', '-ne', '--no-exe', dest='noexe', action="store_true",
@@ -41,6 +44,7 @@ def main():
     config.ENABLE_FOR = args.enable_for
 
     config.KEEP_DIR = args.keep_dir
+    config.RUN_EXE = args.runexe
 
     from .project import compile_project
     compile_project(args)
