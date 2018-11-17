@@ -61,6 +61,7 @@ function basic_tests() {
   run_test tests/function_with_comments_after.cpy
   run_test tests/recognize_struct.cpy
   run_test tests/infer_includes.cpy
+  run_test tests/ignore_lines.cpy
 }
 
 function external_tests() {
