@@ -1,6 +1,7 @@
 from ..util import *
 
-def add_semi_colons(lines):
+
+def add_trailing_semicolons(lines):
     new_lines = []
     indents = []
     for line in lines:
@@ -11,6 +12,10 @@ def add_semi_colons(lines):
     for i, line in enumerate(lines):
         line = line.rstrip();
         cline = line.strip()
+
+        # we dont ignore lines with preceding semicolons
+        # if ignore_line(line, new_lines):
+        #     continue
 
         if not line or line[0] == '#':
             new_lines.append(line)
@@ -33,6 +38,8 @@ def add_semi_colons(lines):
         elif cline[-1] == ':':
             add_semi = False
         elif cline[-1] == ';':
+            add_semi = False
+        elif cline[-1] == '{':
             add_semi = False
         elif cline.startswith('class '):
             add_semi = False
@@ -63,6 +70,9 @@ def add_curly_braces(lines):
         indent = get_indent(line)
         if not line.strip():
             new_lines.append(line)
+            continue
+
+        if ignore_line(line, new_lines):
             continue
 
         if visibility_line(line):
@@ -130,7 +140,17 @@ def join_backslash_lines(lines):
 
 
 
+def remove_preceding_semicolons(lines):
+    new_lines = []
+    for line in lines:
+        indent = get_indent(line)
+        sline = line.strip()
+        if sline and sline[0] == ';':
+            line = line.replace(';', ' ', 1)
 
+        new_lines.append(line)
+
+    return new_lines
 
 def add_parentheses(lines):
     new_lines = []

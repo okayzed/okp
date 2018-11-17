@@ -1,9 +1,17 @@
 #include <iostream>
 using namespace std;
 
-; template<typename T>
+
+;template<typename T>
 auto my_func() {
     return 0; };
+
+
+
+; class MyClass {
+;   public:
+;       MyClass() {};
+; };
 
 
 auto foo_func() {
@@ -11,8 +19,15 @@ auto foo_func() {
 
 
 int main() {
-    ; for (int i = 0; i < 10; i++) { {
-      cout << foo_func() << endl; }
-    ; }; };
+  int i;
+
+; for (i = 0; i < 10; i++) {
+;   cout << foo_func() << endl;
+; };
+; cout << endl;
+
+  for (i = 0; i < 10; i++) {
+    cout << i; }
+  cout << endl; };
 
 

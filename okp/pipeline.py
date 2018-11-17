@@ -25,10 +25,13 @@ def pipeline(lines, base_dir=None):
     lines = variables.add_destructuring(lines, scopings)
 
     lines = structure.add_parentheses(lines)
-    lines = structure.add_semi_colons(lines)
+    lines = structure.add_trailing_semicolons(lines)
 
     # add curly braces (from indentation) has to be last
     lines = structure.add_curly_braces(lines)
+
+    # TODO: decide on whether to remove from generated code or not
+    # lines = structure.remove_preceding_semicolons(lines)
 
     requires = analysis.guess_required_files(lines)
 
