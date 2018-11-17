@@ -16,7 +16,7 @@ int main()
     cin >> input
 
     if input > 0
-        cout << "Result: " << utils::square(10) << endl
+        cout << "Result: " << utils::square(input) << endl
     else
         cout << message << endl
     return 0
