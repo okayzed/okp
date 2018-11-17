@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import tempfile
 import shutil
@@ -185,8 +187,10 @@ def compile_files(tmp_dir, args):
         cmd_args = ofiles + [ "-o", outname ]
         run_cmd("g++", cmd_args)
 
-        if config.RUN_EXE:
-            run_cmd(outname)
+    if config.RUN_EXE:
+        output = run_cmd(outname)
+        util.debug('OUTPUT:\n')
+        util.debug(output)
 
 
 # we need a two pass compilation so we correctly build
