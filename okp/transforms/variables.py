@@ -72,6 +72,8 @@ def add_destructuring(lines, scopings):
     new_lines = []
     keywords = [ "for", "while", "do" ]
     for i, line in enumerate(lines):
+        if ignore_line(line, new_lines):
+            continue
         # remove any trailing ':' and whitespace
         line = line.rstrip()
         sline = line.strip()
@@ -120,6 +122,8 @@ def add_auto_declarations(lines, scopings):
     keywords = ["if", "do ", "while", "else", "class", "struct", "typedef"]
     in_class = ""
     for i, line in enumerate(lines):
+        if ignore_line(line, new_lines):
+            continue
         sline = line.strip()
         scope = scopings[i]
         indent = get_indent(line)

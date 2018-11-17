@@ -21,6 +21,9 @@ def replace_raw(lines, base_dir):
 def replace_blocks(lines):
     new_lines = []
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         indent = get_indent(line)
         cline = line.strip()
         if cline.startswith('block:'):
@@ -32,6 +35,9 @@ def replace_blocks(lines):
 def replace_knowns(lines):
     new_lines = []
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         indent = get_indent(line)
         cline = line.strip()
         if cline.startswith('known '):
@@ -46,6 +52,9 @@ def replace_tabs(lines):
 def replace_pass(lines):
     new_lines = []
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         if line.strip() == "pass":
             line = line.replace("pass", "(void)0")
 
@@ -85,6 +94,9 @@ def replace_loop(line, keyword='for', op='<', inc='++'):
 def replace_for_shorthand(lines):
     new_lines = []
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         if config.ENABLE_FOR:
            line = replace_loop(line, keyword='for')
 
@@ -101,6 +113,9 @@ def replace_for_shorthand(lines):
 def replace_defs(lines):
     new_lines = []
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         cline = line.strip()
         if cline.startswith("def "):
             tokens = cline.split()

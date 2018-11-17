@@ -136,6 +136,9 @@ def add_parentheses(lines):
     new_lines = []
     replace = ["if ", "while ", "for ", "else if ", "switch " ]
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
         indent = get_indent(line)
         sline = line.strip()
         # TODO: join multiple lines (maybe look for next colon?)

@@ -90,6 +90,8 @@ def replace_io_keywords(lines):
     new_lines = []
     tokens = [ '? ', 'read ', '?? ', 'cin ' ]
     for line in lines:
+        if ignore_line(line, new_lines):
+            continue
         indent = get_indent(line)
         sline = line.strip()
 

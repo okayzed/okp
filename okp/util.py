@@ -157,6 +157,14 @@ def strip_outer_parens(s):
 
     return s
 
+def ignore_line(s, nl):
+    sline = s.strip()
+    if sline and sline[0] == ';':
+        nl.append(s)
+        return True
+
+    return False
+
 def extract_until_close(lines, i):
     count = 0
     while i < len(lines):
