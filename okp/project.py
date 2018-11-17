@@ -194,7 +194,11 @@ def compile_files(tmp_dir, args):
 def compile_project(args):
     files = args.files
 
-    tmp_dir = tempfile.mkdtemp()
+    if args.dir:
+        tmp_dir = os.path.abspath(args.dir)
+        os.makedirs(tmp_dir)
+    else:
+        tmp_dir = tempfile.mkdtemp()
     util.verbose("working tmp dir is", tmp_dir)
 
 
@@ -204,7 +208,7 @@ def compile_project(args):
         if not (args.print_):
             ofiles = compile_files(tmp_dir, args)
     finally:
-        if not config.KEEP_DIR:
+        if not config.KEEP_DIR and not args.dir:
             util.verbose("removing", tmp_dir)
             shutil.rmtree(tmp_dir)
         else:

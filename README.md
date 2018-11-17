@@ -1,6 +1,7 @@
 # okp
 
-okp is a python script that processes .cpy files and generates C++ code.
+okp (pronounced like okapi) is a python script that processes .cpy files and
+generates C++ code.
 
 if the following code makes you happy, okp might be for you:
 

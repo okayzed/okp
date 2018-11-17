@@ -13,7 +13,10 @@ def get_parser():
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
     parser.add_argument('-r', '--run', dest="runexe", action="store_true",
         help="invoke executable after compiling it")
-    parser.add_argument('-o', '--output', dest='exename', default="a.out")
+    parser.add_argument('-o', '--output', dest='exename', default="a.out",
+        help="set the name of the executable file")
+    parser.add_argument('-d', '--dir', dest='dir', default=None,
+        help="output source files to this directory. implies -k")
     parser.add_argument('-v', '--verbose', dest='verbose', action="store_true")
     parser.add_argument('-p', '--print', dest='print_', action="store_true",
         help="print translated C++ source code")
