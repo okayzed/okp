@@ -140,13 +140,13 @@ def join_backslash_lines(lines):
 
 
 
-def remove_preceding_semicolons(lines):
+def remove_preceding_ignore_chars(lines):
     new_lines = []
     for line in lines:
         indent = get_indent(line)
         sline = line.strip()
-        if sline and sline[0] == ';':
-            line = line.replace(';', ' ', 1)
+        if sline and sline[0] == IGNORE_CHAR:
+            line = line.replace(IGNORE_CHAR, ';', 1)
 
         new_lines.append(line)
 

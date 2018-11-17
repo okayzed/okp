@@ -13,6 +13,10 @@ auto my_func() {
 ;       MyClass() {};
 ; };
 
+; int foo() {
+;   cout << "this function should have minimal processing done on it" << endl;
+; };
+
 
 auto foo_func() {
     return rand() % 10; };
@@ -29,6 +33,12 @@ int main() {
 
     for (i = 0; i < 10; i++) {
       cout << i; }
-    cout << endl; };
+    cout << endl;
+
+  ; if (false) return 1;
+
+    return 0; };
+
+
 
 

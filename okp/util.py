@@ -5,6 +5,8 @@ import sys
 
 from . import config
 
+IGNORE_CHAR = '$'
+
 def verbose(*args):
     if config.VERBOSE:
         debug(*args)
@@ -147,7 +149,7 @@ def line_is_using(line):
     return line.startswith("using ");
 
 def line_is_template(line):
-    line = line.strip(';').strip()
+    line = line.strip().lstrip(IGNORE_CHAR).strip()
     return line.startswith("template<") or line.startswith("template <")
 
 def case_statement(line):
@@ -163,7 +165,7 @@ def strip_outer_parens(s):
 
 def ignore_line(s, nl):
     sline = s.strip()
-    if sline and sline[0] == ';':
+    if sline and sline[0] == IGNORE_CHAR:
         nl.append(s)
         return True
 

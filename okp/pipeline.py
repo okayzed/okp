@@ -31,7 +31,7 @@ def pipeline(lines, base_dir=None):
     lines = structure.add_curly_braces(lines)
 
     # TODO: decide on whether to remove from generated code or not
-    # lines = structure.remove_preceding_semicolons(lines)
+    lines = structure.remove_preceding_ignore_chars(lines)
 
     requires = analysis.guess_required_files(lines)
 
