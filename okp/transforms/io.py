@@ -110,4 +110,3 @@ def replace_io_keywords(lines):
         new_lines.append(line)
 
     return new_lines
-

@@ -146,6 +146,10 @@ def line_is_include(line):
 def line_is_using(line):
     return line.startswith("using ");
 
+def line_is_template(line):
+    line = line.strip(';').strip()
+    return line.startswith("template<") or line.startswith("template <")
+
 def case_statement(line):
     cline= line.strip()
     # default must have a : always

@@ -76,7 +76,7 @@ Some original features of okp to make it look more pythonic are:
 * `block` keyword for creating blocks
 * `pass` keyword for no-ops
 * `print` and `read` keywords
-* lines that start with a ; are not pre-processed
+* lines that start with a `;` are not pre-processed
 
 ## further resources and similar projects
 
