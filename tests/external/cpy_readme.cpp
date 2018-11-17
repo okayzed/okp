@@ -15,7 +15,7 @@ int main() {
     auto structuredArgs_0 = operations(20, 10);
     auto sum = get<0>(structuredArgs_0);
     auto mult = get<2>(structuredArgs_0);
-    std::cout << sum << ' ' << mult << std::endl; };
+    cout << sum << ' ' << mult << endl; };
 
 
 

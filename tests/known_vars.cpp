@@ -25,11 +25,11 @@ int main() {
     auto s = 10;
 
     a.set_string("bar");
-    std::cout << "R" << ' ' << a.r << ' ' << "S" << ' ' << a.s << std::endl;
+    cout << "R" << ' ' << a.r << ' ' << "S" << ' ' << a.s << endl;
 
     a.shadow_set_string("baz");
 
-    std::cout << "R" << ' ' << a.r << ' ' << "S" << ' ' << a.s << std::endl;
+    cout << "R" << ' ' << a.r << ' ' << "S" << ' ' << a.s << endl;
 
     return 0; };
 

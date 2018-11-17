@@ -5,13 +5,13 @@ using namespace std;
 class MyClass {
     public:
     MyClass() {
-        std::cout << "initializing" << std::endl; }
+        cout << "initializing" << endl; }
 
     ~MyClass() {
-        std::cout << "destructing" << std::endl; }
+        cout << "destructing" << endl; }
 
     auto print_stuff() {
-        std::cout << "printing stuff" << std::endl; } };
+        cout << "printing stuff" << endl; } };
 
 int main() {
 

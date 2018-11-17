@@ -48,11 +48,11 @@ int main() {
 
     vector<int> v(n);
     for (i = 0; i < v.size(); i++) {
-      std::cout << v[i] << " "; }
+      cout << v[i] << " "; }
 
-    std::cout << "" << std::endl;
+    cout << "" << endl;
 
 
-    std::cout << mc.get_class_str() << std::endl; };
+    cout << mc.get_class_str() << endl; };
 
 

@@ -36,17 +36,17 @@ auto bfs(int node, vector<vector<int>> edges) {
 
 int main() {
     int n, a, b;
-    std::cin >> n ;
+    cin >> n ;
 
     vector<vector<int>> edges(n+1);
     for (auto i = 1; i < n; i++) {
-        std::cin >> a >> b ;
+        cin >> a >> b ;
         edges[a].push_back(b);
         edges[b].push_back(a); }
 
     auto node = bfs(1, edges);
     node = bfs(node.node, edges);
 
-    std::cout << node.depth << std::endl; };
+    cout << node.depth << endl; };
 
 

@@ -5,20 +5,20 @@ using namespace std;
 int main() {
     int a, b;
     std::string str;
-    std::cout << "Type two integers: " ; std::cin >> a >> b ; std::cout << "Well done! Now type a string: " ; std::cin >> str ; std::cout << "Congratulations!\n" ;
+    cout << "Type two integers: " ; cin >> a >> b ; cout << "Well done! Now type a string: " ; cin >> str ; cout << "Congratulations!\n" ;
 
-    std::cout << std::endl;
-    std::cout << "Following line is produced by command: ! a b str \"Second << ' ' << string\"" << std::endl;
-    std::cout << a << ' ' << b << ' ' << str << ' ' << "Second string" << std::endl;
-    std::cout << std::endl;
+    cout << endl;
+    cout << "Following line is produced by command: ! a b str \"Second << ' ' << string\"" << endl;
+    cout << a << ' ' << b << ' ' << str << ' ' << "Second string" << endl;
+    cout << endl;
 
-    std::cout << "!! is a quick print without ending the line..." << " ";
-    std::cout << " Ending the line in the following command exemplified!" << std::endl;
+    cout << "!! is a quick print without ending the line..." << " ";
+    cout << " Ending the line in the following command exemplified!" << endl;
 
-    std::cout << "Following line is produced by command: ?? a b str" << std::endl;
-    std::cin >> a >> b >> str ;
+    cout << "Following line is produced by command: ?? a b str" << endl;
+    cin >> a >> b >> str ;
 
 
-    std::cout << "A is valued " << ' ' << a << ' ' << std::endl << std::endl;
+    cout << "A is valued " << ' ' << a << ' ' << std::endl << endl;
     std::cout << "B is valued " << b << std::endl; };
 

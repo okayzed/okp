@@ -9,14 +9,14 @@ int main() {
 
 
     if (a != 30 && b == 20 && c != 40 && b != 19) {
-      std::cout << "worked" << std::endl; }
+      cout << "worked" << endl; }
 
 
     if (a == 10 && b == 20) {
-      std::cout << "a is 10 and b is 30" << std::endl; }
+      cout << "a is 10 and b is 30" << endl; }
 
 
-    std::cout << "the quick brown fox" << std::endl; };
+    cout << "the quick brown fox" << endl; };
 
 
 

@@ -10,10 +10,10 @@ class MyClass {
   public:
     string s;
     MyClass() {
-        std::cout << "instantiated new class mc" << std::endl; }
+        cout << "instantiated new class mc" << endl; }
 
     ~MyClass() {
-        std::cout << "destructor for mc called" << ' ' << s << std::endl; }
+        cout << "destructor for mc called" << ' ' << s << endl; }
 
     auto set_string(auto a) {
         s = a; }
@@ -24,15 +24,15 @@ class MyClass {
 
 
 auto foo() {
-    std::cout << "test function" << std::endl;
+    cout << "test function" << endl;
     return make_tuple(1,  2); };
 
 int main() {
-    std::cout << "foobar" << std::endl;
+    cout << "foobar" << endl;
 
     string s;
-    std::cin >> s ;
-    std::cout << "READ" << ' ' << s << std::endl;
+    cin >> s ;
+    cout << "READ" << ' ' << s << endl;
 
     MyClass mc;
     mc.set_string(s);
@@ -41,16 +41,16 @@ int main() {
     auto a = get<0>(structuredArgs_0);
     auto b = get<1>(structuredArgs_0);
 
-    std::cout << a << ' ' << b << std::endl;
+    cout << a << ' ' << b << endl;
 
     if (true) {
-        std::cout << "true" << std::endl; }
+        cout << "true" << endl; }
 
     if (not false) {
-        std::cout << "false" << std::endl; }
+        cout << "false" << endl; }
 
     for (auto i = 0; i < 10; i++) {
-      std::cout << "I IS" << ' ' << i << std::endl; }
+      cout << "I IS" << ' ' << i << endl; }
 
     return 0; };
 

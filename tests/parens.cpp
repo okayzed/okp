@@ -18,8 +18,8 @@ auto b(vector<int> &arr) {
 
 auto c(vector<int> &arr) {
     for (auto i = 0; i < arr.size(); i++) {
-        std::cout << arr[i] << " "; }
-    std::cout << std::endl; };
+        cout << arr[i] << " "; }
+    cout << endl; };
 
 int main() {
     auto f = a(10);

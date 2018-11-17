@@ -14,7 +14,7 @@ unordered_map<int, int> om;
 
 
 int main() {
-    std::cout << "foobar" << std::endl; };
+    cout << "foobar" << endl; };
 
 
 

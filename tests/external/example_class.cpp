@@ -24,8 +24,8 @@ int main() {
     obj1.id_c = 7;
     obj1.id_p = 91;
 
-    std::cout << "Child id is " << ' ' << obj1.id_c << std::endl;
-    std::cout << "Parent id is " << ' ' << obj1.id_p << std::endl;
+    cout << "Child id is " << ' ' << obj1.id_c << endl;
+    cout << "Parent id is " << ' ' << obj1.id_p << endl;
 
     return 0; };
 

@@ -35,7 +35,7 @@ int main() {
     my_function(nums);
 
     for (auto i : nums) {
-        std::cout << i << " "; }
-    std::cout << "" << std::endl; };
+        cout << i << " "; }
+    cout << "" << endl; };
 
 

@@ -24,6 +24,6 @@ int main() {
     for (auto m : u) {
       mm = std::max(m, mm); }
 
-    std::cout << mm << std::endl; };
+    cout << mm << endl; };
 
 

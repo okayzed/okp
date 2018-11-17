@@ -15,7 +15,7 @@ def io_readline(line, indent, read_token):
     for arg in args:
         if arg[0] != '"':
             if cout_tokens:
-                tokens.append("std::cout")
+                tokens.append("cout")
                 tokens.extend(cout_tokens)
                 tokens.append(';')
                 cout_tokens = []
@@ -24,7 +24,7 @@ def io_readline(line, indent, read_token):
             cin_tokens.append(arg)
         else:
             if cin_tokens:
-                tokens.append("std::cin")
+                tokens.append("cin")
                 tokens.extend(cin_tokens)
                 tokens.append(';')
                 cin_tokens = []
@@ -33,12 +33,12 @@ def io_readline(line, indent, read_token):
             cout_tokens.append(arg)
 
     if cout_tokens:
-        tokens.append("std::cout")
+        tokens.append("cout")
         tokens.extend(cout_tokens)
         tokens.append(';')
 
     if cin_tokens:
-        tokens.append("std::cin")
+        tokens.append("cin")
         tokens.extend(cin_tokens)
         tokens.append(';')
 
@@ -58,14 +58,14 @@ def io_printline(line, indent):
 
     if print_token:
         args = smart_split(sline[len(print_token):], ' ,')
-        line = "%sstd::cout << %s" % (' ' * indent, " << ".join(args))
+        line = "%scout << %s" % (' ' * indent, " << ".join(args))
         if add_space:
             line = '%s << " "' % (line)
         return line
 
     # PRINT WITH NEWLINE
     if sline == "print":
-        return "%sstd::cout << std::endl" % (' ' * indent)
+        return "%scout << endl" % (' ' * indent)
 
     for tok in ["!", "std::cout ", "cout ", "print "]:
         if sline.startswith(tok):
@@ -80,9 +80,9 @@ def io_printline(line, indent):
                 continue
 
             if not args:
-                line = "%sstd::cout << std::endl" % (' ' * indent)
+                line = "%scout << endl" % (' ' * indent)
             else:
-                line = "%sstd::cout << %s << std::endl" % (' ' * indent, " << ' ' << ".join(args))
+                line = "%scout << %s << endl" % (' ' * indent, " << ' ' << ".join(args))
 
     return line
 

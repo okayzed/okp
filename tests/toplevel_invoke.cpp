@@ -8,7 +8,7 @@ vector<int> n(10, 20);
 
 int main() {
     for (auto i = 0; i < 10; i++) {
-        std::cout << "HELLO" << std::endl; }
+        cout << "HELLO" << endl; }
 
     return 0; };
 

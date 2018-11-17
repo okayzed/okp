@@ -4,14 +4,14 @@ using namespace std;
 
 int main() {
     int i;
-    std::cin >> i ;
+    cin >> i ;
 
     switch (i) {
         case 1: {
-            std::cout << "food" << std::endl;
+            cout << "food" << endl;
             break; }
         case 2: {
-            std::cout << "break" << std::endl;
+            cout << "break" << endl;
             break; }
         default: {
             break; }; }; };
