@@ -1,4 +1,6 @@
 from __future__ import print_function
+from future.utils import raise_
+
 
 import os
 import tempfile
@@ -21,7 +23,6 @@ def process_file(fname):
         lines = f.readlines()
 
     lines = pipeline.pipeline(lines, basedir)
-
 
     # TODO:
     # extract exports to fname.h
@@ -54,6 +55,16 @@ def process_h_file(tmp_dir, arg):
 
     return
 
+def print_file_with_line_nums(fname):
+    util.debug("")
+    util.debug('// ' + fname)
+    with open(fname) as f:
+        lines = f.readlines()
+
+    for i, line in enumerate(lines):
+        util.debug(i, line.rstrip())
+    util.debug("")
+
 def compile_cpy_file(tmp_dir, arg):
     name = arg.rstrip(".cpy")
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
@@ -64,7 +75,12 @@ def compile_cpp_file(tmp_dir, arg):
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
 
-    run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+    try:
+        run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+    except:
+        print_file_with_line_nums(fname)
+        e = sys.exc_info()
+        raise_(e[1], None, e[2])
     return ofname
 
 

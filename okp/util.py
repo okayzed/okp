@@ -7,6 +7,8 @@ from . import config
 
 IGNORE_CHAR = '$'
 
+
+
 def verbose(*args):
     if config.VERBOSE:
         debug(*args)
