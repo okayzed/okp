@@ -152,6 +152,25 @@ def remove_preceding_semicolons(lines):
 
     return new_lines
 
+
+# we might have a case like: if (a) || (b): which still needs parentheses
+# the only good case is when the first paren is matching the last paren
+def needs_parens(nline):
+    if nline[0] != '(' or nline[-1] != ')':
+        return True
+
+    paren_stack = []
+    last_pop = 0
+    for i, c in enumerate(nline):
+        if c == '(':
+            paren_stack.append(i)
+        elif c == ')':
+            last_pop = paren_stack.pop()
+
+    if paren_stack or last_pop != 0:
+        return True
+
+
 def add_parentheses(lines):
     new_lines = []
     replace = ["if ", "while ", "for ", "else if ", "switch " ]
@@ -165,7 +184,7 @@ def add_parentheses(lines):
         for tok in replace:
             if sline.startswith(tok):
                 nline = line[indent+len(tok):].rstrip(':')
-                if nline[-1] != ';' and (nline[0] != '(' or nline[-1] != ')'):
+                if nline[-1] != ';' and needs_parens(nline):
                     line = "%s%s(%s) " % (' ' * indent, tok, nline)
 
         new_lines.append(line)

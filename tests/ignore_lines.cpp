@@ -18,16 +18,17 @@ auto foo_func() {
     return rand() % 10; };
 
 
+
 int main() {
-  int i;
+    int i;
 
-; for (i = 0; i < 10; i++) {
-;   cout << foo_func() << endl;
-; };
-; cout << endl;
+  ; for (i = 0; i < 10; i++) {
+  ;   cout << foo_func() << endl;
+  ; };
+  ; cout << endl;
 
-  for (i = 0; i < 10; i++) {
-    cout << i; }
-  cout << endl; };
+    for (i = 0; i < 10; i++) {
+      cout << i; }
+    cout << endl; };
 
 
