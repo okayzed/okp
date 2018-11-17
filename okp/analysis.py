@@ -148,7 +148,7 @@ def guess_required_files(lines):
     using_namespace_std = False
     for line in lines:
         if not using_namespace_std and line.find("using namespace std;") != -1:
-            using_namespace = True
+            using_namespace_std = True
 
         for require in REQUIRE_KEYWORDS:
 

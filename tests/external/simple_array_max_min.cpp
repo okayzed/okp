@@ -1,4 +1,3 @@
-using namespace std;
 
 #include <iostream>
 #include <time.h>
