@@ -60,6 +60,7 @@ function basic_tests() {
   run_test tests/long_conditionals.cpy # aka joined lines
   run_test tests/function_with_comments_after.cpy
   run_test tests/recognize_struct.cpy
+  run_test tests/infer_includes.cpy
 }
 
 function external_tests() {

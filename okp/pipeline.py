@@ -30,4 +30,7 @@ def pipeline(lines, base_dir=None):
     # add curly braces (from indentation) has to be last
     lines = structure.add_curly_braces(lines)
 
+    requires = analysis.guess_required_files(lines)
+
+    lines = requires + lines
     return lines

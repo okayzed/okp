@@ -124,3 +124,54 @@ def remove_structs_and_classes(lines):
             new_lines.append(line)
 
     return new_lines
+
+def guess_required_files(lines):
+    requires = set()
+
+    REQUIRE_KEYWORDS = {
+        "<iostream>" : [ "cout", "cin", "endl" ],
+        "<vector>" : [ "vector" ],
+        "<tuple>" : [ "tuple", "make_tuple" ],
+        "<map>" : ["map"],
+        "<unordered_map>" : ["unordered_map"],
+        "<cstdio>" : ["printf", "scanf"]
+    }
+
+
+    def add_requires(line_tokens, require_tokens, require):
+        if not require in requires:
+            for tok in require_tokens:
+                if tok in tokens:
+                    requires.add(require)
+
+
+    using_namespace_std = False
+    for line in lines:
+        if not using_namespace_std and line.find("using namespace std;") != -1:
+            using_namespace = True
+
+        for require in REQUIRE_KEYWORDS:
+
+            tokens = smart_split(line, " :<>")
+
+            add_requires(tokens, REQUIRE_KEYWORDS[require], require)
+
+
+    prepend = []
+    for r in requires:
+        prepend.append("#include %s" % r)
+
+    included = set()
+    for line in lines:
+        for p in prepend:
+            if line.find(p) != -1:
+                included.add(p);
+
+    prepend = list(filter(lambda w: w not in included, [ p for p in prepend]))
+    if not using_namespace_std and requires:
+        prepend.append("using namespace std;");
+
+    prepend.sort()
+
+    return prepend
+

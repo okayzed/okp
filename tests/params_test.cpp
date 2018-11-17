@@ -1,3 +1,4 @@
+using namespace std;
 
 #include <tuple>
 #include <vector>

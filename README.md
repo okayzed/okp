@@ -4,8 +4,6 @@ okp is a python script that processes .cpy files and generates C++ code.
 
 if the following code makes you happy, okp might be for you:
 
-    #include <iostream>
-
     def weird_multiply(int a, b):
         for i = 0; i < b; i++:
             a *= b
