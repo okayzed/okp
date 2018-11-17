@@ -76,7 +76,9 @@ Some original features of okp to make it look more pythonic are:
 * `pass` keyword for no-ops
 * `print` and `read` keywords
 
-## further resources
+## further resources and similar projects
 
 * [CPY github](https://github.com/vrsperanza/CPY)
 * [what if c looked more like python](http://cpprocks.com/what-if-c-looked-more-like-python-or-coffeescript/)
+* [coffee++](https://bixense.com/coffeepp/)
+* [MyDef](https://github.com/hzhou/MyDef)
