@@ -13,6 +13,8 @@ def get_parser():
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
     parser.add_argument('-r', '--run', dest="runexe", action="store_true",
         help="invoke executable after compiling it")
+    parser.add_argument('-ri', '--run-with-stdin', dest="runinput", action="store_true",
+        help="invoke executable after compiling it and pass stdin to it")
     parser.add_argument('-o', '--output', dest='exename', default="a.out",
         help="set the name of the executable file")
     parser.add_argument('-d', '--dir', dest='dir', default=None,
@@ -48,6 +50,9 @@ def main():
 
     config.KEEP_DIR = args.keep_dir
     config.RUN_EXE = args.runexe
+    config.RUN_WITH_INPUT = args.runinput
+    if args.runinput:
+        config.RUN_EXE = True
 
     from .project import compile_project
     compile_project(args)

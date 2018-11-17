@@ -1,2 +1,4 @@
 VERBOSE=False
 KEEP_DIR=False
+RUN_EXE=False
+RUN_WITH_INPUT=False

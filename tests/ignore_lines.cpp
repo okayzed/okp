@@ -17,6 +17,10 @@ auto my_func() {
 ;   cout << "this function should have minimal processing done on it" << endl;
 ; };
 
+; int foobar() {
+;   return 0;
+; };
+
 
 auto foo_func() {
     return rand() % 10; };
@@ -38,7 +42,5 @@ int main() {
   ; if (false) return 1;
 
     return 0; };
-
-
 
 

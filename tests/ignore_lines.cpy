@@ -14,6 +14,10 @@ $ int foo() {
 $   cout << "this function should have minimal processing done on it" << endl;
 $ }
 
+$ int foobar() {
+$   return 0
+$ }
+
 
 def foo_func():
     return rand() % 10

@@ -31,10 +31,20 @@ def process_file(fname):
 
     return lines
 
-def run_cmd(cmd, more_args=[]):
+def run_cmd(cmd, more_args=[], stdin=None):
     cmd_args = shlex.split(cmd)
     cmd_args.extend(more_args)
     util.debug(" ".join(cmd_args))
+
+    if stdin:
+        pipe = subprocess.Popen(cmd_args, stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = pipe.communicate(bytes(stdin))
+
+        if stderr:
+            print(stderr, file=sys.stderr)
+        return stdout or ""
+
     return subprocess.check_output(cmd_args)
 
 def process_h_file(tmp_dir, arg):
@@ -80,7 +90,8 @@ def compile_cpp_file(tmp_dir, arg):
     except:
         print_file_with_line_nums(fname)
         e = sys.exc_info()
-        raise_(e[1], None, e[2])
+        print("Couldn't compile", fname, "aborting")
+        sys.exit(1)
     return ofname
 
 
@@ -204,7 +215,10 @@ def compile_files(tmp_dir, args):
         run_cmd("g++", cmd_args)
 
     if config.RUN_EXE:
-        output = run_cmd(outname)
+        if config.RUN_WITH_INPUT:
+            output = run_cmd(outname, stdin=sys.stdin.read())
+        else:
+            output = run_cmd(outname)
         util.debug('OUTPUT:\n')
         util.debug(output)
 
