@@ -21,6 +21,12 @@ if the following code makes you happy, okp might be for you:
 okp is not a good idea for anyone to use, but try it anyways and let me
 know what you've built
 
+### motivation
+
+i saw vrsperanza's CPY and the light hit me: a language that looks like python
+but compiles like C. i decided i want to write programs in it. okp is my
+attempt to write a pre-processor like CPY but in python.
+
 ## usage
 
 ```
@@ -69,13 +75,6 @@ Some original features of okp to make it look more pythonic are:
 * `block` keyword for creating blocks
 * `pass` keyword for no-ops
 * `print` and `read` keywords
-
-### motivation
-
-i saw vrsperanza's CPY and the light was upon me: a language that looks like
-python but compiles like C. i decided i want to write programs in it.
-
-okp is an attempt to write a pre-processor like CPY but in python.
 
 ## further resources
 
