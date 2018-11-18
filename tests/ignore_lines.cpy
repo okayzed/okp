@@ -26,7 +26,7 @@ class MyClass2 {
   int a, b, c;
 
 
-
+  string s;
 };
 ```
 

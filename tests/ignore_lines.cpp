@@ -28,7 +28,7 @@ class MyClass2 {
   int a, b, c;
 
 
-
+  string s;
 };
 
 
@@ -46,7 +46,7 @@ int main() {
     cout << endl;
 
     for (i = 0; i < 10; i++) {
-      cout << i; }
+      cout << i << " "; }
     cout << endl;
 
     if (false) return 1;

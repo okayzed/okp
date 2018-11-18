@@ -34,5 +34,5 @@ def main():
     my_function(nums)
 
     for auto i : nums:
-        puts i " "
+        puts i
     print ""

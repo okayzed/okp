@@ -6,3 +6,7 @@
 *.tmp
 build/
 dist/
+tests/projects/*/compile
+tests/projects/*/exe
+tests/projects/*/tmp
+tests/projects/*/diff

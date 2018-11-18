@@ -49,12 +49,13 @@ def io_printline(line, indent):
     sline = line.strip()
     print_token = None
     # PRINT NO NEWLINE
-    add_space = False
+    add_space = True
     if sline.startswith('!!'):
         print_token = "!! "
-        add_space = True
     if sline.startswith('puts '):
         print_token = 'puts '
+        if sline.endswith(","):
+            add_space = False
 
     if print_token:
         args = smart_split(sline[len(print_token):], ' ,')
@@ -79,10 +80,14 @@ def io_printline(line, indent):
             if no_add:
                 continue
 
+            spc = "endl";
+            if sline.endswith(','):
+                spc = "' '";
+
             if not args:
-                line = "%scout << endl" % (' ' * indent)
+                line = "%scout << %s" % (' ' * indent, spc)
             else:
-                line = "%scout << %s << endl" % (' ' * indent, " << ' ' << ".join(args))
+                line = "%scout << %s << %s" % (' ' * indent, " << ' ' << ".join(args), spc)
 
     return line
 

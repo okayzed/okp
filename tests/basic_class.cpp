@@ -50,9 +50,7 @@ int main() {
     for (i = 0; i < v.size(); i++) {
       cout << v[i] << " "; }
 
-    cout << "" << endl;
-
-
+    cout << endl;
     cout << mc.get_class_str() << endl; };
 
 

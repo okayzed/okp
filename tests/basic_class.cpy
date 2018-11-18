@@ -31,7 +31,7 @@ class CClass: public BClass
     public: ~CClass():
         pass
 
-    public: 
+    public:
     def void mybar():
         pass
 
@@ -47,9 +47,7 @@ def main():
 
     vector<int> v(n);
     for i = 0; i < v.size(); i++
-      puts v[i], " "
+      puts v[i]
 
-    print ""
-
-
+    print
     print mc.get_class_str()
