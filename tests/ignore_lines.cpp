@@ -2,24 +2,24 @@
 using namespace std;
 
 
-;template<typename T>
+ template<typename T>
 auto my_func() {
     return 0; };
 
 
 
-; class MyClass {
-;   public:
-;       MyClass() {};
-; };
+  class MyClass {
+    public:
+        MyClass() {};
+  };
 
-; int foo() {
-;   cout << "this function should have minimal processing done on it" << endl;
-; };
+  int foo() {
+    cout << "this function should have minimal processing done on it" << endl;
+  };
 
-; int foobar() {
-;   return 0;
-; };
+  int foobar() {
+    return 0;
+  };
 
 
 auto foo_func() {
@@ -30,16 +30,16 @@ auto foo_func() {
 int main() {
     int i;
 
-  ; for (i = 0; i < 10; i++) {
-  ;   cout << foo_func() << endl;
-  ; };
-  ; cout << endl;
+    for (i = 0; i < 10; i++) {
+      cout << foo_func() << endl;
+    };
+    cout << endl;
 
     for (i = 0; i < 10; i++) {
       cout << i; }
     cout << endl;
 
-  ; if (false) return 1;
+    if (false) return 1;
 
     return 0; };
 

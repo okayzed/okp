@@ -146,7 +146,7 @@ def remove_preceding_ignore_chars(lines):
         indent = get_indent(line)
         sline = line.strip()
         if sline and sline[0] == IGNORE_CHAR:
-            line = line.replace(IGNORE_CHAR, ';', 1)
+            line = line.replace(IGNORE_CHAR, ' ', 1)
 
         new_lines.append(line)
 

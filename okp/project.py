@@ -86,9 +86,11 @@ def compile_cpp_file(tmp_dir, arg):
     ofname = os.path.join(tmp_dir, "%s.o" % name)
 
     try:
-        run_cmd("g++ -c '%s' -o '%s'" % (fname, ofname))
+        run_cmd("g++ -c '%s' -o '%s' " % (fname, ofname), COMPILE_FLAGS)
     except:
-        print_file_with_line_nums(fname)
+        if config.PRINT_ON_ERROR:
+            print_file_with_line_nums(fname)
+
         e = sys.exc_info()
         print("Couldn't compile", fname, "aborting")
         sys.exit(1)
@@ -211,7 +213,7 @@ def compile_files(tmp_dir, args):
     if not args.print_ and more_than_stdin and not args.noexe:
         os.chdir(tmp_dir)
         util.verbose("generating", outname)
-        cmd_args = ofiles + [ "-o", outname ]
+        cmd_args = ofiles + [ "-o", outname ] + COMPILE_FLAGS
         run_cmd("g++", cmd_args)
 
     if config.RUN_EXE:
@@ -220,13 +222,26 @@ def compile_files(tmp_dir, args):
         else:
             output = run_cmd(outname)
         util.debug('OUTPUT:\n')
-        util.debug(output)
+        util.debug(str(output))
 
 
 # we need a two pass compilation so we correctly build
 # all necessary header files before compiling
+COMPILE_FLAGS=""
 def compile_project(args):
-    files = args.files
+    global COMPILE_FLAGS
+    flags = []
+    files = []
+    for file in args.files:
+        if file[0] == '-' and file != '-':
+            flags.append(file)
+        else:
+            files.append(file)
+
+    COMPILE_FLAGS = flags
+
+    if COMPILE_FLAGS:
+        util.debug("compile flags:", " ".join(COMPILE_FLAGS))
 
     if args.dir:
         tmp_dir = os.path.abspath(args.dir)
