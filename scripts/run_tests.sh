@@ -55,6 +55,10 @@ function run_test() {
 }
 
 function run_project_test() {
+  if ! [[ ${1} =~ ${tests_to_run} ]]; then
+    return
+  fi
+
   name=${1}
   cpys=$(compgen -G "${1}/*.cpy")
   cpps=`compgen -G "${1}/*.cpp"`
@@ -91,6 +95,33 @@ function basic_tests() {
   run_test tests/ignore_lines.cpy
 }
 
+function run_test_to_fail() {
+  if ! [[ ${1} =~ ${tests_to_run} ]]; then
+    return
+  fi
+  name=${1/.cpy/.cpp}
+  exe_name=${name/.cpp/.exe}
+  in_name=${name/.cpp/.in}
+  out_name=${name/.cpp/.out}
+  tmp_name=${name/.cpp/.tmp}
+  diff_name=${name/.cpp/.diff}
+  FLAGS="--enable-for --enable-rof"
+
+  python -m okp.main - $FLAGS < ${1} > "${name}"
+  g++ -x c++ - -o ${exe_name} < "${name}" 2> "${out_name}"
+  if [[ $? != 0 ]]; then
+    echo "xPASSED: ${1}"
+  else
+    echo "FAILED: was able to compile ${1}"
+  fi
+
+
+}
+
+function failing_tests() {
+  run_test_to_fail tests/failing/scoping_levels.cpy
+}
+
 function project_tests() {
   echo "running project tests"
   run_project_test tests/projects/simple
@@ -119,6 +150,7 @@ function misc_tests() {
 }
 
 basic_tests
+failing_tests
 project_tests
 external_tests
 misc_tests

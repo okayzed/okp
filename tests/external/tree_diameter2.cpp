@@ -40,7 +40,7 @@ int main() {
 
     vector<vector<int>> edges(n+1);
     for (auto i = 1; i < n; i++) {
-        cin >> a >> b ;
+        cin >> a >>  b ;
         edges[a].push_back(b);
         edges[b].push_back(a); }
 
