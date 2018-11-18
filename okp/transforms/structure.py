@@ -8,6 +8,7 @@ def add_trailing_semicolons(lines):
         indents.append(get_indent(line))
 
     indents.append(0)
+    double_ignore = IGNORE_CHAR + IGNORE_CHAR
 
     for i, line in enumerate(lines):
         line = line.rstrip();
@@ -16,6 +17,9 @@ def add_trailing_semicolons(lines):
         # we dont ignore lines with preceding semicolons
         # if ignore_line(line, new_lines):
         #     continue
+        if cline == double_ignore:
+            new_lines.append(line)
+            continue
 
         if not line or line[0] == '#':
             new_lines.append(line)
@@ -139,12 +143,30 @@ def join_backslash_lines(lines):
 
 
 
+def add_preceding_ignore_chars(lines):
+    new_lines = []
+    in_ignore_block = False
+    ig = IGNORE_CHAR
+    for line in lines:
+        if line.strip().startswith('```'):
+            in_ignore_block = not in_ignore_block
+        elif in_ignore_block:
+            new_lines.append('%s%s%s' % (ig, ig, line))
+        else:
+            new_lines.append(line)
+
+    return new_lines
 
 def remove_preceding_ignore_chars(lines):
     new_lines = []
+    double_ignore = IGNORE_CHAR + IGNORE_CHAR
     for line in lines:
         indent = get_indent(line)
         sline = line.strip()
+
+        if sline.find(double_ignore) != -1:
+            line = line.replace(double_ignore, '', 1)
+
         if sline and sline[0] == IGNORE_CHAR:
             line = line.replace(IGNORE_CHAR, ' ', 1)
 

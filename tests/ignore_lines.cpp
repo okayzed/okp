@@ -22,6 +22,16 @@ auto my_func() {
   };
 
 
+
+
+class MyClass2 {
+  int a, b, c;
+
+
+
+};
+
+
 auto foo_func() {
     return rand() % 10; };
 

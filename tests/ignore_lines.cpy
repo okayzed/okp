@@ -19,6 +19,18 @@ $   return 0
 $ }
 
 
+
+// everything between two backticks gets given to cpp directly
+```
+class MyClass2 {
+  int a, b, c;
+
+
+
+};
+```
+
+
 def foo_func():
     return rand() % 10
 
