@@ -222,7 +222,7 @@ def compile_files(tmp_dir, args):
         else:
             output = run_cmd(outname)
         util.debug('OUTPUT:\n')
-        util.debug(str(output))
+        util.debug(output.decode("utf-8"))
 
 
 # we need a two pass compilation so we correctly build
