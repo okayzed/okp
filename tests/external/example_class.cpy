@@ -23,7 +23,7 @@ def main():
     obj1.id_c = 7 
     obj1.id_p = 91 
 
-    print "Child id is " obj1.id_c
-    print "Parent id is " obj1.id_p
+    print "Child id is ",  obj1.id_c
+    print "Parent id is ",  obj1.id_p
 
     return 0 

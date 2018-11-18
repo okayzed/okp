@@ -13,7 +13,7 @@ class MyClass {
         cout << "instantiated new class mc" << endl; }
 
     ~MyClass() {
-        cout << "destructor for mc called" << ' ' << s << endl; }
+        cout << "destructor for mc called" << ' ' <<  s << endl; }
 
     auto set_string(auto a) {
         s = a; }
@@ -32,7 +32,7 @@ int main() {
 
     string s;
     cin >> s ;
-    cout << "READ" << ' ' << s << endl;
+    cout << "READ" << ' ' <<  s << endl;
 
     MyClass mc;
     mc.set_string(s);
@@ -41,7 +41,7 @@ int main() {
     auto a = get<0>(structuredArgs_0);
     auto b = get<1>(structuredArgs_0);
 
-    cout << a << ' ' << b << endl;
+    cout << a << ' ' <<  b << endl;
 
     if (true) {
         cout << "true" << endl; }
@@ -50,7 +50,7 @@ int main() {
         cout << "false" << endl; }
 
     for (auto i = 0; i < 10; i++) {
-      cout << "I IS" << ' ' << i << endl; }
+      cout << "I IS" << ' ' <<  i << endl; }
 
     return 0; };
 

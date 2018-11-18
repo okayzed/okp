@@ -16,7 +16,7 @@ class MyClass:
         print "instantiated new class mc"
 
     ~MyClass():
-        print "destructor for mc called" s
+        print "destructor for mc called", s
 
     def set_string(auto a):
         s = a
@@ -35,14 +35,14 @@ def main():
 
     string s
     read s // strip comments
-    print "READ" s
+    print "READ", s
 
     MyClass mc
     mc.set_string(s)
 
     a, b = foo() // std:tie when assigning from multi
 
-    print a b
+    print a, b
 
     if true:
         print "true"
@@ -51,6 +51,6 @@ def main():
         print "false"
 
     for i = 0; i < 10; i++:
-      print "I IS" i
+      print "I IS", i
 
     return 0

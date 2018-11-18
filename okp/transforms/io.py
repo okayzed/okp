@@ -2,7 +2,11 @@ from ..util import *
 
 def io_readline(line, indent, read_token):
     sline = line.strip()
-    args = smart_split(sline[len(read_token):], ' ,')
+
+    if read_token.startswith('read'):
+        args = smart_split(sline[len(read_token):], ',')
+    else:
+        args = smart_split(sline[len(read_token):], ' ,')
 
     # if the line already has >> or << on it, we don't process it
     for arg in args:
@@ -70,7 +74,10 @@ def io_printline(line, indent):
 
     for tok in ["!", "std::cout ", "cout ", "print "]:
         if sline.startswith(tok):
-            args = smart_split(sline[len(tok):], ' ,')
+            if tok == "print ":
+                args = smart_split(sline[len(tok):], ',')
+            else:
+                args = smart_split(sline[len(tok):], ' ,')
             no_add = False
             for arg in args:
                 if arg == "<<":
