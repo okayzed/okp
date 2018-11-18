@@ -15,7 +15,7 @@ setup(
     include_package_data=True,
     packages=['okp', 'okp.transforms'],
     scripts=['scripts/okp'],
-    url='http://github.com/raisjn/okp',
+    url='http://github.com/okayzed/okp',
     license='MIT',
     description='an compiler for .cpy files',
     long_description=open('README.md').read(),

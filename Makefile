@@ -9,3 +9,8 @@ install:
 
 test:
 				bash scripts/run_tests.sh
+
+.PHONY: tags
+
+tags:
+				ctags-exuberant -R

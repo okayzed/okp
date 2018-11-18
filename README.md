@@ -15,7 +15,7 @@ if the following code makes you happy, okp might be for you:
         int a, b
         read a, b
 
-        print "WEIRD MULTIPLIED:" weird_multiply(a, b)
+        print "WEIRD MULTIPLIED:", weird_multiply(a, b)
 
 ## status
 
@@ -77,6 +77,7 @@ Some original features of okp to make it look more pythonic are:
 * `pass` keyword for no-ops
 * `print` and `read` keywords
 * lines that start with IGNORE_CHAR are not pre-processed
+* triple backticks for multi-line escapes
 
 ## further resources and similar projects
 
