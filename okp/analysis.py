@@ -44,7 +44,12 @@ def read_scopings(lines):
                 scope_stack[indent] = scope
 
         if i < len(lines) - 1:
-            next_line = lines[i+1]
+            x = 1
+            # skip empty-ish lines when figuring out next indent
+            while i+x < len(lines) -1 and not lines[i+x].strip() :
+                x += 1
+
+            next_line = lines[i+x]
             next_indent = get_indent(next_line)
 
             if indent < next_indent:
