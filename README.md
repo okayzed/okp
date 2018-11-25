@@ -22,6 +22,10 @@ if the following code makes you happy, okp might be for you:
 okp is not a good idea for anyone to use, but try it anyways and let me
 know what you've built
 
+## installation
+
+    pip install okp
+
 ### motivation
 
 i saw vrsperanza's CPY and the light hit me: a language that looks like python
@@ -42,6 +46,12 @@ okp file1.cpy file2.cpy
 
 # specify the executable file
 okp file1.cpy -o ./a.out
+
+# compile and run 
+okp file.cpy -r
+
+# compil and run (stdin is passed to the binary) 
+okp file.cpy -ri < input.txt
 
 # compile a hybrid project
 okp file1.h file2.cpp file3.cpy -o ./a.out
