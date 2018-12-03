@@ -135,6 +135,7 @@ function external_tests() {
   run_test tests/external/example_class.cpy
   run_test tests/external/simple_array_max_min.cpy
   run_test tests/external/scarborough_fair.cpy
+  run_test tests/external/sieve.cpy
   run_project_test tests/projects/cpy_class/
   run_project_test tests/projects/cpy_red_black_tree
   run_project_test tests/projects/cpy_selection_sort/
