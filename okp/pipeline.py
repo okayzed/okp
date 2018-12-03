@@ -16,6 +16,7 @@ def pipeline(lines, base_dir=None):
     lines = keywords.replace_knowns(lines)
     lines = keywords.replace_blocks(lines)
     lines = keywords.replace_defs(lines)
+    lines = keywords.replace_self(lines)
 
     # replaces !, ?, ??, print, read, etc
     lines = io.replace_io_keywords(lines)

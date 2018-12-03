@@ -62,6 +62,16 @@ def replace_pass(lines):
 
     return new_lines
 
+def replace_self(lines):
+    new_lines = []
+    for line in lines:
+        if line.find("self.") != -1:
+            line = line.replace("self.", "this->")
+
+        new_lines.append(line)
+
+    return new_lines
+
 def replace_loop(line, keyword='for', op='<', inc='++'):
 
     sline = line.strip()

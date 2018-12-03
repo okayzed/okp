@@ -137,6 +137,8 @@ def guess_required_files(lines):
         "<iostream>" : [ "cout", "cin", "endl" ],
         "<vector>" : [ "vector" ],
         "<tuple>" : [ "tuple", "make_tuple", "tie", "std::tie"],
+        "<queue>" : [ "queue" ],
+        "<deque>" : [ "deque" ],
         "<map>" : ["map"],
         "<unordered_map>" : ["unordered_map"],
         "<cstdio>" : ["printf", "scanf"]

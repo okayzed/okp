@@ -119,7 +119,8 @@ def process_cpp_file(tmp_dir, arg):
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
 
-    lines = process_file(arg)
+    with open(arg) as f:
+        lines = f.readlines()
 
     basedir = os.path.dirname(fname)
 
