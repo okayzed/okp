@@ -90,6 +90,14 @@ def line_is_function(line):
 
     return False
 
+def line_is_class_definition(line):
+    args = smart_split(line, ' ')
+    if not args:
+        return
+
+    if args[0].find('::') != -1 or args[1].find('::') != -1:
+        return True
+
 
 def extract_header(lines):
     extracted = []
@@ -100,7 +108,7 @@ def extract_header(lines):
         if line_is_include(line) or line_is_using(line):
             extracted.append(line)
 
-        if line_is_function(line):
+        if line_is_function(line) and not line_is_class_definition(line):
             func_decl = line.rstrip('{')
             func_decl += ';'
             extracted.append(func_decl)

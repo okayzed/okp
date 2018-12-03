@@ -86,6 +86,7 @@ Some original features of okp to make it look more pythonic are:
 * `block` keyword for creating blocks
 * `pass` keyword for no-ops
 * `print` and `read` keywords
+* `self` keyword
 * lines that start with IGNORE_CHAR are not pre-processed
 * triple backticks for multi-line escapes
 
