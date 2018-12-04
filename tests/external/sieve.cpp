@@ -38,12 +38,12 @@ auto Sieve::make_sieve(int n) {
         if (this->values[i]) {
             continue; }
 
-        auto lm = max(last_max / i+1, 2);
+        auto lm = max(this->last_max / i+1, 2);
 
         for (auto j = lm; j * i <= n; j++) {
             this->values[j*i] = 1; } }
 
-    auto last_max = n; };
+    this->last_max = n; };
 
 auto Sieve::is_prime(int n) {
     if (this->values.size() <= n) {
