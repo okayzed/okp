@@ -93,6 +93,7 @@ function basic_tests() {
   run_test tests/recognize_struct.cpy
   run_test tests/infer_includes.cpy
   run_test tests/ignore_lines.cpy
+  run_test tests/equals_spacing.cpy
 }
 
 function run_test_to_fail() {

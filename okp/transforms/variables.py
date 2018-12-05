@@ -15,22 +15,54 @@ DESTRUCTURE_INDEX = 0
 
 DECLARE_VARIABLES = True
 
+# this function splits equals, skipping over '==' and turning '= ' into ''
+def split_equals(line):
+    tokens = []
+    prev = []
+    i = 0
+    while i < len(line):
+        c = line[i]
+        peeked = ''
+        if c == '=':
+            if i < len(line)-1:
+                peeked = line[i+1]
+
+            if peeked == '=':
+                prev.append(c)
+                prev.append(peeked)
+                i += 1
+            else:
+                if prev:
+                    tokens.append(''.join(prev))
+                prev = []
+
+        else:
+            prev.append(c)
+        i += 1
+
+    tokens.append(''.join(prev))
+
+    return tokens
+
+
 def make_declarations(line, scope):
     global DESTRUCTURE_INDEX
 
     di = DESTRUCTURE_INDEX
     indent = get_indent(line)
-    tokens = line.strip().split('= ')
+
+    # we need to split on single equals but not double equals
+    # we also need to swallow '= ' and turn it into '='
+    tokens = split_equals(line.strip())
 
     # TODO: what do we do if tokens > 2?
     if len(tokens) == 2:
-#        lhs = tokens[0]
-#        rhs = tokens[1]
-        lhs, rhs = line.split('= ')
+        lhs, rhs = tokens
+        rhs = rhs.strip()
         args = smart_split(lhs, ',')
         if len(args) > 1:
 
-            if lhs.find(' ') > lhs.find(',') or lhs.find('[') != -1:
+            if lhs.find('[') != -1:
                 return line
 
             need_args = False
