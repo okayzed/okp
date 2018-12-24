@@ -5,7 +5,7 @@ package:
 				cp dist/okp-${VERSION}.tar.gz dist/okp-current.tar.gz
 
 install:
-				pip install dist/okp-current.tar.gz
+				pip install dist/okp-current.tar.gz --user
 
 test:
 				bash scripts/run_tests.sh

@@ -140,6 +140,7 @@ def remove_structs_and_classes(lines):
 
 def guess_required_files(lines):
     requires = set()
+    defines = set()
 
     REQUIRE_KEYWORDS = {
         "<iostream>" : [ "cout", "cin", "endl" ],
@@ -152,12 +153,23 @@ def guess_required_files(lines):
         "<cstdio>" : ["printf", "scanf"]
     }
 
+    DEFINE_KEYWORDS = {
+        "len(x) (int)(x).size()" : [ "len" ]
+    }
+
 
     def add_requires(line_tokens, require_tokens, require):
         if not require in requires:
             for tok in require_tokens:
-                if tok in tokens:
+                if tok in line_tokens:
                     requires.add(require)
+
+
+    def add_defines(line_tokens, define_tokens, word):
+        if not word in defines:
+            for tok in define_tokens:
+                if tok in line_tokens:
+                    defines.add(word)
 
 
     using_namespace_std = False
@@ -165,11 +177,12 @@ def guess_required_files(lines):
         if not using_namespace_std and line.find("using namespace std;") != -1:
             using_namespace_std = True
 
+        tokens = smart_split(line, " :<>()")
         for require in REQUIRE_KEYWORDS:
-
-            tokens = smart_split(line, " :<>()")
-
             add_requires(tokens, REQUIRE_KEYWORDS[require], require)
+
+        for define in DEFINE_KEYWORDS:
+            add_defines(tokens, DEFINE_KEYWORDS[define], define)
 
 
     prepend = []
@@ -183,10 +196,16 @@ def guess_required_files(lines):
                 included.add(p);
 
     prepend = list(filter(lambda w: w not in included, [ p for p in prepend]))
+    prepend.sort()
+
+    for d in defines:
+        prepend.append("#define %s" % d)
+
     if not using_namespace_std and requires:
         prepend.append("using namespace std;");
 
-    prepend.sort()
+
+
 
     return prepend
 
