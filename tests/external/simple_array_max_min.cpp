@@ -26,7 +26,7 @@ auto findBiggestSmallest(int * arr, int size) {
 int main() {
     srand(time(NULL));
     int size, maxVal;
-    cout << "Input array size and max value: " ; cin >> size >> maxVal ;
+    cout << "Input array size and max value: " ; cin >> size >> maxVal;
 
     auto arr = genArray(size, maxVal);
 

@@ -11,10 +11,10 @@ int main() {
     int x, n, d;
     multimap<int, int> q;
 
-    cin >> x n ;
+    cin >> x >> n;
 
     for (auto i = 0; i < n; i++) {
-        cin >> d ;
+        cin >> d;
         q.insert({d, d}); }
 
     int l, r;

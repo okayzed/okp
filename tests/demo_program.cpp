@@ -31,7 +31,7 @@ int main() {
     cout << "foobar" << endl;
 
     string s;
-    cin >> s ;
+    cin >> s;
     cout << "READ" << ' ' <<  s << endl;
 
     MyClass mc;

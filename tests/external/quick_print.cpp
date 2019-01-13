@@ -16,7 +16,7 @@ int main() {
     cout << " Ending the line in the following command exemplified!" << endl;
 
     cout << "Following line is produced by command: ?? a b str" << endl;
-    cin >> a >> b >> str ;
+    cin >> a >> b >> str;
 
 
     cout << "A is valued " << ' ' << a << ' ' << std::endl << endl;

@@ -36,11 +36,11 @@ auto bfs(int node, vector<vector<int>> edges) {
 
 int main() {
     int n, a, b;
-    cin >> n ;
+    cin >> n;
 
     vector<vector<int>> edges(n+1);
     for (auto i = 1; i < n; i++) {
-        cin >> a >>  b ;
+        cin >> a >> b;
         edges[a].push_back(b);
         edges[b].push_back(a); }
 

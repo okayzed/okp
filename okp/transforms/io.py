@@ -1,10 +1,10 @@
 from ..util import *
 
-def io_readline(line, indent, read_token):
+def io_readline(line, read_token):
     sline = line.strip()
 
     if read_token.startswith('read'):
-        args = smart_split(sline[len(read_token):], ',')
+        args = smart_split(sline[len(read_token):], ' ,')
     else:
         args = smart_split(sline[len(read_token):], ' ,')
 
@@ -44,9 +44,8 @@ def io_readline(line, indent, read_token):
     if cin_tokens:
         tokens.append("cin")
         tokens.extend(cin_tokens)
-        tokens.append(';')
 
-    line = "%s%s" % (' ' * indent, " ".join(tokens))
+    line = " ".join(tokens)
     return line
 
 def io_printline(line, indent):
@@ -100,7 +99,7 @@ def io_printline(line, indent):
 
 def replace_io_keywords(lines):
     new_lines = []
-    tokens = [ '? ', 'read ', '?? ', 'cin ' ]
+    tokens = [ '?', 'read', '??', 'cin' ]
     for line in lines:
         if ignore_line(line, new_lines):
             continue
@@ -108,12 +107,24 @@ def replace_io_keywords(lines):
         sline = line.strip()
 
         read_token = None
-        for tok in tokens:
-            if sline.startswith(tok):
-                read_token = tok
+        toks = smart_split(line, '(): ')
+
+        for i, t in enumerate(toks):
+            for tok in tokens:
+                if t == tok:
+                    read_token = tok
+                    rtoks = toks[i:]
+                    rline = " ".join(rtoks)
+                    pline = toks[:i]
 
         if read_token:
-            line = io_readline(line, indent, read_token)
+            if len(pline):
+                pline = " ".join(pline) + " "
+            else:
+                pline = ""
+
+            rline = io_readline(rline, read_token)
+            line = "%s%s%s" % (' ' * indent, pline, rline)
 
         else:
             line = io_printline(line, indent)

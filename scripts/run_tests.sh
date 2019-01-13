@@ -94,6 +94,8 @@ function basic_tests() {
   run_test tests/infer_includes.cpy
   run_test tests/ignore_lines.cpy
   run_test tests/equals_spacing.cpy
+  run_test tests/while_read.cpy
+  run_test tests/while_read2.cpy
 }
 
 function run_test_to_fail() {
