@@ -20,7 +20,7 @@ class BClass: AClass
     def get_class_str():
       return "Class"
 
-private:
+    private:
     def multi_ret():
       return 1, 2
 

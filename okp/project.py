@@ -76,7 +76,7 @@ def print_file_with_line_nums(fname):
     util.debug("")
 
 def compile_cpy_file(tmp_dir, arg):
-    name = arg.rstrip(".cpy")
+    name = arg.rstrip(".cpy").rstrip(".okp")
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     return compile_cpp_file(tmp_dir, fname)
 
@@ -139,7 +139,7 @@ def process_cpp_file(tmp_dir, arg):
 
 
 def process_cpy_file(args, tmp_dir, arg, use_headers=False):
-    name = arg.rstrip(".cpy")
+    name = arg.rstrip(".cpy").rstrip(".okp")
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
@@ -183,7 +183,7 @@ def process_files(tmp_dir, args):
             print_lines(lines)
         else:
             util.verbose("processing", arg)
-            if arg.endswith(".cpy"):
+            if arg.endswith(".cpy") or arg.endswith(".okp"):
                 process_cpy_file(args, tmp_dir, arg, use_headers)
             if arg.endswith(".cpp"):
                 process_cpp_file(tmp_dir, arg)
@@ -205,7 +205,7 @@ def compile_files(tmp_dir, args):
     ofiles = []
     for arg in files:
         if arg != '-':
-            if arg.endswith(".cpy"):
+            if arg.endswith(".cpy") or arg.endswith(".okp"):
                 ofiles.append(compile_cpy_file(tmp_dir, arg))
             if arg.endswith(".cpp"):
                 ofiles.append(compile_cpp_file(tmp_dir, arg))

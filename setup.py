@@ -19,6 +19,6 @@ setup(
     license='MIT',
     description='an compiler for .cpy files',
     long_description=open('README.md').read(),
-    install_requires=[ ],
+    install_requires=[ "future" ],
     )
 

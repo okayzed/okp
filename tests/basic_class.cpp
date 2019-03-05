@@ -21,7 +21,7 @@ class BClass: AClass {
     auto get_class_str() {
       return "Class"; }
 
-private:
+    private:
     auto multi_ret() {
       return make_tuple(1,  2); } };
 
