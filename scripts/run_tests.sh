@@ -128,6 +128,7 @@ function failing_tests() {
 function project_tests() {
   echo "running project tests"
   run_project_test tests/projects/simple
+  run_project_test tests/projects/imports
   run_project_test tests/projects/hoisting
 }
 

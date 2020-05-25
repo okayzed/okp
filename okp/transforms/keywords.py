@@ -140,3 +140,21 @@ def replace_defs(lines):
 
     return new_lines
 
+def replace_imports(lines):
+    new_lines = []
+    for line in lines:
+        if ignore_line(line, new_lines):
+            continue
+
+        if line.startswith("import "):
+            tokens = line.split()
+            line = '#include "%s.h"' % tokens[1]
+
+        if line.startswith("#import "):
+            tokens = line.split()
+            line = '#include "%s.h"' % tokens[1]
+
+        new_lines.append(line)
+
+    return new_lines
+
