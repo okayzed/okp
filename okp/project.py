@@ -14,6 +14,8 @@ from . import analysis
 from . import util
 from . import config
 
+CXX = os.environ.get("CXX", "g++")
+
 def print_lines(lines):
     print('\n'.join(lines))
 
@@ -86,7 +88,7 @@ def compile_cpp_file(tmp_dir, arg):
     ofname = os.path.join(tmp_dir, "%s.o" % name)
 
     try:
-        run_cmd("g++ -c '%s' -o '%s' " % (fname, ofname), COMPILE_FLAGS)
+        run_cmd("%s -c '%s' -o '%s' " % (CXX, fname, ofname), COMPILE_FLAGS)
     except:
         if config.PRINT_ON_ERROR:
             print_file_with_line_nums(fname)
@@ -215,7 +217,7 @@ def compile_files(tmp_dir, args):
         os.chdir(tmp_dir)
         util.verbose("generating", outname)
         cmd_args = ofiles + [ "-o", outname ] + COMPILE_FLAGS
-        run_cmd("g++", cmd_args)
+        run_cmd(CXX, cmd_args)
 
     if config.RUN_EXE:
         if config.RUN_WITH_INPUT:

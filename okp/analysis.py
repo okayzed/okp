@@ -63,7 +63,6 @@ def read_scopings(lines):
         # new2 = clanger.add_identifiers(line, bscope)
         # debug("TOKENS", line, new, new2)
 
-
     return scopings
 
 # after line is already decorated, we can check if its a function

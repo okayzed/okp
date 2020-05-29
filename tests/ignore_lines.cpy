@@ -8,14 +8,14 @@ def my_func():
 $ class MyClass {
 $   public:
 $       MyClass() {}
-$ }
+$ };
 
 $ int foo() {
 $   cout << "this function should have minimal processing done on it" << endl;
 $ }
 
 $ int foobar() {
-$   return 0
+$   return 0;
 $ }
 
 

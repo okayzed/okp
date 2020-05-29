@@ -10,16 +10,16 @@ auto my_func() {
 
   class MyClass {
     public:
-        MyClass() {};
+        MyClass() {}
   };
 
   int foo() {
     cout << "this function should have minimal processing done on it" << endl;
-  };
+  }
 
   int foobar() {
     return 0;
-  };
+  }
 
 
 
@@ -42,7 +42,7 @@ int main() {
 
     for (i = 0; i < 10; i++) {
       cout << foo_func() << endl;
-    };
+    }
     cout << endl;
 
     for (i = 0; i < 10; i++) {

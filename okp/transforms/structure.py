@@ -15,13 +15,13 @@ def add_trailing_semicolons(lines):
         cline = line.strip()
 
         # we dont ignore lines with preceding semicolons
-        # if ignore_line(line, new_lines):
-        #     continue
+        if ignore_line(line, new_lines):
+            continue
         if cline == double_ignore:
             new_lines.append(line)
             continue
 
-        if not line or line[0] == '#':
+        if not cline or cline[0] == '#':
             new_lines.append(line)
             continue
 
