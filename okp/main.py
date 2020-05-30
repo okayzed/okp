@@ -10,6 +10,7 @@ def get_parser():
 
     parser = argparse.ArgumentParser(description='Process .cpy files into C++')
     parser.add_argument('-ni', '--disable-implication', help='disables variable implication', action='store_true')
+    parser.add_argument('-nr', '--disable-read', help='disables read keyword', action='store_true')
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
     parser.add_argument('-r', '--run', dest="runexe", action="store_true",
         help="invoke executable after compiling it")
@@ -44,6 +45,8 @@ def main():
 
     if args.disable_implication:
         transforms.variables.DECLARE_VARIABLES = False
+    if args.disable_read:
+        config.READ_KEYWORD = False
 
     config.VERBOSE = args.verbose
 

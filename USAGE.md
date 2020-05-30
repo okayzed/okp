@@ -192,9 +192,11 @@ fails.
 In okp dialect, `print a,b,c` gets translated into cout << a << b << c << endl.
 If the line ends with a comma, the endl is not added
 
-### read (okp extension)
+### read and raw_input (okp extension)
 
 In okp dialect, `read a,b,c` gets translated into `cin >> a >> b >> c`.
+raw\_input is a synonym for read. If `-nr` flag is passed, the read keyword is
+disabled.
 
 ### self (okp extension)
 

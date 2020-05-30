@@ -3,7 +3,12 @@ from ..util import *
 def io_readline(line, read_token):
     sline = line.strip()
 
-    if read_token.startswith('read'):
+    is_readline = False
+    if config.READ_KEYWORD and read_token.startswith('read'):
+        is_readline = True
+    if read_token.startswith('raw_input'):
+        is_readline = True
+    if is_readline:
         args = smart_split(sline[len(read_token):], ' ,')
     else:
         args = smart_split(sline[len(read_token):], ' ,')
@@ -99,7 +104,7 @@ def io_printline(line, indent):
 
 def replace_io_keywords(lines):
     new_lines = []
-    tokens = [ '?', 'read', '??', 'cin' ]
+    tokens = [ '?', 'read', '??', 'cin', 'raw_input']
     for line in lines:
         if ignore_line(line, new_lines):
             continue
