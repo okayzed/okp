@@ -78,12 +78,12 @@ def print_file_with_line_nums(fname):
     util.debug("")
 
 def compile_cpy_file(tmp_dir, arg):
-    name = arg.rstrip(".cpy").rstrip(".okp")
+    name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     return compile_cpp_file(tmp_dir, fname)
 
 def compile_cpp_file(tmp_dir, arg):
-    name = arg.rstrip(".cpp")
+    name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
 
@@ -116,7 +116,7 @@ def add_guards(arg, lines):
     return lines
 
 def process_cpp_file(tmp_dir, arg):
-    name = arg.rstrip(".cpp")
+    name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
@@ -141,7 +141,7 @@ def process_cpp_file(tmp_dir, arg):
 
 
 def process_cpy_file(args, tmp_dir, arg, use_headers=False):
-    name = arg.rstrip(".cpy").rstrip(".okp")
+    name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
@@ -260,7 +260,7 @@ def compile_project(args):
     try:
         process_files(tmp_dir, args)
 
-        if not (args.print_):
+        if not (args.print_) and not args.transpile:
             ofiles = compile_files(tmp_dir, args)
     finally:
         if not config.KEEP_DIR and not args.dir:

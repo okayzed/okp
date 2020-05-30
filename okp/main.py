@@ -30,6 +30,8 @@ def get_parser():
         help="enable for loop shorthand")
     parser.add_argument('-rof', '--enable-rof', dest='enable_rof', action="store_true",
         help="enable rof loop shorthand")
+    parser.add_argument('-t', '--transpile', dest='transpile', action="store_true",
+        help="don't compile code, only transpile")
 
     return parser
 
@@ -53,6 +55,8 @@ def main():
     config.RUN_WITH_INPUT = args.runinput
     if args.runinput:
         config.RUN_EXE = True
+
+    config.TRANSPILE_ONLY = args.transpile
 
     from .project import compile_project
     compile_project(args)
