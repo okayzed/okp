@@ -45,7 +45,7 @@ int main() {
     }
     cout << endl;
 
-    for (i = 0; i < 10; i++) {
+    for (auto i = 0; i < 10; i++) {
       cout << i << " "; }
     cout << endl;
 

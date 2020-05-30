@@ -248,7 +248,10 @@ def compile_project(args):
 
     if args.dir:
         tmp_dir = os.path.abspath(args.dir)
-        os.makedirs(tmp_dir)
+        try:
+            os.makedirs(tmp_dir)
+        except FileExistsError:
+            pass
     else:
         tmp_dir = tempfile.mkdtemp()
     util.verbose("working tmp dir is", tmp_dir)

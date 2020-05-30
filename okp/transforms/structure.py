@@ -109,7 +109,8 @@ def add_curly_braces(lines):
         if indent_levels[-1] > 0:
             new_lines[nb] += ' }'
 
-        if new_lines[nb][-1] != ";":
+
+        if new_lines[nb][0] != "#" and new_lines[nb][-1] != ";":
             new_lines[nb] += ';';
 
         indent_levels.pop()
