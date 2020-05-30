@@ -84,6 +84,7 @@ function basic_tests() {
   run_test tests/params_test.cpy
   run_test tests/toplevel_invoke.cpy
   run_test tests/nested_identifiers.cpy
+  run_test tests/ifdef_scoping.cpy
   run_test tests/known_vars.cpy
   run_test tests/demo_program.cpy
   run_test tests/class_constructors.cpy

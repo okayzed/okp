@@ -1,3 +1,4 @@
+from __future__ import print_function
 from .util import *
 
 from . import id_recognizer

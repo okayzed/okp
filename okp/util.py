@@ -118,6 +118,8 @@ def get_indent(line):
             indent += 1
         elif c == '\t':
             indent += 8
+        elif c == IGNORE_CHAR:
+            continue
         else:
             break
 
