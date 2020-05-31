@@ -26,7 +26,7 @@ def pipeline(lines, base_dir=None):
     lines = variables.add_auto_declarations(lines, scopings)
     lines = variables.add_destructuring(lines, scopings)
 
-    // known keyword replacement has to happen after auto declarations
+    # known keyword replacement has to happen after auto declarations
     lines = keywords.replace_knowns(lines)
 
     lines = structure.add_parentheses(lines)
