@@ -8,7 +8,7 @@ from . import config
 def get_parser():
     import argparse
 
-    parser = argparse.ArgumentParser(description='Process .cpy files into C++')
+    parser = argparse.ArgumentParser(description='Process .cpy files into C++. Any unknown flags are passed as compiler flags to g++')
     parser.add_argument('-ni', '--disable-implication', help='disables variable implication', action='store_true')
     parser.add_argument('-nr', '--disable-read', help='disables read keyword', action='store_true')
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
@@ -38,7 +38,7 @@ def get_parser():
 
 def main():
     parser = get_parser()
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
     if not args.files:
         parser.print_help()
         return
@@ -56,6 +56,7 @@ def main():
     config.KEEP_DIR = args.keep_dir
     config.RUN_EXE = args.runexe
     config.RUN_WITH_INPUT = args.runinput
+    config.COMPILER_FLAGS = unknown
     if args.runinput:
         config.RUN_EXE = True
 

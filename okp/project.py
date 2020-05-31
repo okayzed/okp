@@ -242,6 +242,7 @@ def compile_project(args):
             files.append(file)
 
     COMPILE_FLAGS = flags
+    COMPILE_FLAGS.extend(config.COMPILER_FLAGS)
 
     if COMPILE_FLAGS:
         util.debug("compile flags:", " ".join(COMPILE_FLAGS))
