@@ -14,7 +14,6 @@ def pipeline(lines, base_dir=None):
     lines = keywords.replace_tabs(lines)
     lines = keywords.replace_pass(lines)
     lines = keywords.replace_for_shorthand(lines)
-    lines = keywords.replace_knowns(lines)
     lines = keywords.replace_blocks(lines)
     lines = keywords.replace_defs(lines)
     lines = keywords.replace_self(lines)
@@ -26,6 +25,9 @@ def pipeline(lines, base_dir=None):
     scopings = analysis.read_scopings(lines)
     lines = variables.add_auto_declarations(lines, scopings)
     lines = variables.add_destructuring(lines, scopings)
+
+    // known keyword replacement has to happen after auto declarations
+    lines = keywords.replace_knowns(lines)
 
     lines = structure.add_parentheses(lines)
     lines = structure.add_trailing_semicolons(lines)

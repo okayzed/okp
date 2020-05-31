@@ -10,7 +10,7 @@ public:
         auto r = a; }
 
     auto shadow_set_string(auto a) {
-        // known r;
+        r;
         r = a; }
 
     string r; };

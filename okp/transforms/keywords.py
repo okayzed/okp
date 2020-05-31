@@ -41,7 +41,8 @@ def replace_knowns(lines):
         indent = get_indent(line)
         cline = line.strip()
         if cline.startswith('known '):
-            line = "%s// %s" % (' ' * indent, cline)
+            cline = cline[len('known '):]
+            line = "%s%s" % (' ' * indent, cline)
 
         new_lines.append(line)
     return new_lines

@@ -98,6 +98,7 @@ function basic_tests() {
   run_test tests/while_read.cpy
   run_test tests/while_read2.cpy
   run_test tests/input_keyword.cpy
+  run_test tests/knowns.cpy
 }
 
 function run_test_to_fail() {
