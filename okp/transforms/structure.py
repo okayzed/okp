@@ -84,6 +84,10 @@ def add_curly_braces(lines):
             new_lines.append(line)
             continue
 
+        if hash_line(line):
+            new_lines.append(line)
+            continue
+
         if indent_levels[-1] > indent:
             while indent_levels[-1] > indent:
                 indent_levels.pop()

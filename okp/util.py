@@ -137,6 +137,11 @@ def array_access(arg):
 def visibility_line(line):
     return line.endswith('private:') or line.endswith('public:')
 
+def hash_line(line):
+    cline = line.strip()
+    return cline[0] == '#'
+
+
 def is_def(line):
     return line.strip().find("def ") != -1
 
