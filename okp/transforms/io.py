@@ -116,6 +116,9 @@ def replace_io_keywords(lines):
 
         for i, t in enumerate(toks):
             for tok in tokens:
+                if i > 0 and (tok[0] == '?'):
+                    continue
+
                 if t == tok:
                     read_token = tok
                     rtoks = toks[i:]
