@@ -174,7 +174,9 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
 
 
 def process_files(tmp_dir, args):
+    args.files = analysis.gather_files(args.files)
     files = args.files
+    print("GATHERED FOR COMPILATION:", files)
     # if we have multiple files, we have to generate their headers
     use_headers = len(files) > 1
 
@@ -199,6 +201,7 @@ def compile_files(tmp_dir, args):
         outname = os.path.join(cur_dir, outname)
 
     files = args.files
+
     more_than_stdin = False
     for arg in files:
         if arg != '-':
@@ -251,7 +254,7 @@ def compile_project(args):
         tmp_dir = os.path.abspath(args.dir)
         try:
             os.makedirs(tmp_dir)
-        except FileExistsError:
+        except OSError:
             pass
     else:
         tmp_dir = tempfile.mkdtemp()

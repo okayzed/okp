@@ -1,6 +1,8 @@
 from __future__ import print_function
 from .util import *
 
+import os
+
 from . import id_recognizer
 def read_scopings(lines):
     indent_levels = [0]
@@ -98,6 +100,63 @@ def line_is_class_definition(line):
     if args[0].find('::') != -1 or args[1].find('::') != -1:
         return True
 
+def gather_includes(file, includes, base_dir=None):
+    if file in includes:
+        return
+
+    dirname = os.path.dirname(file)
+    fname = os.path.basename(file)
+
+    if base_dir == None:
+        base_dir = dirname
+    else:
+        base_dir = os.path.join(base_dir, dirname)
+
+    file = os.path.join(base_dir, fname)
+    includes[file] = True
+
+
+    with open(file) as f:
+        lines = f.readlines()
+
+    for line in lines:
+        cline = line.strip()
+        if cline.startswith("#include"):
+            tokens = cline.split()
+            include = tokens[1]
+            if include[0] != '"':
+                continue
+            include = include.strip('"')
+
+            fname, ext = os.path.splitext(include)
+            cpyname = "%s.cpy" % fname
+            if os.path.exists(os.path.join(base_dir, cpyname)):
+                gather_includes(cpyname, includes, base_dir)
+            else:
+                gather_includes(include, includes, base_dir)
+
+        if cline.startswith("import"):
+            tokens = cline.split()
+            include = tokens[1]
+            fname = "%s.cpy" % include
+
+            gather_includes(fname, includes, base_dir)
+
+    return includes
+
+def gather_files(files):
+    ret = {}
+    original_dir = os.getcwd()
+    for file in files:
+        if not os.path.exists(file):
+            continue
+        file_dir, file = os.path.split(file)
+        if file_dir:
+            os.chdir(file_dir)
+        gather_includes(file, ret)
+
+    os.chdir(original_dir)
+    return ret.keys()
 
 def extract_header(lines):
     extracted = []
