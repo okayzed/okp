@@ -160,47 +160,7 @@ def gather_files(files):
         gather_includes(file, ret)
 
     os.chdir(original_dir)
-    return ret.keys()
-
-def extract_header(lines):
-    extracted = []
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-
-        if line_is_include(line) or line_is_using(line):
-            extracted.append(line)
-
-        if line_is_function(line) and not line_is_class_definition(line):
-            func_decl = line.rstrip('{')
-            func_decl += ';'
-            extracted.append(func_decl)
-
-
-        if is_struct(line) or is_class(line):
-            until = extract_until_close(lines, i)
-            ex = lines[i:until]
-            extracted.extend(ex)
-            i = until
-        else:
-            i += 1
-
-    return extracted
-
-def extract_body(lines):
-    new_lines = []
-    i = 0
-    while i < len(lines):
-        line = lines[i]
-        if is_struct(line) or is_class(line):
-            until = extract_until_close(lines, i)
-            i = until
-        else:
-            i += 1
-
-            new_lines.append(line)
-
-    return new_lines
+    return list(ret.keys())
 
 def guess_required_files(lines):
     requires = set()

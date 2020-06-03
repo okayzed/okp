@@ -1,7 +1,7 @@
 from __future__ import print_function
 from future.utils import raise_
 
-
+import re
 import os
 import tempfile
 import shutil
@@ -115,11 +115,13 @@ def add_guards(arg, lines):
 
     return lines
 
-def process_cpp_file(tmp_dir, arg):
+def process_cpp_file(args, tmp_dir, arg):
     name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
+
+    args.files.append(arg)
 
     with open(arg) as f:
         lines = f.readlines()
@@ -148,6 +150,12 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
 
     lines = process_file(arg)
 
+    as_header = True
+    for line in lines:
+        if re.search("main(.*) {", line):
+            args.files.append(arg)
+            as_header = False
+
     basedir = os.path.dirname(fname)
 
     try:
@@ -155,30 +163,29 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     except:
         pass
 
-    if use_headers:
-        header = analysis.extract_header(lines)
-        header = add_guards(arg, header)
-
-        lines = analysis.extract_body(lines)
-        lines.insert(0, '#include "%s"' % os.path.basename(hfname))
-        with open(hfname, "w") as f:
-            f.write("\n".join(header))
-
     if (args.print_):
         print("// %s" % arg)
         print_lines(lines)
         return
 
-    with open(fname, "w") as f:
-        f.write("\n".join(lines))
+    if as_header:
+        header = lines
+        header = add_guards(arg, header)
+
+        with open(hfname, "w") as f:
+            f.write("\n".join(lines))
+    else:
+        with open(fname, "w") as f:
+            f.write("\n".join(lines))
 
 
 
 def process_files(tmp_dir, args):
     args.files = analysis.gather_files(args.files)
-    files = args.files
+    files = list(args.files)
     # if we have multiple files, we have to generate their headers
     use_headers = len(files) > 1
+    args.files = []
 
     for arg in files:
         if arg == '-':
@@ -190,7 +197,7 @@ def process_files(tmp_dir, args):
             if arg.endswith(".cpy") or arg.endswith(".okp"):
                 process_cpy_file(args, tmp_dir, arg, use_headers)
             if arg.endswith(".cpp"):
-                process_cpp_file(tmp_dir, arg)
+                process_cpp_file(args, tmp_dir, arg)
             if arg.endswith(".h"):
                 process_h_file(tmp_dir, arg)
 
