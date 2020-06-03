@@ -148,6 +148,10 @@ def gather_files(files):
     ret = {}
     original_dir = os.getcwd()
     for file in files:
+        if file == '-':
+            ret[file] = True
+            continue
+
         if not os.path.exists(file):
             continue
         file_dir, file = os.path.split(file)

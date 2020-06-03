@@ -147,8 +147,6 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     hfname = os.path.join(tmp_dir, "%s.h" % name)
 
     lines = process_file(arg)
-    header = analysis.extract_header(lines)
-    header = add_guards(arg, header)
 
     basedir = os.path.dirname(fname)
 
@@ -158,6 +156,9 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         pass
 
     if use_headers:
+        header = analysis.extract_header(lines)
+        header = add_guards(arg, header)
+
         lines = analysis.remove_structs_and_classes(lines)
         lines.insert(0, '#include "%s"' % os.path.basename(hfname))
         with open(hfname, "w") as f:
@@ -176,7 +177,6 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
 def process_files(tmp_dir, args):
     args.files = analysis.gather_files(args.files)
     files = args.files
-    print("GATHERED FOR COMPILATION:", files)
     # if we have multiple files, we have to generate their headers
     use_headers = len(files) > 1
 

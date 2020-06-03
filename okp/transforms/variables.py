@@ -117,7 +117,7 @@ def add_destructuring(lines, scopings):
 
         added = False
         for k in keywords:
-            if sline.startswith(k):
+            if sline.startswith(k) or sline.endswith('{'):
                 new_lines.append(line)
                 added = True
                 break
@@ -132,7 +132,7 @@ def add_destructuring(lines, scopings):
                 args = ', '.join(args).strip()
                 line = "%sreturn make_tuple(%s)" % (' ' * indent, args)
 
-        elif line.find('=') != -1:
+        elif line.find('=') != -1 and not sline.endswith(':'):
             if DECLARE_VARIABLES:
                 line = make_declarations(line, scope)
 
