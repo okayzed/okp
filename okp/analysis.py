@@ -187,7 +187,7 @@ def extract_header(lines):
 
     return extracted
 
-def remove_structs_and_classes(lines):
+def extract_body(lines):
     new_lines = []
     i = 0
     while i < len(lines):
@@ -197,6 +197,7 @@ def remove_structs_and_classes(lines):
             i = until
         else:
             i += 1
+
             new_lines.append(line)
 
     return new_lines

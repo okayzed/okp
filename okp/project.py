@@ -159,7 +159,7 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         header = analysis.extract_header(lines)
         header = add_guards(arg, header)
 
-        lines = analysis.remove_structs_and_classes(lines)
+        lines = analysis.extract_body(lines)
         lines.insert(0, '#include "%s"' % os.path.basename(hfname))
         with open(hfname, "w") as f:
             f.write("\n".join(header))

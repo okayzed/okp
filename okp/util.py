@@ -139,7 +139,7 @@ def visibility_line(line):
 
 def hash_line(line):
     cline = line.strip()
-    return cline[0] == '#'
+    return cline and cline[0] == '#'
 
 
 def is_def(line):
