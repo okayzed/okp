@@ -142,6 +142,7 @@ def process_cpp_file(args, tmp_dir, arg):
     return ofname
 
 
+
 def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     name, ext = os.path.splitext(arg)
     fname = os.path.join(tmp_dir, "%s.cpp" % name)
@@ -151,10 +152,10 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     lines = process_file(arg)
 
     as_header = True
-    for line in lines:
-        if re.search("main(.*) {", line):
-            args.files.append(arg)
-            as_header = False
+    if analysis.file_contains_main(lines):
+        as_header = False
+        args.files.append(fname)
+
 
     basedir = os.path.dirname(fname)
 

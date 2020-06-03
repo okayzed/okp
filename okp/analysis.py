@@ -100,6 +100,23 @@ def line_is_class_definition(line):
     if args[0].find('::') != -1 or args[1].find('::') != -1:
         return True
 
+def file_contains_main(lines):
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if is_struct(line) or is_class(line):
+            until = extract_until_close(lines, i)
+            ex = lines[i:until]
+            i = until
+            continue
+
+        if re.search("main(.*) {", line):
+            return True
+
+        i += 1
+
+    return False
+
 def gather_includes(file, includes, base_dir=None):
     if file in includes:
         return
