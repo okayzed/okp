@@ -69,6 +69,8 @@ def add_curly_braces(lines):
     indent_levels = [0]
     nb = 0
 
+    outer_indent = 0
+
     for i, line in enumerate(lines):
         line = line.rstrip('\n')
         indent = get_indent(line)
@@ -88,12 +90,15 @@ def add_curly_braces(lines):
             new_lines.append(line)
             continue
 
+        if is_class(line):
+            outer_indent = indent
+
         if indent_levels[-1] > indent:
             while indent_levels[-1] > indent:
                 indent_levels.pop()
                 new_lines[nb] += ' }'
 
-                if indent_levels[-1] == 0 and new_lines[nb][-1] != ';':
+                if indent_levels[-1] == outer_indent and new_lines[nb][-1] != ';':
                     new_lines[nb] += ';'
 
 

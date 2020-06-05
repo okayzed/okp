@@ -99,6 +99,7 @@ function basic_tests() {
   run_test tests/while_read2.cpy
   run_test tests/input_keyword.cpy
   run_test tests/knowns.cpy
+  run_test tests/namespace.cpy
 }
 
 function run_test_to_fail() {

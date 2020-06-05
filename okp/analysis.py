@@ -106,9 +106,10 @@ def file_contains_main(lines):
         line = lines[i]
         if is_struct(line) or is_class(line):
             until = extract_until_close(lines, i)
-            ex = lines[i:until]
-            i = until
-            continue
+            if until:
+                i = until
+                continue
+
 
         if re.search("main(.*) {", line):
             return True
