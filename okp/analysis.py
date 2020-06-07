@@ -192,7 +192,8 @@ def guess_required_files(lines):
         "<deque>" : [ "deque" ],
         "<map>" : ["map"],
         "<unordered_map>" : ["unordered_map"],
-        "<cstdio>" : ["printf", "scanf"]
+        "<cstdio>" : ["printf", "scanf"],
+        "<memory>" : ["shared_ptr", "unique_ptr", "weak_ptr"]
     }
 
     DEFINE_KEYWORDS = {
