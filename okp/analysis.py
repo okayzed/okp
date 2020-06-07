@@ -153,13 +153,6 @@ def gather_includes(file, includes, base_dir=None):
             else:
                 gather_includes(include, includes, base_dir)
 
-        if cline.startswith("import"):
-            tokens = cline.split()
-            include = tokens[1]
-            fname = "%s.cpy" % include
-
-            gather_includes(fname, includes, base_dir)
-
     return includes
 
 def gather_files(files):

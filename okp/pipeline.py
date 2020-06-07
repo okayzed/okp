@@ -9,7 +9,6 @@ def pipeline(lines, base_dir=None):
     lines = structure.join_backslash_lines(lines)
     lines = structure.add_preceding_ignore_chars(lines)
 
-    lines = keywords.replace_imports(lines)
     lines = keywords.replace_raw(lines, base_dir or os.getcwd())
     lines = keywords.replace_tabs(lines)
     lines = keywords.replace_pass(lines)
