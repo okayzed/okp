@@ -197,7 +197,7 @@ def process_files(tmp_dir, args):
             util.verbose("processing", arg)
             if arg.endswith(".cpy") or arg.endswith(".okp"):
                 process_cpy_file(args, tmp_dir, arg, use_headers)
-            if arg.endswith(".cpp"):
+            if arg.endswith(".cpp") or arg.endswith(".c"):
                 process_cpp_file(args, tmp_dir, arg)
             if arg.endswith(".h"):
                 process_h_file(tmp_dir, arg)
@@ -222,6 +222,8 @@ def compile_files(tmp_dir, args):
                 ofiles.append(compile_cpy_file(tmp_dir, arg))
             if arg.endswith(".cpp"):
                 ofiles.append(compile_cpp_file(tmp_dir, arg))
+            if arg.endswith(".c"):
+                ofiles.append(compile_c_file(tmp_dir, arg))
 
 
     if not args.print_ and more_than_stdin and not args.noexe:

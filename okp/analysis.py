@@ -119,7 +119,8 @@ def file_contains_main(lines):
     return False
 
 def gather_includes(file, includes, base_dir=None):
-    if file in includes:
+    file_path = os.path.join(base_dir or '', file)
+    if file_path in includes:
         return
 
     dirname = os.path.dirname(file)
@@ -131,8 +132,7 @@ def gather_includes(file, includes, base_dir=None):
         base_dir = os.path.join(base_dir, dirname)
 
     file = os.path.join(base_dir, fname)
-    includes[file] = True
-
+    includes[file_path] = True
 
     with open(file) as f:
         lines = f.readlines()
@@ -166,9 +166,7 @@ def gather_files(files):
         if not os.path.exists(file):
             continue
         file_dir, file = os.path.split(file)
-        if file_dir:
-            os.chdir(file_dir)
-        gather_includes(file, ret)
+        gather_includes(file, ret,file_dir)
 
     os.chdir(original_dir)
     return list(ret.keys())

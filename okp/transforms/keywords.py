@@ -68,6 +68,8 @@ def replace_self(lines):
     for line in lines:
         if line.find("self.") != -1:
             line = line.replace("self.", "this->")
+        if line.find("self") != -1:
+            line = line.replace("self", "this")
 
         new_lines.append(line)
 
