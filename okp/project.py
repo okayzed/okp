@@ -60,7 +60,7 @@ def process_h_file(tmp_dir, arg):
         pass
 
     with open(arg) as f:
-        lines = f.readlines()
+        lines = [l.rstrip() for l in f.readlines()]
 
     with open(fname, "w") as f:
         f.write("\n".join(lines))

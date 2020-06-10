@@ -131,10 +131,15 @@ def gather_includes(file, includes, base_dir=None):
     else:
         base_dir = os.path.join(base_dir, dirname)
 
+    if not os.path.exists(file_path):
+        print("missing file:", file)
+        return
+
     file = os.path.join(base_dir, fname)
     includes[file_path] = True
 
-    with open(file) as f:
+
+    with open(file_path) as f:
         lines = f.readlines()
 
     for line in lines:
