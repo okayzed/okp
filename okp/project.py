@@ -60,10 +60,10 @@ def process_h_file(tmp_dir, arg):
         pass
 
     with open(arg) as f:
-        lines = [l.rstrip() for l in f.readlines()]
+        lines = f.readlines()
 
     with open(fname, "w") as f:
-        f.write("\n".join(lines))
+        f.write("".join(lines))
 
     return
 
@@ -137,7 +137,7 @@ def process_cpp_file(args, tmp_dir, arg):
         lines = f.readlines()
 
     with open(fname, "w") as f:
-        f.write("\n".join(lines))
+        f.write("".join(lines))
 
     return ofname
 

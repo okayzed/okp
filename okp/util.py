@@ -151,6 +151,9 @@ def is_struct(line):
 def is_class(line):
     return line.strip().startswith("class ")
 
+def is_struct(line):
+    return line.strip().startswith("struct ")
+
 def line_is_include(line):
     return line.startswith("#include")
 

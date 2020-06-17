@@ -145,6 +145,8 @@ def get_class(line):
     tokens = smart_split(line, ' ')
     if tokens[0] == "class":
         return tokens[1].rstrip(':')
+    if tokens[0] == "struct":
+        return tokens[1].rstrip(':')
 
     return ""
 def add_auto_declarations(lines, scopings):
@@ -160,7 +162,7 @@ def add_auto_declarations(lines, scopings):
         scope = scopings[i]
         indent = get_indent(line)
 
-        if is_class(line):
+        if is_class(line) or is_struct(line):
             in_class = get_class(line)
 
         skip_line = False
