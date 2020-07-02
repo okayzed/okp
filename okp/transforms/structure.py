@@ -150,7 +150,26 @@ def join_backslash_lines(lines):
 
     return new_lines
 
+def join_open_bracketed_lines(lines):
+    s = []
+    cur_line = []
+    new_lines = []
+    for line in lines:
+        cur_line.append(line)
+        for c in line:
+            if c == '(':
+                s.append(')')
 
+            if c == ')':
+                if not s or s[-1] != c:
+                    raise "Mismatched bracket"
+                s.pop()
+        if not s:
+            new_lines.append(' '.join(cur_line))
+            cur_line = []
+    new_lines.append(' '.join(cur_line))
+
+    return new_lines
 
 def add_preceding_ignore_chars(lines):
     new_lines = []

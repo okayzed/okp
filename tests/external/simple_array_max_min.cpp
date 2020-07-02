@@ -42,3 +42,4 @@ int main() {
     cout << "Biggest number:" << ' ' << max << endl;
     cout << "Smallest number:" << ' ' << min << endl; };
 
+
