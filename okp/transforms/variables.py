@@ -91,10 +91,11 @@ def make_declarations(line, scope):
                 di += 1
 
         elif len(args[0].split()) == 1:
-            arg = args[0].strip()
-            carg = no_punctuation(args[0])
-            if not var_access(arg) and not carg in scope:
-                line = "%sauto %s = %s" % (' ' * indent, arg, rhs)
+            if args[0].find(".") == -1:
+                arg = args[0].strip()
+                carg = no_punctuation(args[0])
+                if not var_access(arg) and not carg in scope:
+                    line = "%sauto %s = %s" % (' ' * indent, arg, rhs)
 
     DESTRUCTURE_INDEX = di
     return line
@@ -221,14 +222,20 @@ def add_auto_declarations(lines, scopings):
                 elif before_p.strip() == "~%s" % in_class.strip():
                     class_func = True
 
-                if before_p == "main":
-                    if len(args) == 1:
-                        line = "%sint %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
-                elif len(args) == 1 and not class_func:
-                    before_p = before_p.strip()
-                    line = "%sauto %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
-                else:
-                    line = "%s(%s)%s" % (before_p, ", ".join(new_params), after_p)
+                lambda_func = False
+                if line.find('](') != -1:
+                    lambda_func = True
+
+                if not lambda_func:
+
+                    if before_p == "main":
+                        if len(args) == 1:
+                            line = "%sint %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
+                    elif len(args) == 1 and not class_func:
+                        before_p = before_p.strip()
+                        line = "%sauto %s(%s)%s" % (' ' * indent, before_p, ", ".join(new_params), after_p)
+                    else:
+                        line = "%s(%s)%s" % (before_p, ", ".join(new_params), after_p)
 
 
         # special for loop declarations

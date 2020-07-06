@@ -159,12 +159,15 @@ def join_open_bracketed_lines(lines):
         for c in line:
             if c == '(':
                 s.append(')')
+            if c == '{':
+                s.append('}')
 
-            if c == ')':
+            if c == ')' or c == '}':
                 if not s or s[-1] != c:
-                    raise "Mismatched bracket"
+                    print("Mismatched bracket", c, "ON", cur_line)
                 s.pop()
-        if not s:
+
+        if not s or s[-1] == '}':
             new_lines.append(' '.join(cur_line))
             cur_line = []
     new_lines.append(' '.join(cur_line))
