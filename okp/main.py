@@ -45,8 +45,6 @@ def main():
 
     if args.disable_implication:
         transforms.variables.DECLARE_VARIABLES = False
-    if args.disable_read:
-        config.READ_KEYWORD = False
 
     config.VERBOSE = args.verbose
 
