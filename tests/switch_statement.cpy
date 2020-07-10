@@ -3,7 +3,7 @@ using namespace std;
 
 def main():
     int i
-    read i
+    raw_input i
 
     switch i:
         case 1:

@@ -34,7 +34,7 @@ def main():
     print "foobar"
 
     string s
-    read s // strip comments
+    raw_input s // strip comments
     print "READ", s
 
     MyClass mc

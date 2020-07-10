@@ -34,11 +34,11 @@ def bfs(int node, vector<vector<int>> edges):
 
 def main():
     int n, a, b
-    read n
+    raw_input n
 
     vector<vector<int>> edges(n+1);
     for i 1 n: // [1 n)
-        read a, b
+        raw_input a, b
         edges[a].push_back(b)
         edges[b].push_back(a)
 

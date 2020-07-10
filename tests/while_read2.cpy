@@ -1,4 +1,4 @@
 def main():
   string s
-  while read s:
+  while raw_input s:
     print s
