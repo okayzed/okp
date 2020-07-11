@@ -164,7 +164,7 @@ def join_open_bracketed_lines(lines):
 
             if c == ')' or c == '}':
                 if not s or s[-1] != c:
-                    print("Mismatched bracket", c, "ON", cur_line)
+                    debug("Mismatched bracket", c, "ON", cur_line)
                 s.pop()
 
         if not s or s[-1] == '}':

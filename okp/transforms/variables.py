@@ -19,10 +19,12 @@ DESTRUCTURE_INDEX = 0
 DECLARE_VARIABLES = True
 
 # this function splits equals, skipping over '==' and turning '= ' into ''
+# we also do not consider equals that are inside brackets to be meaningful
 def split_equals(line):
     tokens = []
     prev = []
     i = 0
+    brackets = 0
     while i < len(line):
         c = line[i]
         peeked = ''
@@ -34,12 +36,16 @@ def split_equals(line):
                 prev.append(c)
                 prev.append(peeked)
                 i += 1
-            else:
+            elif not brackets:
                 if prev:
                     tokens.append(''.join(prev))
                 prev = []
 
         else:
+            if c == '[':
+                brackets += 1
+            elif c == ']':
+                brackets -= 1
             prev.append(c)
         i += 1
 
@@ -94,7 +100,7 @@ def make_declarations(line, scope):
                 di += 1
 
         elif len(args[0].split()) == 1:
-            if args[0].find(".") == -1:
+            if args[0].find(".") == -1 and args[0].find(":") == -1:
                 arg = args[0].strip()
                 carg = no_punctuation(args[0])
                 if not var_access(arg) and not carg in scope:

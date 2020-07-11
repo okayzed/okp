@@ -102,6 +102,8 @@ function basic_tests() {
   run_test tests/knowns.cpy
   run_test tests/namespace.cpy
   run_test tests/open_paren_lines.cpy
+  run_test tests/lambda.cpy
+  run_test tests/static_decl.cpy
 }
 
 function run_test_to_fail() {
