@@ -88,6 +88,7 @@ function basic_tests() {
   run_test tests/known_vars.cpy
   run_test tests/demo_program.cpy
   run_test tests/class_constructors.cpy
+  run_test tests/nested_class.cpy
 	run_test tests/switch_statement.cpy
   run_test tests/long_conditionals.cpy # aka joined lines
   run_test tests/function_with_comments_after.cpy

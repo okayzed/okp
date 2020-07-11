@@ -1,4 +1,7 @@
+from __future__ import print_function
+
 from ..util import *
+import sys
 
 def var_access(arg):
     return dot_access(arg) or array_access(arg) or ptr_access(arg)
@@ -155,7 +158,7 @@ def add_auto_declarations(lines, scopings):
     class_start = 0
 
     keywords = ["if", "do ", "while", "else", "class", "struct", "typedef"]
-    in_class = ""
+    in_class = []
     for i, line in enumerate(lines):
         if ignore_line(line, new_lines):
             continue
@@ -163,8 +166,13 @@ def add_auto_declarations(lines, scopings):
         scope = scopings[i]
         indent = get_indent(line)
 
+        if sline != "":
+            while in_class and in_class[-1][1] >= indent:
+                in_class.pop()
+
         if is_class(line) or is_struct(line):
-            in_class = get_class(line)
+            in_class.append((get_class(line), indent))
+
 
         skip_line = False
         for k in keywords:
@@ -217,10 +225,12 @@ def add_auto_declarations(lines, scopings):
                 args = before_p.split()
                 class_func = False
 
-                if before_p.strip() == in_class.strip():
-                    class_func = True
-                elif before_p.strip() == "~%s" % in_class.strip():
-                    class_func = True
+                if in_class:
+                    class_name, _ = in_class[-1]
+                    if before_p.strip() == class_name.strip():
+                        class_func = True
+                    elif before_p.strip() == "~%s" % class_name.strip():
+                        class_func = True
 
                 lambda_func = False
                 if line.find('](') != -1:
