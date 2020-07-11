@@ -157,7 +157,7 @@ def add_auto_declarations(lines, scopings):
     new_lines = []
     class_start = 0
 
-    keywords = ["if", "do ", "while", "else", "class", "struct", "typedef"]
+    keywords = ["if", "do ", "while", "else", "class", "struct", "typedef", "try", "catch"]
     in_class = []
     for i, line in enumerate(lines):
         if ignore_line(line, new_lines):
