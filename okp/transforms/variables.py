@@ -206,6 +206,10 @@ def add_auto_declarations(lines, scopings):
             pr = line.find("(")
             if pr > 0:
                 lp = line.find(")")
+                if lp == -1:
+                    new_lines.append(line)
+                    continue
+
                 params = smart_split(line[pr+1:lp], ",")
 
                 before_p = line[:pr]

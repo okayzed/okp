@@ -104,6 +104,7 @@ function basic_tests() {
   run_test tests/open_paren_lines.cpy
   run_test tests/lambda.cpy
   run_test tests/static_decl.cpy
+  run_test tests/bug_double_equal.cpy
 }
 
 function run_test_to_fail() {
