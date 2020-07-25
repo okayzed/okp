@@ -8,5 +8,11 @@ vector<App> APPS = {\
   {.bin = "bar"},\
   {.bin = "baz"} };
 
+vector<App> BAPPS = vector<App>(%{
+  {.bin = "foo"},
+  {.bin = "bar"},
+  {.bin = "baz"}
+})
+
 def main():
   pass

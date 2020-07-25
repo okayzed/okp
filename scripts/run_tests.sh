@@ -1,5 +1,8 @@
 tests_to_run=$*
 
+PASSED=0
+FAILED=0
+
 function test_output() {
 
   exe_name=${1}
@@ -23,12 +26,15 @@ function test_output() {
     if [[ $? != 0 ]]; then
       echo "FAILED: ${1}"
       cat ${diff_name}
-      return
+      FAILED=$(($FAILED+1))
+      return 1
+
     fi
     prefix="+"
   fi
 
   echo "${prefix}PASSED: ${1}"
+  PASSED=$(($PASSED+1))
 
 }
 
@@ -49,6 +55,7 @@ function run_test() {
   if [[ $? != 0 ]]; then
     cat -n "${name}"
     echo "FAILED: ${1}"
+    FAILED=$(($FAILED+1))
   else
     test_output ${exe_name} ${in_name} ${out_name} ${tmp_name} ${diff_name}
   fi
@@ -105,6 +112,7 @@ function basic_tests() {
   run_test tests/lambda.cpy
   run_test tests/static_decl.cpy
   run_test tests/bug_double_equal.cpy
+  run_test tests/percent_joiner.cpy
 }
 
 function run_test_to_fail() {
@@ -168,3 +176,10 @@ failing_tests
 project_tests
 external_tests
 misc_tests
+
+echo "TOTAL PASSED: ${PASSED}"
+echo "TOTAL FAILED: ${FAILED}"
+
+if [[ ${FAILED} != 0 ]]; then
+  exit 1
+fi

@@ -150,6 +150,47 @@ def join_backslash_lines(lines):
 
     return new_lines
 
+def join_percent_bracketed_lines(lines):
+    content = "\n".join(lines)
+    out = []
+    stack = []
+    cur = []
+    # n is next
+    i = 0
+    while i < len(content):
+        c = content[i]
+        i += 1
+        if c == "%":
+            if i < len(content) and content[i] == "{":
+                stack.append("{")
+                cur = [ "{" ]
+                i += 1
+                continue
+            else:
+                out.append(c)
+        elif stack:
+            if c == "{":
+                stack.append(c)
+            elif c == "}":
+                stack.pop()
+                if not stack:
+                    out.extend(cur)
+                    out.append("}")
+                    cur = []
+
+            if c != "\n":
+                cur.append(c)
+            else:
+                cur.append(" ")
+        else:
+            out.append(c)
+
+    if stack:
+        out.extend(cur)
+
+    r = "".join(out).split('\n')
+    return r
+
 def join_open_bracketed_lines(lines):
     s = []
     cur_line = []
