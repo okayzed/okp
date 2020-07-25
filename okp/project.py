@@ -13,6 +13,7 @@ from . import pipeline
 from . import analysis
 from . import util
 from . import config
+from . import single_header
 
 CXX = os.environ.get("CXX", "g++")
 
@@ -165,8 +166,6 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         pass
 
     if (args.print_):
-        print("// %s" % arg)
-        print_lines(lines)
         return
 
     if as_header:
@@ -225,8 +224,11 @@ def compile_files(tmp_dir, args):
             if arg.endswith(".c"):
                 ofiles.append(compile_c_file(tmp_dir, arg))
 
+    if args.single_header:
+        os.chdir(tmp_dir)
+        single_header.compile(files, outname)
 
-    if not args.print_ and more_than_stdin and not args.noexe:
+    if not args.single_header and not args.print_ and more_than_stdin and not args.noexe:
         os.chdir(tmp_dir)
         util.verbose("generating", outname)
         cmd_args = ofiles + [ "-o", outname ] + COMPILE_FLAGS

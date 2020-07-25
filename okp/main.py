@@ -33,6 +33,8 @@ def get_parser():
         help="enable rof loop shorthand")
     parser.add_argument('-t', '--transpile', dest='transpile', action="store_true",
         help="don't compile code, only transpile")
+    parser.add_argument('-sh', '--single-header', dest='single_header', action="store_true",
+        help="transpile into a single header file")
 
     return parser
 
