@@ -32,7 +32,7 @@ i saw vrsperanza's CPY and the light hit me: a language that looks like python
 but compiles like C. i decided i want to write programs in it. okp is my
 attempt to write a pre-processor like CPY but in python.
 
-## usage
+## [usage](USAGE.md)
 
 ```
 # print c++ source
@@ -85,7 +85,7 @@ Some original features of okp to make it look more pythonic are:
 * `def` keyword before function names
 * `block` keyword for creating blocks
 * `pass` keyword for no-ops
-* `print` and `read` keywords
+* `print` and `raw_input` keywords
 * `self` keyword
 * lines that start with IGNORE_CHAR are not pre-processed
 * triple backticks for multi-line escapes

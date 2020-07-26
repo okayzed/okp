@@ -34,10 +34,12 @@ optional arguments:
   -for, --enable-for    enable for loop shorthand
   -rof, --enable-rof    enable rof loop shorthand
   -t, --transpile       don't compile code, only transpile
+  -sh, --single-header  transpile into a single header file
 ~~~~~
 
 **NOTE**: any lines that start with `$` will be ignored by the okp processor
-and treated as raw cpp.
+and treated as raw c++. Surrounding lines of code with triple backticks will
+also treat those lines as raw c++.
 
 ## Bugs
 
@@ -111,6 +113,61 @@ Sometimes you might want to mix .cpy and .cpp code in the same file. There are
 two ways of doing this: one is to prepend `$` to the beginning of a line of cpp
 code, the other is to surround a block of cpp code with triple backticks
 
+### Joining multi-line statements
+
+okp uses the backslash character at the end of lines to indicate that two lines
+should be joined. okp will automatically join lines inside parentheses but will
+not join lines inside curly braces.
+
+
+~~~~~~
+a = foo(
+  1,
+  2,
+  3
+)
+
+becomes
+
+a = foo(1,2,3);
+~~~~~~~
+
+but
+
+~~~~~~~
+a = foo({
+  1,
+  2,
+  3
+})
+~~~~~~~
+
+will not be joined (and lead to an okp induced syntax error) because the lines
+are inside an open bracket.
+
+to join lines inside curly braces, a % sign can be added to the opening brace
+and all lines up to the corresponding closing brace will be joined into one
+line.
+
+~~~~~~
+a = { \
+  .foo=1, \
+  .bar=2, \
+  .baz=3, \
+}
+
+a = %{
+  .foo=1,
+  .bar=2,
+  .baz=3
+}
+
+both become
+
+a = { .foo=1, .bar=2, .baz=3 }
+~~~~~~
+
+
 ## Keywords
 
 ### block (okp extension)
@@ -140,10 +197,6 @@ When the -for is used, for loop shortening is enabled. `for x 0 10` turns into
 When the -rof flag is set, reverse for loop shortening is turned on: `rof a b
 c` turns into `for x = a; x > b; x -= c`. Like the `for` shoretening syntax,
 The `c` parameter is optional
-
-### import (okp extension)
-
-`import foo` turns into `#include foo.h`.
 
 ### io shorthand
 
