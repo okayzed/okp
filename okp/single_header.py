@@ -105,7 +105,8 @@ def n2_top_sort(graph):
                 batch.add(f)
         for f in graph.keys():
             graph[f] -= batch
-        ret.extend(list(batch))
+
+        ret.extend(list(sorted(batch)))
         for f in batch:
             del graph[f]
         if not batch and graph:
