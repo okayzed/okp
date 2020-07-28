@@ -61,6 +61,31 @@ function run_test() {
   fi
 }
 
+function run_test_to_fail() {
+  if ! [[ ${1} =~ ${tests_to_run} ]]; then
+    return
+  fi
+  name=${1/.cpy/.cpp}
+  exe_name=${name/.cpp/.exe}
+  in_name=${name/.cpp/.in}
+  out_name=${name/.cpp/.out}
+  tmp_name=${name/.cpp/.tmp}
+  diff_name=${name/.cpp/.diff}
+  FLAGS="--enable-for --enable-rof"
+
+  python3 -m okp.main - $FLAGS < ${1} > "${name}"
+  g++ -x c++ - -o ${exe_name} < "${name}" 2> "${out_name}"
+  if [[ $? != 0 ]]; then
+    PASSED=$(($PASSED+1))
+    echo "xPASSED: ${1}"
+  else
+    FAILED=$(($FAILED+1))
+    echo "FAILED: was able to compile ${1}"
+  fi
+
+
+}
+
 function run_project_test() {
   if ! [[ ${1} =~ ${tests_to_run} ]]; then
     return
@@ -114,37 +139,7 @@ function basic_tests() {
   run_test tests/bug_double_equal.cpy
   run_test tests/percent_joiner.cpy
   run_test tests/walrus_operator.cpy
-}
-
-function run_test_to_fail() {
-  if ! [[ ${1} =~ ${tests_to_run} ]]; then
-    return
-  fi
-  name=${1/.cpy/.cpp}
-  exe_name=${name/.cpp/.exe}
-  in_name=${name/.cpp/.in}
-  out_name=${name/.cpp/.out}
-  tmp_name=${name/.cpp/.tmp}
-  diff_name=${name/.cpp/.diff}
-  FLAGS="--enable-for --enable-rof"
-
-  python3 -m okp.main - $FLAGS < ${1} > "${name}"
-  g++ -x c++ - -o ${exe_name} < "${name}" 2> "${out_name}"
-  if [[ $? != 0 ]]; then
-    PASSED=$(($PASSED+1))
-    echo "xPASSED: ${1}"
-  else
-    FAILED=$(($FAILED+1))
-    echo "FAILED: was able to compile ${1}"
-  fi
-
-
-}
-
-function failing_tests() {
-  run_test_to_fail tests/failing/scoping_levels.cpy
-  run_test_to_fail tests/failing/walrus_operator_assign_twice.cpy
-  run_test_to_fail tests/failing/walrus_operator_mixed_types.cpy
+  run_test tests/ifstream.cpy
 }
 
 function project_tests() {
@@ -175,6 +170,13 @@ function misc_tests() {
   run_test tests/external/tree_diameter2.cpy
   run_test tests/external/cocktail_sort.cpy
 }
+
+function failing_tests() {
+  run_test_to_fail tests/failing/scoping_levels.cpy
+  run_test_to_fail tests/failing/walrus_operator_assign_twice.cpy
+  run_test_to_fail tests/failing/walrus_operator_mixed_types.cpy
+}
+
 
 basic_tests
 failing_tests
