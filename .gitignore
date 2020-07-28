@@ -4,6 +4,7 @@
 *.diff
 *.out
 *.tmp
+*.cpp
 build/
 dist/
 tests/projects/*/compile

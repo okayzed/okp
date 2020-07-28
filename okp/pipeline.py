@@ -25,6 +25,8 @@ def pipeline(lines, base_dir=None):
 
     # scopings is a per line scope of seen variables
     scopings = analysis.read_scopings(lines)
+    lines = variables.replace_walrus_operator(lines, scopings)
+    scopings = analysis.read_scopings(lines)
     lines = variables.add_auto_declarations(lines, scopings)
     lines = variables.add_destructuring(lines, scopings)
 

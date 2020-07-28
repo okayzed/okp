@@ -54,7 +54,7 @@ def split_equals(line):
     return tokens
 
 
-def make_declarations(line, scope):
+def make_destructuring_declarations(line, scope):
     global DESTRUCTURE_INDEX
 
     di = DESTRUCTURE_INDEX
@@ -144,7 +144,7 @@ def add_destructuring(lines, scopings):
 
         elif line.find('=') != -1 and not sline.endswith(':'):
             if DECLARE_VARIABLES:
-                line = make_declarations(line, scope)
+                line = make_destructuring_declarations(line, scope)
 
 
         new_lines.append(line)
@@ -157,8 +157,8 @@ def get_class(line):
         return tokens[1].rstrip(':')
     if tokens[0] == "struct":
         return tokens[1].rstrip(':')
-
     return ""
+
 def add_auto_declarations(lines, scopings):
     new_lines = []
     class_start = 0
@@ -308,3 +308,26 @@ def add_auto_declarations(lines, scopings):
         new_lines.append(line)
     return new_lines
 
+
+def replace_walrus_operator(lines, scopings):
+    newlines = []
+    for line in lines:
+        tokens = smart_split(line, [" "])
+        indent = get_indent(line)
+        walrus_toks = [t for t in tokens if ":=" in t and not t.startswith('"')]
+        if walrus_toks:
+            # for destructuring tuples, we let make_destructuring_declarations() handle
+            # the auto declaration
+            if "," in line and line.index(",") < line.index(":="):
+                newlines.append(line.replace(":=","="))
+            else:
+                new_toks = [indent*" "+"auto"]
+                for tok in tokens:
+                    if ":=" in tok and (not tok.startswith('"')):
+                        new_toks.append(tok.replace(":=","="))
+                    else:
+                        new_toks.append(tok)
+                newlines.append(" ".join(new_toks))
+        else:
+            newlines.append(line)
+    return newlines

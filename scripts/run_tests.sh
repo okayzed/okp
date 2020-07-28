@@ -50,7 +50,7 @@ function run_test() {
   diff_name=${name/.cpp/.diff}
   FLAGS="--enable-for --enable-rof"
 
-  python -m okp.main - $FLAGS < ${1} > "${name}"
+  python3 -m okp.main - $FLAGS < ${1} > "${name}"
   g++ -x c++ - -o ${exe_name} < "${name}"
   if [[ $? != 0 ]]; then
     cat -n "${name}"
@@ -77,7 +77,7 @@ function run_project_test() {
   tmp_name="${name}/tmp"
   diff_name="${name}/diff"
 
-  python -m okp.main -for -rof ${cpys} ${hs} ${cpps} -o ${exe_name} 2> ${name}/compile
+  python3 -m okp.main -for -rof ${cpys} ${hs} ${cpps} -o ${exe_name} 2> ${name}/compile
   test_output ${exe_name} ${in_name} ${out_name} ${tmp_name} ${diff_name}
 }
 
@@ -113,6 +113,7 @@ function basic_tests() {
   run_test tests/static_decl.cpy
   run_test tests/bug_double_equal.cpy
   run_test tests/percent_joiner.cpy
+  run_test tests/walrus_operator.cpy
 }
 
 function run_test_to_fail() {
@@ -127,11 +128,13 @@ function run_test_to_fail() {
   diff_name=${name/.cpp/.diff}
   FLAGS="--enable-for --enable-rof"
 
-  python -m okp.main - $FLAGS < ${1} > "${name}"
+  python3 -m okp.main - $FLAGS < ${1} > "${name}"
   g++ -x c++ - -o ${exe_name} < "${name}" 2> "${out_name}"
   if [[ $? != 0 ]]; then
+    PASSED=$(($PASSED+1))
     echo "xPASSED: ${1}"
   else
+    FAILED=$(($FAILED+1))
     echo "FAILED: was able to compile ${1}"
   fi
 
@@ -140,6 +143,8 @@ function run_test_to_fail() {
 
 function failing_tests() {
   run_test_to_fail tests/failing/scoping_levels.cpy
+  run_test_to_fail tests/failing/walrus_operator_assign_twice.cpy
+  run_test_to_fail tests/failing/walrus_operator_mixed_types.cpy
 }
 
 function project_tests() {
