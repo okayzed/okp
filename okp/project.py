@@ -166,6 +166,8 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
         pass
 
     if (args.print_):
+        print("// %s" % arg)
+        print_lines(lines)
         return
 
     if as_header:

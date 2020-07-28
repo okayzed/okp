@@ -24,11 +24,8 @@ def pipeline(lines, base_dir=None):
     lines = io.replace_io_keywords(lines)
 
     # scopings is a per line scope of seen variables
-    scopings = analysis.read_scopings(lines)
-    lines = variables.replace_walrus_operator(lines, scopings)
-    scopings = analysis.read_scopings(lines)
-    lines = variables.add_auto_declarations(lines, scopings)
-    lines = variables.add_destructuring(lines, scopings)
+    lines = variables.replace_walrus_operator(lines)
+    lines = variables.add_auto_declarations(lines)
 
     # known keyword replacement has to happen after auto declarations
     lines = keywords.replace_knowns(lines)
