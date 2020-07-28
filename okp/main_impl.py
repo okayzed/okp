@@ -46,7 +46,8 @@ def main():
         return
 
     if args.disable_implication:
-        transforms.variables.DECLARE_VARIABLES = False
+        from .transforms import variables
+        variables.DECLARE_VARIABLES = False
 
     config.VERBOSE = args.verbose
 

@@ -64,6 +64,9 @@ def get_class(line):
 
 
 def handle_unscoped_variables(line, scope):
+    if not DECLARE_VARIABLES:
+        return line
+
     indent = get_indent(line)
 
     # we need to split on single equals but not double equals
@@ -302,9 +305,8 @@ def add_auto_declarations(lines):
         if line.strip().startswith('return'):
             line = handle_return_tuples(line, scope)
         if line.find('=') != -1 and not sline.endswith(':'):
-            if DECLARE_VARIABLES:
-                line = handle_destructuring_decls(line, scope)
-                line = handle_unscoped_variables(line, scope)
+            line = handle_destructuring_decls(line, scope)
+            line = handle_unscoped_variables(line, scope)
 
         new_lines.append(line)
     return new_lines
