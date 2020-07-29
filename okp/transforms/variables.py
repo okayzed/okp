@@ -161,11 +161,20 @@ def handle_for_loop_auto(line, scope):
             args[0] = args[0][len('for '):]
 
         args[0] = strip_outer_parens(args[0])
+
+        # if our args are glommed together because of for loop bracketing, we
+        # try to unroll it using smart_split on the only item in the array
+        if len(args) == 1:
+            args = smart_split(args[0], ';')
+
         stmts = smart_split(args[0], ',')
 
         arg0 = []
         for j, s in enumerate(stmts):
-            toks = s.split('=')
+            toks = s.split(':=')
+            if len(toks) == 1:
+                toks = s.split('=')
+
             if len(toks) == 1:
                 arg0.append(s)
                 continue
@@ -175,9 +184,11 @@ def handle_for_loop_auto(line, scope):
 
             arg = lhs.strip()
 
-            add_auto = True
+            add_auto = DECLARE_VARIABLES
             if j != 0:
                 add_auto = False
+            elif s.find(":") != -1:
+                add_auto = True
             elif var_access(arg):
                 add_auto = False
             elif arg in scope:
@@ -315,6 +326,11 @@ def add_auto_declarations(lines):
 def replace_walrus_operator(lines):
     newlines = []
     for line in lines:
+        sline = line.strip()
+        if sline.startswith("for ") or sline.startswith("for("):
+            newlines.append(line)
+            continue
+
         tokens = smart_split(line, [" "])
         indent = get_indent(line)
         walrus_toks = [t for t in tokens if ":=" in t and not t.startswith('"')]

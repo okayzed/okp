@@ -13,3 +13,7 @@ def main():
     z := "adsf"
     z = ":="
     y := " := "
+
+    // TODO: get this working
+    for i := 0; i < 10; i++:
+      print i
