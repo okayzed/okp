@@ -140,6 +140,7 @@ function basic_tests() {
   run_test tests/percent_joiner.cpy
   run_test tests/walrus_operator.cpy
   run_test tests/ifstream.cpy
+  run_test tests/for_loops.cpy
 }
 
 function project_tests() {
