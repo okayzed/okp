@@ -7,9 +7,13 @@ import os
 
 def pipeline(lines, base_dir=None):
     lines = comments.skip_comments(lines)
+
+    # CONVERTED TO USING LINES() (CONVERT ABOVE TOO)
     lines = structure.join_backslash_lines(lines)
     lines = structure.join_open_bracketed_lines(lines)
     lines = structure.join_percent_bracketed_lines(lines)
+    # CONVERTED TO USING LINES() (CONVERT BELOW TOO)
+
     lines = structure.add_preceding_ignore_chars(lines)
 
     lines = keywords.replace_raw(lines, base_dir or os.getcwd())

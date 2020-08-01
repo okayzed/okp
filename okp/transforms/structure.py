@@ -127,12 +127,11 @@ def add_curly_braces(lines):
     return new_lines
 
 def join_backslash_lines(lines):
-    new_lines = ['']
+    lines = Lines(lines)
 
-    i = 0
     full_line = []
-    while i < len(lines):
-        line = lines[i].rstrip()
+    for line in lines:
+        line = line.rstrip()
         if full_line:
             line = line.strip()
         if line.endswith('\\'):
@@ -143,13 +142,14 @@ def join_backslash_lines(lines):
                 full_line.append(line.strip())
             else:
                 full_line.append(line)
-            new_lines.append(' '.join(full_line))
+            lines.add_line(' '.join(full_line))
             full_line = []
 
-        i += 1
 
-    return new_lines
+    return list(lines.get())
 
+# TODO: joining percent bracketed lines is rough on the Lines object
+# need to re-write properly
 def join_percent_bracketed_lines(lines):
     content = "\n".join(lines)
     out = []
@@ -157,6 +157,8 @@ def join_percent_bracketed_lines(lines):
     cur = []
     # n is next
     i = 0
+    lines = Lines(lines)
+
     while i < len(content):
         c = content[i]
         i += 1
@@ -182,16 +184,22 @@ def join_percent_bracketed_lines(lines):
                 cur.append(c)
             else:
                 cur.append(" ")
+        elif c == "\n":
+            lines.add_line("".join(out))
+            lines.incr()
+            out = []
         else:
             out.append(c)
 
-    if stack:
-        out.extend(cur)
-
-    r = "".join(out).split('\n')
-    return r
+    if out:
+        lines.add_line("".join(out))
+  
+    lines.turnover()
+    ll = list(lines)
+    return list(ll)
 
 def join_open_bracketed_lines(lines):
+    lines = Lines(lines)
     s = []
     cur_line = []
     new_lines = []
@@ -209,11 +217,11 @@ def join_open_bracketed_lines(lines):
                 s.pop()
 
         if not s or s[-1] == '}':
-            new_lines.append(' '.join(cur_line))
+            lines.add_line(' '.join(cur_line))
             cur_line = []
-    new_lines.append(' '.join(cur_line))
+    lines.add_line(' '.join(cur_line))
 
-    return new_lines
+    return lines.get()
 
 def add_preceding_ignore_chars(lines):
     new_lines = []

@@ -196,6 +196,62 @@ def extract_until_close(lines, i):
         i += 1
         if count == 0:
             return i
+
+class Lines:
+    def __init__(self, lines):
+        self.__lines = []
+        self.__line = 0
+        self.__new_lines = []
+        self.__line_nos = []
+        self.__i = 0
+
+        for i, line in enumerate(lines):
+            self.__line_nos.append(i)
+            self.__lines.append(line)
+
+    def add_line(self, new_line):
+        self.__line_nos.append(self.__line)
+        self.__new_lines.append(new_line)
+
+    def incr(self):
+        self.__line += 1
+
+    def turnover(self):
+        self.commit()
+
+        self.__lines = self.__new_lines
+        self.__line = 0
+        self.__new_lines = []
+
+    def commit(self):
+        if self.__new_lines:
+            self.__committed = self.__new_lines
+
+    def get(self):
+        return self.__committed
+
+    def annotated(self):
+        return self.__lines
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        return self.__next__()
+
+    def __next__(self):
+        i = self.__i
+        while i < len(self.__lines):
+            line = str(self.__lines[i])
+            self.__line = self.__line_nos[i]
+            i += 1
+
+            self.__i = i
+            return line
+
+        self.turnover()
+        raise StopIteration
+
 if __name__ == "__main__":
     smart_split("int main(int argc, char **argv)", [' '])
     smart_split('"foo bar baz", int main', [','])
