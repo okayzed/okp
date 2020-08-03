@@ -122,17 +122,19 @@ def add_curly_braces(lines):
             new_lines[nb] += ';';
 
         indent_levels.pop()
-    new_lines.append('')
 
     return new_lines
 
-def join_backslash_lines(lines):
-    new_lines = ['']
+def join_backslash_lines(tlines):
+    new_lines = []
 
     i = 0
     full_line = []
-    while i < len(lines):
-        line = lines[i].rstrip()
+    line_no = None
+    while i < len(tlines):
+        if not line_no:
+            line_no = tlines[i][0]
+        line = tlines[i][1].rstrip()
         if full_line:
             line = line.strip()
         if line.endswith('\\'):
@@ -143,20 +145,25 @@ def join_backslash_lines(lines):
                 full_line.append(line.strip())
             else:
                 full_line.append(line)
-            new_lines.append(' '.join(full_line))
+            new_lines.append((line_no,' '.join(full_line)))
             full_line = []
+            line_no = None
 
         i += 1
 
     return new_lines
 
-def join_percent_bracketed_lines(lines):
-    content = "\n".join(lines)
+def join_percent_bracketed_lines(tlines):
+    line_nos = [line_no for line_no, _ in tlines]
+    new_lines = []
+    content = "\n".join([line for _, line in tlines])
     out = []
     stack = []
     cur = []
     # n is next
     i = 0
+    j = 0
+    orig_line_no = None
     while i < len(content):
         c = content[i]
         i += 1
@@ -180,22 +187,34 @@ def join_percent_bracketed_lines(lines):
 
             if c != "\n":
                 cur.append(c)
-            else:
+            else: # when we are joining inside ${}
                 cur.append(" ")
+                if not orig_line_no:
+                    orig_line_no = line_nos[j]
+                j += 1
+        elif c == "\n": # we finished joining
+            if not orig_line_no:
+                orig_line_no = line_nos[j]
+            j += 1
+            new_lines.append((orig_line_no,"".join(out)))
+            orig_line_no = None
+            out = []
         else:
             out.append(c)
 
-    if stack:
-        out.extend(cur)
+    if out:
+        new_lines.append((line_no[j+1],"".join(out)))
 
-    r = "".join(out).split('\n')
-    return r
+    return new_lines
 
-def join_open_bracketed_lines(lines):
+def join_open_bracketed_lines(tlines):
     s = []
     cur_line = []
-    new_lines = []
-    for line in lines:
+    new_tlines = []
+    orig_line_no = None
+    for line_no, line in tlines:
+        if not orig_line_no:
+            orig_line_no = line_no
         cur_line.append(line)
         for c in line:
             if c == '(':
@@ -209,11 +228,13 @@ def join_open_bracketed_lines(lines):
                 s.pop()
 
         if not s or s[-1] == '}':
-            new_lines.append(' '.join(cur_line))
+            new_tlines.append((orig_line_no,' '.join(cur_line)))
             cur_line = []
-    new_lines.append(' '.join(cur_line))
+            orig_line_no = None
+    # TODO remove this?
+    new_tlines.append((orig_line_no,' '.join(cur_line)))
 
-    return new_lines
+    return new_tlines
 
 def add_preceding_ignore_chars(lines):
     new_lines = []
@@ -222,6 +243,7 @@ def add_preceding_ignore_chars(lines):
     for line in lines:
         if line.strip().startswith('```'):
             in_ignore_block = not in_ignore_block
+            new_lines.append('')
         elif in_ignore_block:
             new_lines.append('%s%s%s' % (ig, ig, line))
         else:

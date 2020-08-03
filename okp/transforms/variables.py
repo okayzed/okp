@@ -137,9 +137,9 @@ def handle_destructuring_decls(line, scope):
                         continue
 
                     if not arg in scope:
-                        line += '\n%sauto %s = get<%s>(%s);' % (' ' * indent, arg, j, pname )
+                        line += '%sauto %s = get<%s>(%s);' % (' ' * indent, arg, j, pname )
                     else:
-                        line += '\n%s%s = get<%s>(%s);' % (' ' * indent, arg, j, pname)
+                        line += '%s%s = get<%s>(%s);' % (' ' * indent, arg, j, pname)
 
                 di += 1
 

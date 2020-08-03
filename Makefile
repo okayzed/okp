@@ -8,7 +8,7 @@ install:
 				pip install dist/okp-current.tar.gz --user
 
 test:
-				bash scripts/run_tests.sh
+				bash scripts/run_tests.sh ${test}
 
 .PHONY: tags
 
