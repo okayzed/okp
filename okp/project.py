@@ -25,7 +25,8 @@ def process_file(fname):
     with open(fname) as f:
         lines = f.readlines()
 
-    lines = pipeline.pipeline(lines, basedir)
+    fname = os.path.normpath(os.path.abspath(fname))
+    lines = pipeline.pipeline(lines, basedir, fname=fname)
 
     # TODO:
     # extract exports to fname.h
@@ -192,7 +193,7 @@ def process_files(tmp_dir, args):
     for arg in files:
         if arg == '-':
             lines = sys.stdin.readlines()
-            lines = pipeline.pipeline(lines)
+            lines = pipeline.pipeline(lines, fname="<stdin>")
             print_lines(lines)
         else:
             util.verbose("processing", arg)

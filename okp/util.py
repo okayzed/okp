@@ -141,7 +141,6 @@ def hash_line(line):
     cline = line.strip()
     return cline and cline[0] == '#'
 
-
 def is_def(line):
     return line.strip().find("def ") != -1
 
@@ -150,9 +149,6 @@ def is_struct(line):
 
 def is_class(line):
     return line.strip().startswith("class ")
-
-def is_struct(line):
-    return line.strip().startswith("struct ")
 
 def line_is_include(line):
     return line.startswith("#include")

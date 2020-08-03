@@ -104,6 +104,11 @@ def file_contains_main(lines):
     i = 0
     while i < len(lines):
         line = lines[i]
+        sline = line.strip()
+        if not line or line[0] == "#":
+            i += 1
+            continue
+
         indent = get_indent(line)
         if is_struct(line) or is_class(line):
             until = extract_until_close(lines, i)
