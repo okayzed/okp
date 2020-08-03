@@ -21,9 +21,9 @@ node** tree_init()
 
 char isRed(node * n)
 	return n != NULL && n->red
-	
+
 void costlyPrint (node * n, int depth, ideal)
-	if n == NULL 
+	if n == NULL
 		return
 	if depth < ideal
 		costlyPrint(n->left, depth+1, ideal)
@@ -42,15 +42,15 @@ void rotateRight (node ** r)
 	node * n = *r
 	node * l = n->left
 	n->left = l->right
-	l->right = n	
+	l->right = n
 	*r = l
 	//printf("rotateRight %d %d\n", n->data, l->data)
-	
+
 void rotateLeft (node ** r)
 	node * n = *r
-	node * l = n->right	
+	node * l = n->right
 	n->right = l->left
-	l->left = n	
+	l->left = n
 	*r = l
 	//printf("rotateLeft %d %d\n", n->data, l->data)
 
@@ -61,7 +61,7 @@ void colorSwap (node ** n)
 		(*n)->right->red = 0
 	(*n)->red = 1
 	//printf("colorSwap %d %d %d\n", (*n)->data, (*n)->left->data, (*n)->right->data)
-	
+
 void tree_balance (node** n)
 	if isRed((*n)->left) && isRed((*n)->right) && (isRed((*n)->right->right) || isRed((*n)->right->left) || isRed((*n)->left->right) || isRed((*n)->left->left))
 		colorSwap(n)
@@ -86,7 +86,7 @@ void tree_balance (node** n)
 			(*n)->red = 0
 			(*n)->left->red = 1
 	//printf("bal %d\n", (*n)->data)
-		
+
 void tree_insert (node** n, int data)
 	if *n == NULL
 		*n = node_init(data)
@@ -96,10 +96,10 @@ void tree_insert (node** n, int data)
 		tree_insert(&(*n)->left, data)
 	else
 		tree_insert(&(*n)->right, data)
-		
+
 	tree_balance(n)
 	return;
-	
+
 void tree_preOrder (node* n)
 	if n == NULL
 		return
@@ -113,7 +113,7 @@ void tree_inOrder (node* n)
 	tree_inOrder(n->left)
 	printf("%d ", n->data)
 	tree_inOrder(n->right)
-	
+
 void tree_postOrder (node* n)
 	if n == NULL
 		return
@@ -133,11 +133,24 @@ node* tree_find (node * n, int key)
 	else if key > n->data
 		return tree_find(n->right, key)
 
+
+int tree_max (node* n)
+	if n->right != NULL
+		return tree_max(n->right)
+	else
+		return n->data
+
+int tree_min (node* n)
+	if n->left != NULL
+		return tree_min(n->left)
+	else
+		return n->data
+
 int tree_sucessor (node** root, node* n, int key)
-	n = tree_find(n, key)	
+	n = tree_find(n, key)
 	if n != NULL && n->right != NULL
         return tree_min(n->right);
-	
+
 	struct node* successor = NULL;
 	n = *root;
     while root != NULL
@@ -148,16 +161,16 @@ int tree_sucessor (node** root, node* n, int key)
             n = n->right
         else
            break
-	
+
 	if successor == NULL
 		return -1
     return successor->data
-	
+
 int tree_predecessor (node** root, node* n, int key)
-	n = tree_find(n, key)	
+	n = tree_find(n, key)
 	if n != NULL && n->left != NULL
         return tree_max(n->left);
-	
+
 	struct node* predecessor = NULL;
 	n = *root;
     while root != NULL
@@ -168,30 +181,18 @@ int tree_predecessor (node** root, node* n, int key)
             n = n->left
         else
            break
-	
+
 	if predecessor == NULL
 		return -1
     return predecessor->data
-	
-int tree_max (node* n)
-	if n->right != NULL
-		return tree_max(n->right)
-	else
-		return n->data
-	
-int tree_min (node* n)
-	if n->left != NULL
-		return tree_min(n->left)
-	else
-		return n->data
-	
+
 void tree_free2 (node* n)
 	if n == NULL
 		return
 	tree_free2(n->left)
 	tree_free2(n->right)
 	free(n)
-	
+
 void tree_free (node** t)
 	tree_free2(*t)
 	free(t)
