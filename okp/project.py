@@ -20,20 +20,55 @@ CXX = os.environ.get("CXX", "g++")
 def print_lines(lines):
     print('\n'.join(lines))
 
+def extract_hidden(lines):
+    scope_stack = []
+    h_lines, cpp_lines = [],[]
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.strip().startswith("class") or line.strip().startswith("namespace"):
+            # "namespace Foo:" or "class Bar(Baz):"
+            # namespace Foo:
+            #   class Bar : public Baz:
+            #     Bar() : Baz():
+            #       pass
+            #     def qux():
+            # "Foo::Bar::qux()"
+            scope = line.split(":")[0].split()[-1]
+            scope_stack.append(scope)
+        if line.strip() == "@hidden":
+            i += 1
+            line = lines[i]
+            # first line after @hidden should be a method declaration
+            target_indent = util.get_indent(line)
+            # first token is type (int, bool, etc) or "def"
+            tokens = line.lstrip().split()
+            prefix = "::".join(scope_stack) + "::"
+            # ex: "int Foo::Bar::qux():"
+            new_line = tokens[0] +" "+ prefix + " ".join(tokens[1:]) + "\n"
+            cpp_lines.append(new_line)
+            i += 1
+            while i < len(lines) and util.get_indent(lines[i]) >= target_indent:
+                cpp_lines.append(lines[i][target_indent:])
+                i += 1
+        else:
+            h_lines.append(line)
+            i += 1
+    print(cpp_lines)
+    return h_lines, cpp_lines
+
 def process_file(fname):
     basedir, name = os.path.split(fname)
     with open(fname) as f:
         lines = f.readlines()
 
+    h_lines, cpp_lines = extract_hidden(lines)
+
     fname = os.path.normpath(os.path.abspath(fname))
-    lines = pipeline.pipeline(lines, basedir, fname=fname)
+    h_lines = pipeline.pipeline(h_lines, basedir, fname=fname)
+    cpp_lines = pipeline.pipeline(cpp_lines, basedir, fname=fname)
 
-    # TODO:
-    # extract exports to fname.h
-    # print("\n".join(exports))
-    # print("/* END HEADER */")
-
-    return lines
+    return h_lines, cpp_lines
 
 def run_cmd(cmd, more_args=[], stdin=None):
     cmd_args = shlex.split(cmd)
@@ -151,10 +186,12 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
 
-    lines = process_file(arg)
+    h_lines, cpp_lines = process_file(arg)
+    if cpp_lines:
+        cpp_lines = ['#include "{}"'.format(hfname)] + cpp_lines
 
     as_header = True
-    if analysis.file_contains_main(lines):
+    if analysis.file_contains_main(h_lines):
         as_header = False
         args.files.append(fname)
 
@@ -168,18 +205,27 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
 
     if (args.print_):
         print("// %s" % arg)
-        print_lines(lines)
+        print_lines(h_lines)
+        print_lines(cpp_lines)
         return
 
     if as_header:
-        header = lines
+        header = h_lines
         header = add_guards(arg, header)
 
         with open(hfname, "w") as f:
-            f.write("\n".join(lines))
-    else:
+            f.write("\n".join(header))
         with open(fname, "w") as f:
-            f.write("\n".join(lines))
+            f.write("\n".join(cpp_lines))
+    else:
+        if cpp_lines:
+            with open(hfname, "w") as f:
+                f.write("\n".join(h_lines))
+            with open(fname, "w") as f:
+                f.write("\n".join(cpp_lines))
+        else:
+            with open(fname, "w") as f:
+                f.write("\n".join(h_lines))
 
 
 
