@@ -14,6 +14,7 @@ from . import analysis
 from . import util
 from . import config
 from . import single_header
+from . import linters
 
 CXX = os.environ.get("CXX", "g++")
 
@@ -275,9 +276,10 @@ def compile_project(args):
         tmp_dir = tempfile.mkdtemp()
     util.verbose("working tmp dir is", tmp_dir)
 
-
     try:
         process_files(tmp_dir, args)
+
+        linters.run(tmp_dir, args)
 
         if not (args.print_) and not args.transpile:
             ofiles = compile_files(tmp_dir, args)

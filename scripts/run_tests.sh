@@ -141,6 +141,7 @@ function basic_tests() {
   run_test tests/walrus_operator.cpy
   run_test tests/ifstream.cpy
   run_test tests/for_loops.cpy
+  run_test tests/class_var_lint.cpy
 }
 
 function project_tests() {

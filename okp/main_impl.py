@@ -8,9 +8,10 @@ from . import config
 def get_parser():
     import argparse
 
-    parser = argparse.ArgumentParser(description='Process .cpy files into C++. Any unknown flags are passed as compiler flags to g++')
+    parser = argparse.ArgumentParser(
+        description='Process .cpy files into C++. Any unknown flags are passed as compiler flags to g++',
+        formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=50))
     parser.add_argument('-ni', '--disable-implication', help='disables variable implication', action='store_true')
-    parser.add_argument('-nr', '--disable-read', help='disables read keyword', action='store_true')
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
     parser.add_argument('-r', '--run', dest="runexe", action="store_true",
         help="invoke executable after compiling it")
@@ -20,7 +21,8 @@ def get_parser():
         help="set the name of the executable file")
     parser.add_argument('-d', '--dir', dest='dir', default=None,
         help="output source files to this directory. implies -k")
-    parser.add_argument('-v', '--verbose', dest='verbose', action="store_true")
+    parser.add_argument('-v', '--verbose', dest='verbose', action="store_true",
+        help="operate in verbose mode")
     parser.add_argument('-p', '--print', dest='print_', action="store_true",
         help="print translated C++ source code")
     parser.add_argument('-k', '--keep-dir', dest='keep_dir', action="store_true",
@@ -35,6 +37,8 @@ def get_parser():
         help="don't compile code, only transpile")
     parser.add_argument('-sh', '--single-header', dest='single_header', action="store_true",
         help="transpile into a single header file")
+    parser.add_argument('-li', '--lint', dest='lint', action="store_true",
+        help="run linters before compiling")
 
     return parser
 
@@ -48,6 +52,8 @@ def main():
     if args.disable_implication:
         from .transforms import variables
         variables.DECLARE_VARIABLES = False
+
+    config.LINT = args.lint
 
     config.VERBOSE = args.verbose
 

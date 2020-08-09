@@ -13,7 +13,7 @@ setup(
     author='okay',
     author_email='okayzed+okp@gmail.com',
     include_package_data=True,
-    packages=['okp', 'okp.transforms'],
+    packages=['okp', 'okp.transforms', 'okp.linters'],
     scripts=['scripts/okp'],
     url='http://github.com/okayzed/okp',
     license='MIT',
