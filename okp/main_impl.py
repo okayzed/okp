@@ -12,6 +12,7 @@ def get_parser():
         description='Process .cpy files into C++. Any unknown flags are passed as compiler flags to g++',
         formatter_class=lambda prog: argparse.HelpFormatter(prog,max_help_position=50))
     parser.add_argument('-ni', '--disable-implication', help='disables variable implication', action='store_true')
+    parser.add_argument('-nr', '--disable-read', help='[DEPRECATED] disables read keyword', action='store_true')
     parser.add_argument('files', nargs='*', help="list of files to process and compile")
     parser.add_argument('-r', '--run', dest="runexe", action="store_true",
         help="invoke executable after compiling it")
