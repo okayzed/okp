@@ -71,6 +71,16 @@ def replace_self(lines):
         if line.find("self") != -1:
             line = line.replace("self", "this")
 
+        # REPLACE $foo with this->foo
+        # this is used for instance variables to make sure they
+        # are well annotated
+        tokens = smart_split(line, " ", keep_splitters=True)
+        for i, token in enumerate(tokens):
+            if token and token[0] == "$":
+                token = "this->" + token[1:]
+                tokens[i] = token
+
+        line = "".join(tokens)
         new_lines.append(line)
 
     return new_lines
