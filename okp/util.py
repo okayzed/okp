@@ -5,7 +5,7 @@ import sys
 
 from . import config
 
-IGNORE_CHAR = '$'
+IGNORE_CHAR = '`'
 
 
 

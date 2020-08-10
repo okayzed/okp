@@ -37,9 +37,9 @@ optional arguments:
   -sh, --single-header  transpile into a single header file
 ~~~~~
 
-**NOTE**: any lines that start with `$` will be ignored by the okp processor
-and treated as raw c++. Surrounding lines of code with triple backticks will
-also treat those lines as raw c++.
+**NOTE**: any lines that start with `\`` will be ignored by the okp processor
+and treated as raw c++. Surrounding multiple lines of code with triple
+backticks will also treat those lines as raw c++.
 
 ## Bugs
 

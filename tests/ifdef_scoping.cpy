@@ -1,9 +1,9 @@
 def foo():
   abc = 0
 
-$ #ifdef FOO
-$ abc
-$ #endif
+` #ifdef FOO
+` abc
+` #endif
 
   return abc
 
