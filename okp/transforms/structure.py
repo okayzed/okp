@@ -203,7 +203,8 @@ def join_percent_bracketed_lines(tlines):
             out.append(c)
 
     if out:
-        new_lines.append((line_no[j+1],"".join(out)))
+        # TODO: fix this
+        new_lines.append((line_nos[j]+1, "".join(out)))
 
     return new_lines
 
@@ -228,11 +229,11 @@ def join_open_bracketed_lines(tlines):
                 s.pop()
 
         if not s or s[-1] == '}':
-            new_tlines.append((orig_line_no,' '.join(cur_line)))
+            new_tlines.append((orig_line_no, ' '.join(cur_line)))
             cur_line = []
             orig_line_no = None
     # TODO remove this?
-    new_tlines.append((orig_line_no,' '.join(cur_line)))
+    new_tlines.append((orig_line_no, ' '.join(cur_line)))
 
     return new_tlines
 
