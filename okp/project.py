@@ -103,19 +103,11 @@ def compile_cpp_file(tmp_dir, arg):
 
 
 def add_guards(arg, lines):
-    arg = arg.replace('/', '__')
-    arg = arg.replace('.', '_')
-    arg = arg.replace(' ', '_')
-    arg = arg.upper()
-    arg = "%s_H" % (arg)
+    for line in lines:
+        if line.strip().startswith("#pragma once"):
+            return lines
 
-    guard_line = "#ifndef %s\n#define %s" % (arg, arg)
-    endif = "#endif"
-
-    lines.insert(0, guard_line)
-    lines.append(endif)
-
-
+    lines.insert(0, "#pragma once")
     return lines
 
 def process_cpp_file(args, tmp_dir, arg):
