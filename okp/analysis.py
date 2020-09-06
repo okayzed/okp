@@ -187,7 +187,7 @@ def guess_required_files(lines):
     defines = set()
 
     REQUIRE_KEYWORDS = {
-        "<iostream>" : [ "cout", "cin", "endl" ],
+        "<iostream>" : [ "cout", "cin", "endl", "cerr" ],
         "<vector>" : [ "vector" ],
         "<tuple>" : [ "tuple", "make_tuple", "tie", "std::tie"],
         "<queue>" : [ "queue" ],

@@ -63,9 +63,11 @@ def io_printline(line, indent):
         if sline.endswith(","):
             add_space = False
 
+
+    call = "cout"
     if print_token:
         args = smart_split(sline[len(print_token):], ' ,')
-        line = "%scout << %s" % (' ' * indent, " << ".join(args))
+        line = "%s%s << %s" % (' ' * indent, call, " << ".join(args))
         if add_space:
             line = '%s << " "' % (line)
         return line
@@ -74,8 +76,12 @@ def io_printline(line, indent):
     if sline == "print":
         return "%scout << endl" % (' ' * indent)
 
-    for tok in ["!", "std::cout ", "cout ", "print "]:
+    for tok in ["!", "std::cout ", "cout ", "print ", "debug "]:
         if sline.startswith(tok):
+            if tok == "debug ":
+                call = "std::cerr"
+            else:
+                call = "std::cout"
             if tok == "print ":
                 args = smart_split(sline[len(tok):], ',')
             else:
@@ -89,14 +95,14 @@ def io_printline(line, indent):
             if no_add:
                 continue
 
-            spc = "endl";
+            spc = "std::endl"
             if sline.endswith(','):
-                spc = "' '";
+                spc = "' '"
 
             if not args:
-                line = "%scout << %s" % (' ' * indent, spc)
+                line = "%s%s << %s" % (' ' * indent, call, spc)
             else:
-                line = "%scout << %s << %s" % (' ' * indent, " << ' ' << ".join(args), spc)
+                line = "%s%s << %s << %s" % (' ' * indent, call, " << ' ' << ".join(args), spc)
 
     return line
 

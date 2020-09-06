@@ -8,6 +8,7 @@ function test_output() {
   exe_name=${1}
   in_name=${2}
   out_name=${3}
+  err_name=${3/.out/.err}
   tmp_name=${4}
   diff_name=${5}
   prefix="-"
@@ -16,9 +17,9 @@ function test_output() {
     # if test -f ${out_name}; then
     #     cat ${in_name} | ${exe_name} > ${out_name}
     # fi
-    cat ${in_name} | ${exe_name} > ${tmp_name}
+    cat ${in_name} | ${exe_name} > ${tmp_name} 2> ${tmp_name}.err
   else
-    ${exe_name} > ${tmp_name}
+    ${exe_name} > ${tmp_name} 2> ${tmp_name}.err
   fi
 
   if test -f ${out_name}; then
@@ -32,6 +33,19 @@ function test_output() {
     fi
     prefix="+"
   fi
+
+  if test -f ${err_name}; then
+    diff ${err_name} ${tmp_name}.err > ${diff_name}
+    if [[ $? != 0 ]]; then
+      echo "STDERR FAILED: ${1}"
+      cat ${diff_name}
+      FAILED=$(($FAILED+1))
+      return 1
+
+    fi
+    prefix="+"
+  fi
+
 
   echo "${prefix}PASSED: ${1}"
   PASSED=$(($PASSED+1))
@@ -98,7 +112,7 @@ function run_project_test() {
 
   exe_name="${name}/exe"
   in_name="${name}/in"
-  out_name="${name}/out"
+  out_name="${name}/run.out"
   tmp_name="${name}/tmp"
   diff_name="${name}/diff"
 
@@ -142,6 +156,7 @@ function basic_tests() {
   run_test tests/ifstream.cpy
   run_test tests/for_loops.cpy
   run_test tests/class_var_lint.cpy
+  run_test tests/debug_keyword.cpy
 }
 
 function project_tests() {
