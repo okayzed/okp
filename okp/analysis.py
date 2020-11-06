@@ -142,7 +142,8 @@ def gather_includes(file, includes, base_dir=None):
         return
 
     file = os.path.join(base_dir, fname)
-    includes[file_path] = True
+    if not file_path.endswith(".cpp"):
+        includes[file_path] = True
 
 
     with open(file_path) as f:
@@ -178,6 +179,7 @@ def gather_files(files):
             continue
         file_dir, file = os.path.split(file)
         gather_includes(file, ret,file_dir)
+        ret[file] = True
 
     os.chdir(original_dir)
     return list(ret.keys())

@@ -40,6 +40,8 @@ def get_parser():
         help="transpile into a single header file")
     parser.add_argument('-li', '--lint', dest='lint', action="store_true",
         help="run linters before compiling")
+    parser.add_argument('-ns', '--no-source-map', dest='add_source_map', action="store_false",
+        help="Add source maps to .cpp files", default=True)
 
     return parser
 

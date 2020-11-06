@@ -21,13 +21,13 @@ CXX = os.environ.get("CXX", "g++")
 def print_lines(lines):
     print('\n'.join(lines))
 
-def process_file(fname):
+def process_file(fname, args):
     basedir, name = os.path.split(fname)
     with open(fname) as f:
         lines = f.readlines()
 
     fname = os.path.normpath(os.path.abspath(fname))
-    lines = pipeline.pipeline(lines, basedir, fname=fname)
+    lines = pipeline.pipeline(lines, basedir, fname=fname, add_source_map=args.add_source_map)
 
     # TODO:
     # extract exports to fname.h
@@ -144,7 +144,7 @@ def process_cpy_file(args, tmp_dir, arg, use_headers=False):
     ofname = os.path.join(tmp_dir, "%s.o" % name)
     hfname = os.path.join(tmp_dir, "%s.h" % name)
 
-    lines = process_file(arg)
+    lines = process_file(arg, args)
 
     as_header = True
     if analysis.file_contains_main(lines):
@@ -186,7 +186,7 @@ def process_files(tmp_dir, args):
     for arg in files:
         if arg == '-':
             lines = sys.stdin.readlines()
-            lines = pipeline.pipeline(lines, fname="<stdin>")
+            lines = pipeline.pipeline(lines, fname="<stdin>", add_source_map=args.add_source_map)
             print_lines(lines)
         else:
             util.verbose("processing", arg)
