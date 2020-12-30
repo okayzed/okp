@@ -13,6 +13,15 @@ DEBUG_GRAPH=False
 def gather_includes(file, includes, parent=None, base_dir=None):
     file_path = os.path.normpath(os.path.join(base_dir or "", file))
 
+    valid_exts = [".h", ".cpy", ".cpp", ".c", ".hpp"]
+    valid_ext = False
+    for ext in valid_exts:
+        if file.endswith(ext):
+            valid_ext = True
+
+    if not valid_ext:
+        return
+
     if file_path == parent:
         return
 

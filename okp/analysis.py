@@ -129,6 +129,15 @@ def gather_includes(file, includes, base_dir=None):
     if file_path in includes:
         return
 
+    valid_exts = [".h", ".cpy", ".cpp", ".c", ".hpp"]
+    valid_ext = False
+    for ext in valid_exts:
+        if file.endswith(ext):
+            valid_ext = True
+
+    if not valid_ext:
+        return
+
     dirname = os.path.dirname(file)
     fname = os.path.basename(file)
 
@@ -177,8 +186,8 @@ def gather_files(files):
 
         if not os.path.exists(file):
             continue
-        file_dir, file = os.path.split(file)
-        gather_includes(file, ret,file_dir)
+        file_dir, filename = os.path.split(file)
+        gather_includes(filename, ret, file_dir)
         ret[file] = True
 
     os.chdir(original_dir)

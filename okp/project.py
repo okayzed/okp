@@ -196,6 +196,8 @@ def process_files(tmp_dir, args):
                 process_cpp_file(args, tmp_dir, arg)
             if arg.endswith(".h"):
                 process_h_file(tmp_dir, arg)
+            if arg.endswith(".o"):
+                args.files.append(arg)
 
 def compile_files(tmp_dir, args):
     cur_dir = os.getcwd()
@@ -215,6 +217,8 @@ def compile_files(tmp_dir, args):
         if arg != '-':
             if arg.endswith(".cpy") or arg.endswith(".okp"):
                 ofiles.append(compile_cpy_file(tmp_dir, arg))
+            if arg.endswith(".o"):
+                ofiles.append(arg)
             if arg.endswith(".cpp"):
                 ofiles.append(compile_cpp_file(tmp_dir, arg))
             if arg.endswith(".c"):
