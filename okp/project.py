@@ -57,6 +57,11 @@ def process_h_file(tmp_dir, arg):
     fname = os.path.join(tmp_dir, arg)
     basedir = os.path.dirname(fname)
 
+    abspath = os.path.abspath(fname)
+    abstmp = os.path.abspath(tmp_dir)
+    if not abspath.startswith(abstmp):
+        return
+
     try:
         os.makedirs(basedir)
     except:
